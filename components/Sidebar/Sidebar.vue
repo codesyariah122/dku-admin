@@ -307,8 +307,8 @@ export default {
             Authorization: `Bearer ${this.token.token}`,
           },
         };
-        delete config.headers["Authorization"];
-        this.$axios
+
+        this.$api
           .get(endPoint, config)
           .then(({ data }) => {
             if (data.data[0].logins[0].user_token_login === this.token.token) {

@@ -154,7 +154,6 @@ export default {
   },
 
   mounted() {
-    // this.authTokenStorage();
     this.checkIsLogin();
   },
 
