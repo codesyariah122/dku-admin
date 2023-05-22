@@ -7,6 +7,7 @@
         :headers="headers"
         :columns="items"
         types="user-role"
+        :usersData="Object.values(this.userData)"
       />
     </div>
   </div>
@@ -35,7 +36,7 @@ export default {
       items: [],
       headers: [...USER_ROLE_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
-      message: "",
+      message: ""
     };
   },
 
@@ -45,6 +46,7 @@ export default {
   },
 
   mounted() {
+    this.checkUserLogin();
     this.getUserRole();
   },
 

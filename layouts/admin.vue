@@ -1,5 +1,5 @@
 <template>
-  <div @click="outsideClick">
+  <div>
     <sidebar />
     <div
       v-if="userData.role !== 3"
@@ -65,10 +65,6 @@ export default {
         console.log("no action");
         localStorage.removeItem("refresh-first");
       }
-    },
-
-    outsideClick() {
-      console.log(this.$refs.btnDropdownRef)
     },
 
     checkExpires() {

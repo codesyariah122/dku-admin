@@ -49,10 +49,6 @@ export default {
     };
   },
 
-  mounted() {
-    console.log(this.notifs);
-  },
-
   methods: {
     toggleDropdown: function (event) {
       event.preventDefault();
@@ -67,15 +63,6 @@ export default {
       }
     },
   },
-  // watch: {
-  //   notifs() {
-  //     if (this.$_.size(this.notifs) > 0) {
-  //       this.showNotif = true;
-  //       let lists = [];
-  //       lists.push(this.messageNotifs);
-  //       localStorage.setItem('notif-lists', JSON.stringify(lists));
-  //     }
-  //   },
-  // },
+
 };
 </script>

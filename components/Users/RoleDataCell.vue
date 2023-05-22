@@ -34,7 +34,7 @@
         <i class="fa-regular fa-hourglass"></i>
       </td>
 
-      <td
+      <td v-if="column.name !== 'ADMIN'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
         <dropdowns-table-dropdown />
@@ -49,6 +49,10 @@ export default {
     columns: {
       type: Array,
     },
-  },
+    users: {
+      type: Array,
+      default: [],
+    }
+  }
 };
 </script>

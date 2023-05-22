@@ -23,7 +23,7 @@
 
         <users-user-data-cell v-if="types === 'user-data'" :columns="columns" @deleted-data="deletedData"/>
 
-        <users-role-data-cell v-if="types === 'user-role'" :columns="columns"/>
+        <users-role-data-cell v-if="types === 'user-role'" :columns="columns" :users="usersData"/>
 
       </table>
     </div>
@@ -50,6 +50,10 @@ export default {
     types: {
       type: String
     },
+    usersData: {
+      type: Array,
+      default: []
+    }
   },
 
   methods: {

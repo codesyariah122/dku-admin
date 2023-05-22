@@ -17,16 +17,22 @@
       }"
     >
       <a
+        href="javascript:void(0);"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+      >
+        <i class="fa-solid fa-info"></i> &nbsp;&nbsp;Detailed Data
+      </a>
+      <a
         @click="deletedData"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
-        Delete Data
+        <i class="fa-solid fa-trash"></i> &nbsp;&nbsp;Delete Data
       </a>
       <a
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
-        Edit Data
+        <i class="fa-solid fa-pen-to-square"></i> &nbsp;&nbsp;Edit Data
       </a>
     </div>
   </div>
@@ -38,14 +44,13 @@ export default {
   props: {
     id: {
       type: Number,
-    }
+    },
   },
   data() {
     return {
       dropdownPopoverShow: false,
     };
   },
-
 
   methods: {
     toggleDropdown: function (event) {
@@ -61,9 +66,9 @@ export default {
     },
 
     deletedData() {
-      this.$emit('deleted-data', this.id)
+      this.$emit("deleted-data", this.id);
       this.dropdownPopoverShow = false;
-    }
+    },
   },
 };
 </script>
