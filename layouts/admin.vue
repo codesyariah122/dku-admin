@@ -176,7 +176,6 @@ export default {
         // console.log(this.notifs[0][0].emailForbaiden)
         this.checkExpires();
         if (this.notifs[0][0].emailForbaiden === this.userEmail) {
-          console.log(this.notifs[0][0].emailForbaiden === this.userEmail)
           this.$toast.show(this.message, {
             type: "info",
             duration: 5000,

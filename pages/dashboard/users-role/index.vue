@@ -29,15 +29,18 @@ export default {
   },
   data() {
     return {
+      dataNotifs: [],
       notifs: [],
       items: [],
       headers: [...USER_ROLE_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
+      message: "",
     };
   },
 
   created() {
     this.checkNewData();
+    this.dataManagementEvent();
   },
 
   mounted() {
@@ -58,19 +61,31 @@ export default {
       );
     },
 
+    dataManagementEvent() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "DataManagementEvent",
+        (e) => {
+          this.message = e[0].notif;
+          this.dataNotifs.push(e[0]);
+        }
+      );
+    },
+
     getUserRole() {
       getData({
         api_url: `${this.api_url}/fitur/roles-management`,
         token: this.token.token,
       })
         .then(({ data }) => {
+          let cells = [];
           data.data.map((cell) => {
-            this.items.push({
+            cells.push({
               id: cell.id,
               name: this.$role(cell.name),
               users: cell.users.map((user) => user.name),
             });
           });
+          this.items = [...cells];
         })
         .catch((err) => console.log(err));
     },
@@ -79,6 +94,18 @@ export default {
   watch: {
     notifs() {
       if (this.notifs?.length > 0) {
+        if (this.notifs.type !== "added" || this.notifs.type !== "removed") {
+          this.getUserRole();
+        }
+      }
+    },
+    dataNotifs() {
+      if (this.dataNotifs?.length > 0) {
+        this.$toast.show(this.message, {
+          type: "info",
+          duration: 5000,
+          position: "top-right",
+        });
         this.getUserRole();
       }
     },

@@ -139,7 +139,7 @@
                       class="text-xs uppercase py-3 font-bold block"
                       :class="[
                         isActive
-                          ? 'text-purple-900 hover:text-blueGray-800'
+                          ? 'text-purple-700 hover:text-blueGray-800'
                           : 'text-blueGray-700 hover:text-blueGray-500',
                       ]"
                     >
@@ -260,7 +260,6 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "MenuSubMenuManagement",
         (e) => {
-          console.log(e[0]);
           this.menuSubMenuNotifs.push(e[0]);
         }
       );
