@@ -139,7 +139,6 @@ export default {
       loadingLogin: null,
       loadingCheck: null,
       api_url: process.env.NUXT_ENV_API_URL,
-      owners: [],
       form: {},
       validation: [],
       errorPassword: "",

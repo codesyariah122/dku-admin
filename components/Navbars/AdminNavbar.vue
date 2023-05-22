@@ -7,12 +7,11 @@
       class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4"
     >
       <!-- Brand -->
-      <a
-        class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-        href="javascript:void(0)"
+      <span
+        class="text-xs font-semibold inline-block py-2 px-2 rounded text-emerald-600 bg-emerald-200 capitalize last:mr-0 mr-1"
       >
-        Dashboard
-      </a>
+        Sesi login: {{ countdown }}
+      </span>
       <!-- Form -->
       <form
         class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
@@ -38,3 +37,50 @@
   </nav>
   <!-- End Navbar -->
 </template>
+
+<script>
+export default {
+  props: ['userData'],
+  data() {
+    return {
+      countdown: "",
+    };
+  },
+
+  created() {
+    this.expiredCountDown();
+  },
+
+  methods: {
+    expiredCountDown() {
+      setInterval(() => {
+        // Waktu saat ini
+        const endTime = new Date(this.userData.expires_at);
+        let currentTime = new Date().getTime();
+
+        // Selisih antara waktu akhir dan waktu saat ini
+        let timeLeft = endTime - currentTime;
+
+        // Konversi selisih waktu menjadi detik, menit, dan jam
+        let seconds = Math.floor((timeLeft / 1000) % 60);
+        let minutes = Math.floor((timeLeft / 1000 / 60) % 60);
+        let hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+
+        // Format waktu mundur
+        this.countdown = `${days > 0 ? days + " hari, " : ""} ${
+          hours > 0 ? hours + " hari, " : ""
+        } ${minutes > 0 ? minutes + " menit, " : ""} ${
+          seconds > 0 ? seconds + " detik" : ""
+        }`;
+
+        // Hentikan penghitungan waktu mundur jika waktu telah habis
+        if (timeLeft < 0) {
+          clearInterval(countdownInterval);
+          this.countdown = "Waktu telah habis!";
+        }
+      }, 1000);
+    },
+  },
+};
+</script>

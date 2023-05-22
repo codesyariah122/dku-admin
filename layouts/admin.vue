@@ -5,7 +5,7 @@
       v-if="userData.role !== 3"
       class="relative md:ml-64 bg-blueGray-100"
     >
-      <admin-navbar />
+      <admin-navbar :userData="userData"/>
       <header-stats />
 
       <div class="px-4 md:px-10 mx-auto w-full -m-24 py-6">

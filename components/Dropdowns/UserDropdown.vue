@@ -132,7 +132,6 @@ export default {
     checkIsLogin() {
       if (this.token !== null) {
         this.loadingData = true;
-        console.log(process.env.NUXT_ENV_PRODUCTION);
         const endPoint = `${this.api_url}/fitur/user-profile`;
         const config = {
           headers: {
