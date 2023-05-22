@@ -27,7 +27,7 @@ export default {
   },
 
   mounted() {
-    this.checkUserLogin();
+    // this.checkUserLogin();
   },
 
   methods: {
@@ -125,11 +125,7 @@ export default {
                 this.$store.dispatch("auth/removeAuthToken", "auth");
                 this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
                 setTimeout(() => {
-                  if (this.path === "/") {
-                    location.reload();
-                  } else {
-                    this.$router.replace("/");
-                  }
+                  this.$router.replace("/");
                 }, 1500);
               }
             })
