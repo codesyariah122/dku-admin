@@ -26,9 +26,6 @@ export default {
     this.checkNewData();
   },
 
-  mounted() {
-    // this.checkUserLogin();
-  },
 
   methods: {
     authTokenStorage() {

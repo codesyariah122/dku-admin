@@ -10,7 +10,7 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            Users Data
+            {{title}}
           </h3>
         </div>
       </div>
@@ -21,7 +21,7 @@
 
         <molecules-table-header :headers="headers" :color="color"/>
 
-        <users-user-data-cell v-if="types === 'user-data'" :columns="columns"/>
+        <users-user-data-cell v-if="types === 'user-data'" :columns="columns" @deleted-data="deletedData"/>
 
         <users-role-data-cell v-if="types === 'user-role'" :columns="columns"/>
 
@@ -38,6 +38,9 @@ export default {
         return ["light", "dark"].indexOf(value) !== -1;
       },
     },
+    title: {
+      type: String
+    },
     headers: {
       type: Array,
     },
@@ -48,5 +51,11 @@ export default {
       type: String
     },
   },
+
+  methods: {
+    deletedData(id) {
+      this.$emit('deleted-data', id)
+    }
+  }
 };
 </script>

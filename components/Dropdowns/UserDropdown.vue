@@ -32,20 +32,20 @@
     >
       <a
         :href="`/dashboard/${roles}`"
-        class="capitalize text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="capitalize text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 hover:underline hover:text-blue-700 hover:decoration-double"
       >
         {{ name }}
       </a>
 
       <p
-        class="text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:underline hover:text-blue-700 hover:decoration-double"
       >
         {{ userData.email }}
       </p>
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
       <a
         href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 hover:bg-gray-600 hover:text-white"
       >
         Setting
       </a>
@@ -53,7 +53,7 @@
       <a
         @click="this.logout"
         href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 hover:bg-gray-600 hover:text-white"
       >
         Logout
       </a>
@@ -64,12 +64,8 @@
 <script>
 import { createPopper } from "@popperjs/core";
 import image from "@/assets/img/team-1-800x800.jpg";
-import vClickOutside from "v-click-outside";
 
 export default {
-  directives: {
-    clickOutside: vClickOutside.directive,
-  },
   data() {
     return {
       notifs: [],
@@ -189,11 +185,10 @@ export default {
       }
     },
     updateProfileNotifs() {
-      if(this.$_.size(this.updateProfileNotifs) > 0) {
+      if (this.$_.size(this.updateProfileNotifs) > 0) {
         this.checkIsLogin();
       }
-    }
+    },
   },
-
 };
 </script>

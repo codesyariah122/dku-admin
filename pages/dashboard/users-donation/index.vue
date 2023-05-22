@@ -3,11 +3,10 @@
     <div class="w-full mb-12 px-4">
       <cards-card-table
         color="dark"
-        title="User Dashboard"
+        title="User Donation"
         :headers="headers"
         :columns="items"
         types="user-data"
-        @deleted-data="deletedUser"
       />
     </div>
   </div>
@@ -19,11 +18,12 @@
  * @returns {string}
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
-import { USER_DATA_TABLE } from "~/utils/tables-organizations";
+ import { USER_DATA_TABLE } from "~/utils/tables-organizations";
 import { getData } from "~/hooks/getData/index";
 
+
 export default {
-  name: "users-data",
+  name: "uses-donation",
   layout: "admin",
 
   data() {
@@ -100,13 +100,12 @@ export default {
 
     getUserData() {
       getData({
-        api_url: `${this.api_url}/fitur/user-management`,
+        api_url: `${this.api_url}/fitur/user-management?role=USER`,
         token: this.token.token,
       })
         .then(({ data }) => {
           let cells = []
           data.data.map((cell) => {
-            console.log(cell.logins);
             const prepareCell = {
               id: cell.id,
               name: cell.name,
@@ -128,10 +127,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-
-    deletedUser(id) {
-      console.log(id);
-    }
   },
 
   watch: {

@@ -2,7 +2,7 @@
   <div>
     <a
       class="text-blueGray-400 py-1 px-3 font-bold text-md"
-      href="#pablo"
+      href="#!"
       ref="btnDropdownRef"
       v-on:click="toggleDropdown($event)"
     >
@@ -17,22 +17,16 @@
       }"
     >
       <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        @click="deletedData"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
-        Action
+        Delete Data
       </a>
       <a
         href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
-        Another action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Something else here
+        Edit Data
       </a>
     </div>
   </div>
@@ -41,11 +35,18 @@
 import { createPopper } from "@popperjs/core";
 
 export default {
+  props: {
+    id: {
+      type: Number,
+    }
+  },
   data() {
     return {
       dropdownPopoverShow: false,
     };
   },
+
+
   methods: {
     toggleDropdown: function (event) {
       event.preventDefault();
@@ -58,6 +59,11 @@ export default {
         });
       }
     },
+
+    deletedData() {
+      this.$emit('deleted-data', this.id)
+      this.dropdownPopoverShow = false;
+    }
   },
 };
 </script>

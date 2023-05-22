@@ -11,6 +11,12 @@
       <td
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
+        {{ column.username }}
+      </td>
+
+      <td
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
         {{ column.email }}
       </td>
 
@@ -61,10 +67,10 @@
         ></i>
         {{ column.is_login == 1 ? "Online" : "Offline" }}
       </td>
-      <td
+      <td v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown />
+        <dropdowns-table-dropdown @deleted-data="deletedData" :id="column.id" />
       </td>
     </tr>
   </tbody>
@@ -75,6 +81,16 @@ export default {
   props: {
     columns: {
       type: Array,
+    }
+  },
+
+  mounted () {
+    console.log(this.token.token)
+  },
+
+  methods: {
+    deletedData(id) {
+      this.$emit('deleted-data', id);
     }
   }
 };

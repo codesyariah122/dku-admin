@@ -3,6 +3,7 @@
     <div class="w-full mb-12 px-4">
       <card-table
         color="dark"
+        title="Roles User"
         :headers="headers"
         :columns="items"
         types="user-role"
