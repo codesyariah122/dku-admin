@@ -275,9 +275,6 @@ export default {
                 this.loadingData = false;
                 this.userDataCheck(data.data[0]);
               }, 500);
-              this.userToken = data.data[0].logins.map(
-                (d) => d.user_token_login
-              );
               this.image =
                 this.image_url +
                 "/" +
@@ -310,12 +307,12 @@ export default {
 
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
+      if (this.$_.size(this.notifs) > 0) {
         this.checkIsLogin();
       }
     },
     menuSubMenuNotifs() {
-      if (this.menuSubMenuNotifs.length > 0) {
+      if (this.$_.size(this.menuSubMenuNotifs) > 0) {
         this.userAccessMenu();
       }
     },

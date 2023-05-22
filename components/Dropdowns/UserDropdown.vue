@@ -184,12 +184,12 @@ export default {
 
   watch: {
     notifs() {
-      if (this.notifs.length > 0) {
+      if (this.$_.size(this.notifs) > 0) {
         this.checkIsLogin();
       }
     },
     updateProfileNotifs() {
-      if(this.updateProfileNotifs.length > 0) {
+      if(this.$_.size(this.updateProfileNotifs) > 0) {
         this.checkIsLogin();
       }
     }

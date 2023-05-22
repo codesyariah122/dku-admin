@@ -5,7 +5,7 @@
       v-if="userData.role !== 3"
       class="relative md:ml-64 bg-blueGray-100"
     >
-      <admin-navbar :userData="userData"/>
+      <admin-navbar />
       <header-stats />
 
       <div class="px-4 md:px-10 mx-auto w-full -m-24 py-6">
@@ -43,15 +43,13 @@ export default {
       userEmail: "",
       userName: "",
       userRoles: "",
-      messageNotif: "",
       emailForbaiden: "",
-      userData: []
+
     };
   },
 
   mounted() {
     this.refreshFirst();
-    this.checkUserLogin();
     this.checkExpires();
   },
 
@@ -66,34 +64,6 @@ export default {
       } else {
         console.log("no action");
         localStorage.removeItem("refresh-first");
-      }
-    },
-
-    checkUserLogin() {
-      if (this?.token !== null) {
-        this.loading = true;
-        const endPoint = `${this.api_url}/fitur/user-profile`;
-        const config = {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${this?.token?.token}`,
-          },
-        };
-        this.$api
-          .get(endPoint, config)
-          .then(({ data }) => {
-            this.userData = {...data.data[0]}
-          })
-          .catch((err) => {
-            console.log(err)
-          });
-      } else {
-        this.$swal({
-          icon: "error",
-          title: "Oops...",
-          text: "Error Access!",
-        });
-        this.$router.replace("/");
       }
     },
 
@@ -172,11 +142,11 @@ export default {
 
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
+      if (this.$_.size(this.notifs) > 0) {
         // console.log(this.notifs[0][0].emailForbaiden)
         this.checkExpires();
         if (this.notifs[0][0].emailForbaiden === this.userEmail) {
-          this.$toast.show(this.message, {
+          this.$toast.show(this.messageNotifs, {
             type: "info",
             duration: 5000,
             position: "top-right",

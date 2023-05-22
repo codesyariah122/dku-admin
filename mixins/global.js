@@ -10,10 +10,11 @@ export default {
       expires_at: null,
       api_url: process.env.NUXT_ENV_API_URL,
       notifs: [],
-      message: null,
+      messageNotifs: null,
       userEmail: "",
       emailForbaiden: "",
       cells: [],
+      userData: []
     };
   },
 
@@ -26,6 +27,7 @@ export default {
   },
 
   mounted() {
+    this.checkUserLogin();
   },
 
   methods: {
@@ -37,8 +39,11 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "EventNotification",
         (e) => {
-          this.notifs.push(e);
-          this.message = e[0].notif;
+          // console.log(e[0].notif)
+          if(e[0].type !== 'logout') {
+            this.notifs.push(e);
+            this.messageNotifs = e[0].notif;
+          }
         }
       );
     },
@@ -175,6 +180,34 @@ export default {
       this.cells = [...cells];
     },
 
+    checkUserLogin() {
+      if (this?.token !== null) {
+        this.loading = true;
+        const endPoint = `${this.api_url}/fitur/user-profile`;
+        const config = {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${this?.token?.token}`,
+          },
+        };
+        this.$api
+          .get(endPoint, config)
+          .then(({ data }) => {
+            this.userData = {...data.data[0]}
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      } else {
+        this.$swal({
+          icon: "error",
+          title: "Oops...",
+          text: "Error Access!",
+        });
+        this.$router.replace("/");
+      }
+    },
+
   },
 
   computed: {
@@ -184,7 +217,7 @@ export default {
   },
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
+      if (this.$_.size(this.notifs) > 0) {
         console.log(":CREATED");
       }
     },

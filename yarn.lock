@@ -1775,7 +1775,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
   integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
 
-"@popperjs/core@^2.9.3":
+"@popperjs/core@^2.6.0", "@popperjs/core@^2.9.3":
   version "2.11.7"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.7.tgz#ccab5c8f7dc557a52ca3288c10075c9ccd37fff7"
   integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
@@ -2950,6 +2950,11 @@ chart.js@2.9.4:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
 
+chart.js@^3.7.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-3.9.1.tgz#3abf2c775169c4c71217a107163ac708515924b8"
+  integrity sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==
+
 chartjs-color-string@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/chartjs-color-string/-/chartjs-color-string-0.6.0.tgz#1df096621c0e70720a64f4135ea171d051402f71"
@@ -2964,6 +2969,11 @@ chartjs-color@^2.1.0:
   dependencies:
     chartjs-color-string "^0.6.0"
     color-convert "^1.9.3"
+
+chartjs-plugin-datalabels@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-2.2.0.tgz#369578e131d743c2e34b5fbe2d3f9335f6639b8f"
+  integrity sha512-14ZU30lH7n89oq+A4bWaJPnAG8a7ZTk7dKf48YAzMvJjQtjrgg5Dpk9f+LbjCF6bpx3RAGTeL13IXpKQYyRvlw==
 
 chokidar@^2.1.8:
   version "2.1.8"
@@ -3665,6 +3675,11 @@ cuint@^0.2.2:
   resolved "https://registry.yarnpkg.com/cuint/-/cuint-0.2.2.tgz#408086d409550c2631155619e9fa7bcadc3b991b"
   integrity sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==
 
+custom-event-polyfill@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-1.0.7.tgz#9bc993ddda937c1a30ccd335614c6c58c4f87aee"
+  integrity sha512-TDDkd5DkaZxZFM8p+1I3yAlvM3rSr1wbrOliG4yJiwinMZN8z/iGL7BTlDkrJcYTmgUSb4ywVCc3ZaUtOtC76w==
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
@@ -3803,6 +3818,13 @@ destroy@1.2.0, destroy@^1.0.4:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.2.0.tgz#4803735509ad8be552934c67df614f94e66fa015"
   integrity sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==
+
+detect-autofill@^1.1.3:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/detect-autofill/-/detect-autofill-1.1.4.tgz#1424ca5863c69a1e0373ea85a4f0edccc2357479"
+  integrity sha512-utCBQwCR/beSnADQmBC7C4tTueBBkYCl6WSpfGUkYKO/+MzPxqYGj6G4MvHzcKmH1gCTK+VunX2vaagvkRXPvA==
+  dependencies:
+    custom-event-polyfill "^1.0.7"
 
 detect-indent@^5.0.0:
   version "5.0.0"
@@ -5602,7 +5624,7 @@ jiti@^1.16.0, jiti@^1.16.2, jiti@^1.9.2:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.16.2.tgz#75f7a0a8fde4a0e57e576f7d329491d588db89cf"
   integrity sha512-OKBOVWmU3FxDt/UH4zSwiKPuc1nihFZiOD722FuJlngvLz2glX1v2/TJIgoA4+mrpnXxHV6dSAoCvPcYQtoG5A==
 
-jiti@^1.18.2:
+jiti@^1.17.2, jiti@^1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.18.2.tgz#80c3ef3d486ebf2450d9335122b32d121f2a83cd"
   integrity sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==
@@ -6980,6 +7002,11 @@ perfect-debounce@^0.1.3:
   resolved "https://registry.yarnpkg.com/perfect-debounce/-/perfect-debounce-0.1.3.tgz#ff6798ea543a3ba1f0efeeaf97c0340f5c8871ce"
   integrity sha512-NOT9AcKiDGpnV/HBhI22Str++XWcErO/bALvHCuhv33owZW/CjH8KAFLZDCmu3727sihe0wTxpDhyGc6M8qacQ==
 
+perfect-scrollbar@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-1.5.5.tgz#41a211a2fb52a7191eff301432134ea47052b27f"
+  integrity sha512-dzalfutyP3e/FOpdlhVryN4AJ5XDVauVWxybSkLZmakFE2sS3y3pc4JnSprw8tGmHvkaG5Edr5T7LBTZ+WWU2g==
+
 picocolors@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"
@@ -7863,21 +7890,21 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2
     picocolors "^0.2.1"
     source-map "^0.6.1"
 
+postcss@^8.0.9, postcss@^8.4.23:
+  version "8.4.23"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.23.tgz#df0aee9ac7c5e53e1075c24a3613496f9e6552ab"
+  integrity sha512-bQ3qMcpF6A/YjR55xtoTr0jGOlnPOKAIMdOWiv0EIT6HVPEaJiJB4NLljSbiHoC2RX7DN5Uvjtpbg1NPdwv1oA==
+  dependencies:
+    nanoid "^3.3.6"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
 postcss@^8.1.10, postcss@^8.2.15, postcss@^8.4.14, postcss@^8.4.18:
   version "8.4.21"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
   integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
   dependencies:
     nanoid "^3.3.4"
-    picocolors "^1.0.0"
-    source-map-js "^1.0.2"
-
-postcss@^8.4.23:
-  version "8.4.23"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.23.tgz#df0aee9ac7c5e53e1075c24a3613496f9e6552ab"
-  integrity sha512-bQ3qMcpF6A/YjR55xtoTr0jGOlnPOKAIMdOWiv0EIT6HVPEaJiJB4NLljSbiHoC2RX7DN5Uvjtpbg1NPdwv1oA==
-  dependencies:
-    nanoid "^3.3.6"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
@@ -8971,7 +8998,7 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-sucrase@^3.32.0:
+sucrase@^3.29.0, sucrase@^3.32.0:
   version "3.32.0"
   resolved "https://registry.yarnpkg.com/sucrase/-/sucrase-3.32.0.tgz#c4a95e0f1e18b6847127258a75cf360bc568d4a7"
   integrity sha512-ydQOU34rpSyj2TGyz4D2p8rbktIOZ8QY9s+DGLvFU1i5pWJE8vkpruCjGCMHsdXwnD7JDcS+noSwM/a7zyNFDQ==
@@ -9045,6 +9072,36 @@ tailwind-config-viewer@^1.7.2:
     open "^7.0.4"
     portfinder "^1.0.26"
     replace-in-file "^6.1.0"
+
+tailwindcss@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.3.0.tgz#8cab40e5a10a10648118c0859ba8bfbc744a761e"
+  integrity sha512-hOXlFx+YcklJ8kXiCAfk/FMyr4Pm9ck477G0m/us2344Vuj355IpoEDB5UmGAsSpTBmr+4ZhjzW04JuFXkb/fw==
+  dependencies:
+    arg "^5.0.2"
+    chokidar "^3.5.3"
+    color-name "^1.1.4"
+    didyoumean "^1.2.2"
+    dlv "^1.1.3"
+    fast-glob "^3.2.12"
+    glob-parent "^6.0.2"
+    is-glob "^4.0.3"
+    jiti "^1.17.2"
+    lilconfig "^2.0.6"
+    micromatch "^4.0.5"
+    normalize-path "^3.0.0"
+    object-hash "^3.0.0"
+    picocolors "^1.0.0"
+    postcss "^8.0.9"
+    postcss-import "^14.1.0"
+    postcss-js "^4.0.0"
+    postcss-load-config "^3.1.4"
+    postcss-nested "6.0.0"
+    postcss-selector-parser "^6.0.11"
+    postcss-value-parser "^4.2.0"
+    quick-lru "^5.1.1"
+    resolve "^1.22.1"
+    sucrase "^3.29.0"
 
 tailwindcss@^3.2.4:
   version "3.2.4"
@@ -9335,6 +9392,19 @@ tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
   integrity sha512-JVa5ijo+j/sOoHGjw0sxw734b1LhBkQ3bvUGNdxnVXDCX81Yx7TFgnZygxrIIWn23hbfTaMYLwRmAxFyDuFmIw==
+
+tw-elements@^1.0.0-beta2:
+  version "1.0.0-beta2"
+  resolved "https://registry.yarnpkg.com/tw-elements/-/tw-elements-1.0.0-beta2.tgz#a405bd6bdc3320bac2f660c8b7d745e700d9b39b"
+  integrity sha512-0DAm5i7OSk1NCW9i/JotHZOWG0NIuCBr5S0t1h66rDgH1M2fxCQvvQw3AxK0fVaCJG0jk82UhAsI7PCEMoq6Xw==
+  dependencies:
+    "@popperjs/core" "^2.6.0"
+    chart.js "^3.7.1"
+    chartjs-plugin-datalabels "^2.0.0"
+    deepmerge "^4.2.2"
+    detect-autofill "^1.1.3"
+    perfect-scrollbar "^1.5.5"
+    tailwindcss "3.3.0"
 
 tweetnacl@^1.0.3:
   version "1.0.3"

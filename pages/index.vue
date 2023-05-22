@@ -34,7 +34,7 @@
                 />
                 <div v-if="validation.email" class="flex py-6">
                   <div
-                    class="bg-yellow-100 rounded-lg text-base text-yellow-700 w-full h-24"
+                    class="bg-yellow-100 rounded-lg text-base text-yellow-700 w-full h-auto"
                     role="alert"
                   >
                     {{ validation.email[0] }}
@@ -62,18 +62,18 @@
                 ></i>
                 <div v-if="validation.password" class="flex py-6">
                   <div
-                    class="bg-yellow-100 rounded-lg mb-4 text-base text-yellow-700 w-full"
+                    class="bg-yellow-100 rounded-lg mb-4 text-base text-yellow-700 w-full h-auto"
                     role="alert"
                   >
                     {{ validation.password[0] }}
                   </div>
                 </div>
-                <div v-if="errorPassword" class="flex py-6">
+                <div v-if="errorLogin" class="flex py-6">
                   <div
-                    class="bg-yellow-100 rounded-sm mb-4 text-base text-yellow-700 w-full h-10 p-2"
+                    :class="`${errorLogin === 'Your email not registered !' ? 'bg-danger-600' : 'bg-warning-300'} rounded-sm mb-4 text-base text-white font-bold capitalize w-full h-auto p-2`"
                     role="alert"
                   >
-                    {{ errorPassword }}
+                    {{ errorLogin }}
                   </div>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default {
       api_url: process.env.NUXT_ENV_API_URL,
       form: {},
       validation: [],
-      errorPassword: "",
+      errorLogin: "",
       hidePassword: true,
       error: false,
       showLogin: false,
@@ -206,7 +206,7 @@ export default {
       }
     },
     login() {
-      this.errorPassword = false;
+      this.errorLogin = false;
       this.loadingLogin = true;
       this.validation = [];
       const endPoint = `${this.api_url}/auth/login`;
@@ -275,7 +275,7 @@ export default {
               );
             }, 1000);
           } else {
-            this.errorPassword = data.message;
+            this.errorLogin = data.message;
             this.$swal({
               icon: "warning",
               title: "Oops...",
@@ -293,7 +293,7 @@ export default {
               text: err.message,
             });
             this.error = true;
-            this.errorPassword = "";
+            this.errorLogin = "";
             this.validation = err?.response?.data;
           }
         })
