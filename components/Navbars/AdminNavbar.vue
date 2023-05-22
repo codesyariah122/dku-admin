@@ -58,7 +58,7 @@ export default {
 
         // Format waktu mundur
         this.countdown = `${days > 0 ? days + " hari, " : ""} ${
-          hours > 0 ? hours + " hari, " : ""
+          hours > 0 ? hours + " jam, " : ""
         } ${minutes > 0 ? minutes + " menit, " : ""} ${
           seconds > 0 ? seconds + " detik" : ""
         }`;
