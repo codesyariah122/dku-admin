@@ -10,7 +10,7 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            {{title}}
+            {{ title }}
           </h3>
         </div>
       </div>
@@ -18,13 +18,29 @@
 
     <div class="block w-full overflow-x-auto">
       <table class="items-center w-full bg-transparent border-collapse">
+        <molecules-table-header :headers="headers" :color="color" />
 
-        <molecules-table-header :headers="headers" :color="color"/>
+        <users-user-data-cell
+          v-if="types === 'user-data'"
+          :columns="columns"
+          @deleted-data="deletedData"
+          :types="types"
+        />
 
-        <users-user-data-cell v-if="types === 'user-data'" :columns="columns" @deleted-data="deletedData"/>
+        <users-role-data-cell
+          v-if="types === 'user-role'"
+          :columns="columns"
+          :users="usersData"
+          @deleted-data="deletedData"
+          :types="types"
+        />
 
-        <users-role-data-cell v-if="types === 'user-role'" :columns="columns" :users="usersData"/>
-
+        <campaigns-campaign-data-cell
+          v-if="types === 'campaign-data'"
+          :columns="columns"
+          @deleted-data="deletedData"
+          :types="types"
+        />
       </table>
     </div>
   </div>
@@ -39,7 +55,7 @@ export default {
       },
     },
     title: {
-      type: String
+      type: String,
     },
     headers: {
       type: Array,
@@ -48,18 +64,20 @@ export default {
       type: Array,
     },
     types: {
-      type: String
+      type: String,
     },
     usersData: {
-      type: Array,
-      default: []
-    }
+      type: Object,
+      default: function () {
+        return {}; // or any other appropriate default value
+      },
+    },
   },
 
   methods: {
     deletedData(id) {
-      this.$emit('deleted-data', id)
-    }
-  }
+      this.$emit("deleted-data", id);
+    },
+  },
 };
 </script>

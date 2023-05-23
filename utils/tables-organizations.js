@@ -36,10 +36,33 @@ export const USER_DATA_TABLE = [
 export const USER_ROLE_TABLE = [
   {
     id: 1,
-    title: 'Role Name'
+    title: 'role name'
   },
   {
     id: 2,
-    title: 'Users'
+    title: 'users'
+  }
+]
+
+export const CAMPAIGN_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'campaign title'
+  },
+  {
+    id: 2,
+    title: 'campaign banner'
+  },
+  {
+    id: 3,
+    title: 'is headline'
+  },
+  {
+    id: 4,
+    title: 'author'
+  },
+  {
+    id: 5,
+    title: 'limit'
   }
 ]

@@ -40,14 +40,14 @@
       <td
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-        {{ $moment(column.last_login).fromNow() }}
+        {{ column.last_login ? $moment(column.last_login).fromNow() : 'NULL' }}
       </td>
 
       <td
         v-if="column.expires_at"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-      {{ column.countdown }}
+        {{ column.countdown }}
       </td>
 
       <td
@@ -67,10 +67,11 @@
         ></i>
         {{ column.is_login == 1 ? "Online" : "Offline" }}
       </td>
-      <td v-if="column.token !== token.token && column.username !== 'super_admin'"
+      <td
+        v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown @deleted-data="deletedData" :id="column.id" />
+        <dropdowns-table-dropdown @deleted-data="deletedData" :id="column.id" :types="types"/>
       </td>
     </tr>
   </tbody>
@@ -81,17 +82,21 @@ export default {
   props: {
     columns: {
       type: Array,
+      default: function () {
+        return {}; // or any other appropriate default value
+      },
+    },
+    types: {
+      type: String
     }
   },
 
-  mounted () {
-    console.log(this.token.token)
-  },
+  mounted() {},
 
   methods: {
     deletedData(id) {
-      this.$emit('deleted-data', id);
-    }
-  }
+      this.$emit("deleted-data", id);
+    },
+  },
 };
 </script>

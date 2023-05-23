@@ -3,11 +3,11 @@
     <div class="w-full mb-12 px-4">
       <cards-card-table
         color="dark"
-        title="User Dashboard"
+        title="Campaign Data"
         :headers="headers"
         :columns="items"
-        types="user-data"
-        @deleted-data="deletedUser"
+        types="campaign-data"
+        @deleted-data="deletedCampaign"
       />
     </div>
   </div>
@@ -19,7 +19,7 @@
  * @returns {string}
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
-import { USER_DATA_TABLE } from "~/utils/tables-organizations";
+import { CAMPAIGN_DATA_TABLE } from "~/utils/tables-organizations";
 import { getData } from "~/hooks/getData/index";
 
 export default {
@@ -29,7 +29,9 @@ export default {
   data() {
     return {
       notifs: [],
-      headers: [...USER_DATA_TABLE],
+      dataNotifs: [],
+      message: '',
+      headers: [...CAMPAIGN_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
     };
@@ -37,11 +39,11 @@ export default {
 
   created() {
     this.checkNewData();
+    this.dataManagementEvent();
   },
 
   mounted() {
-    this.getUserData();
-    this.startCountdown();
+    this.getCampaignData();
   },
 
   methods: {
@@ -58,69 +60,31 @@ export default {
       );
     },
 
-    timerData(item, timeLeft) {
-      const dataTime = {
-        seconds: Math.floor((timeLeft / 1000) % 60),
-        minutes: Math.floor((timeLeft / 1000 / 60) % 60),
-        hours: Math.floor((timeLeft / (1000 * 60 * 60)) % 24),
-        days: Math.floor(timeLeft / (1000 * 60 * 60 * 24))
-      }
-      return dataTime;
+    dataManagementEvent() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "DataManagementEvent",
+        (e) => {
+          this.message = e[0].notif;
+          this.dataNotifs.push(e[0]);
+        }
+      );
     },
 
-    startCountdown() {
-      setInterval(() => {
-        this.items.forEach((item) => {
-          const currentTime = new Date().getTime()
-          const timeLeft = item.endTime - currentTime
-          let {
-            seconds,
-            minutes,
-            hours,
-            days
-          } = this.timerData(item, timeLeft)
-
-
-          if (item.endTime !== null) {
-            item.countdown = `${days > 0 ? days + " hari, " : ""} ${
-              hours > 0 ? hours + " hari, " : ""
-            } ${minutes > 0 ? minutes + " menit, " : ""} ${
-              seconds > 0 ? seconds + " detik" : ""
-            }`;
-          } else {
-            item.countdown = null;
-          }
-
-          if (timeLeft < 0 && item.endTime !== null) {
-            item.countdown = "Sesi login berakhir!";
-          }
-        });
-      }, 1000);
-    },
-
-    getUserData() {
+    getCampaignData() {
       getData({
-        api_url: `${this.api_url}/fitur/user-management`,
+        api_url: `${this.api_url}/fitur/campaign-management`,
         token: this.token.token,
       })
         .then(({ data }) => {
           let cells = []
           data.data.map((cell) => {
-            console.log(cell.logins);
             const prepareCell = {
               id: cell.id,
-              name: cell.name,
-              email: cell.email,
-              role: cell.role,
-              phone: cell.phone,
-              status: cell.status,
-              last_login: cell.last_login,
-              token: cell.logins.map((data) => data.user_token_login)[0],
-              expires_at: cell.expires_at,
-              is_login: cell.is_login,
-              endTime: new Date(cell.expires_at),
-              countdown: "",
-              username: cell.profiles.map((profile) => profile.username)[0]
+              title: cell.title,
+              banner: cell.banner,
+              is_headline: cell.is_headline,
+              author: cell.author,
+              limit: cell.without_limit
             }
             cells.push(prepareCell)
           });
@@ -129,15 +93,26 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    deletedUser(id) {
+    deletedCampaign(id) {
       console.log(id);
     }
   },
 
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
-        this.getUserData();
+      if (this.$_.size(this.notifs) > 0) {
+        this.getCampaignData();
+      }
+    },
+    dataNotifs() {
+      if (this.$_.size(this.dataNotifs) > 0) {
+        this.$toast.show(this.message, {
+          type: "info",
+          duration: 5000,
+          position: "top-right",
+        });
+        this.getCampaignData();
+        this.getTotalCampaign();
       }
     },
   },

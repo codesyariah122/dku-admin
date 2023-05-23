@@ -29,14 +29,18 @@ export default {
   data() {
     return {
       notifs: [],
+      dataNotifs: [],
       headers: [...USER_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
+      message: ''
     };
   },
 
   created() {
     this.checkNewData();
+    this.dataManagementEvent();
+    this.checkUpdateEvent();
   },
 
   mounted() {
@@ -53,7 +57,18 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "EventNotification",
         (e) => {
+          console.log(e[0])
           this.notifs.push(e[0]);
+        }
+      );
+    },
+
+    dataManagementEvent() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "DataManagementEvent",
+        (e) => {
+          this.message = e[0].notif;
+          this.dataNotifs.push(e[0]);
         }
       );
     },
@@ -136,10 +151,26 @@ export default {
 
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
+      if (this.$_.size(this.notifs) > 0) {
         this.getUserData();
       }
     },
+    dataNotifs() {
+      if (this.dataNotifs?.length > 0) {
+        this.$toast.show(this.message, {
+          type: "info",
+          duration: 5000,
+          position: "top-right",
+        });
+        this.getUserData();
+        this.getTotalUser();
+      }
+    },
+    updateProfileNotifs() {
+      if(this.$_.size(this.updateProfileNotifs) > 0) {
+        this.getUserData();
+      }
+    }
   },
 };
 </script>

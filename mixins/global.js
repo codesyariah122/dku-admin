@@ -10,6 +10,8 @@ export default {
       expires_at: null,
       api_url: process.env.NUXT_ENV_API_URL,
       notifs: [],
+      dataNotifs: [],
+      updateProfileNotifs: [],
       messageNotifs: null,
       userEmail: "",
       emailForbaiden: "",
@@ -41,6 +43,24 @@ export default {
             this.notifs.push(e);
             this.messageNotifs = e[0].notif;
           }
+        }
+      );
+    },
+
+    dataManagementEvent() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "DataManagementEvent",
+        (e) => {
+          this.dataNotifs.push(e[0]);
+        }
+      );
+    },
+
+    checkUpdateEvent() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "UpdateProfileEvent",
+        (e) => {
+          this.updateProfileNotifs.push(e[0]);
         }
       );
     },
@@ -199,6 +219,29 @@ export default {
         });
         this.$router.replace("/");
       }
+    },
+
+    getTotalUser() {
+      this.$store.dispatch("totals/totalDataQuery", {
+        api_url: this.api_url,
+        type: "TOTAL_USER",
+        token: this.token,
+      });
+    },
+
+    getTotalCampaign() {
+      this.$store.dispatch("totals/totalDataQuery", {
+        api_url: this.api_url,
+        type: "TOTAL_CAMPAIGN",
+        token: this.token,
+      });
+    },
+
+    getUserOnline() {
+      this.$store.dispatch("totals/totalUserOnline", {
+        api_url: this.api_url,
+        token: this.token,
+      });
     },
 
   },

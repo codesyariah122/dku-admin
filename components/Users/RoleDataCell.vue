@@ -21,7 +21,10 @@
         </div>
 
         <div v-else>
-          <a href="/dashboard/users-donation" class="hover:text-blue-700 hover:underline hover:decoration-double text-md">
+          <a
+            href="/dashboard/users-donation"
+            class="hover:text-blue-700 hover:underline hover:decoration-double text-md"
+          >
             Total : {{ $_.size(column.users) }} User
           </a>
         </div>
@@ -34,10 +37,11 @@
         <i class="fa-regular fa-hourglass"></i>
       </td>
 
-      <td v-if="column.name !== 'ADMIN'"
+      <td
+        v-if="column.name !== 'ADMIN'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown />
+        <dropdowns-table-dropdown :types="types"/>
       </td>
     </tr>
   </tbody>
@@ -49,10 +53,15 @@ export default {
     columns: {
       type: Array,
     },
+    types: {
+      type: String
+    },
     users: {
       type: Array,
-      default: [],
-    }
-  }
+      default: function () {
+        return {}; // or any other appropriate default value
+      },
+    },
+  },
 };
 </script>

@@ -129,6 +129,8 @@ export default {
     { src: "~/plugins/pagination" },
     { src: "~/plugins/vClickOutside", ssr: false },
     { src: "~/plugins/lodash", ssr: false },
+    { src: '~/plugins/truncate-html', ssr: false },
+    { src: '~/plugins/he', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

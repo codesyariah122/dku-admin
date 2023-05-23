@@ -120,7 +120,7 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "UpdateProfileEvent",
         (e) => {
-          this.updateProfileNotifs.push(e[0].notif);
+          this.updateProfileNotifs.push(e[0]);
         }
       );
     },

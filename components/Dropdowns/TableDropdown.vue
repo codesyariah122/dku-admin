@@ -1,7 +1,7 @@
 <template>
   <div>
     <a
-      class="text-blueGray-400 py-1 px-3 font-bold text-md"
+      class="text-blueGray-400 py-1 px-6 font-bold text-lg"
       href="#!"
       ref="btnDropdownRef"
       v-on:click="toggleDropdown($event)"
@@ -16,24 +16,34 @@
         block: dropdownPopoverShow,
       }"
     >
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-info"></i> &nbsp;&nbsp;Detailed Data
-      </a>
-      <a
-        @click="deletedData"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-trash"></i> &nbsp;&nbsp;Delete Data
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-pen-to-square"></i> &nbsp;&nbsp;Edit Data
-      </a>
+      <div v-if="types == 'campaign-data'">
+        <a
+          href="javascript:void(0);"
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+        >
+          <i class="fa-solid fa-info"></i> &nbsp;&nbsp;Detailed Data
+        </a>
+      </div>
+      <div v-else>
+        <a
+          href="javascript:void(0);"
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+        >
+          <i class="fa-solid fa-info"></i> &nbsp;&nbsp;Detailed Data
+        </a>
+        <a
+          @click="deletedData"
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+        >
+          <i class="fa-solid fa-trash"></i> &nbsp;&nbsp;Delete Data
+        </a>
+        <a
+          href="javascript:void(0);"
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+        >
+          <i class="fa-solid fa-pen-to-square"></i> &nbsp;&nbsp;Edit Data
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +54,9 @@ export default {
   props: {
     id: {
       type: Number,
+    },
+    types: {
+      type: String,
     },
   },
   data() {
