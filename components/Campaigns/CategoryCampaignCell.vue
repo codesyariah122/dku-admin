@@ -1,71 +1,25 @@
+<style>
+.truncated-container {
+  max-height: 100px; /* Adjust the height as needed */
+  overflow: auto;
+}
+</style>
+
 <template>
   <tbody>
     <tr v-for="column in columns" :key="column.id">
       <th
-        v-if="column.name"
+        v-if="column.title"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
       >
-        {{ column.name }}
+        {{ column.title }}
       </th>
 
       <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        {{ column.username }}
-      </td>
 
-      <td
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-        {{ column.email }}
-      </td>
-
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        {{ column.phone ? column.phone : "NULL" }}
-      </td>
-
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        <i
-          :class="`fas fa-circle ${
-            column.status === 'ACTIVE' ? 'text-green-700' : 'text-orange-500'
-          } mr-2`"
-        ></i>
-        {{ column.status }}
-      </td>
-
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        {{ column.last_login ? $moment(column.last_login).fromNow() : 'NULL' }}
-      </td>
-
-      <td
-        v-if="column.expires_at"
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        {{ column.countdown }}
-      </td>
-
-      <td
-        v-else
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        NULL
-      </td>
-
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        <i
-          :class="`fas fa-circle ${
-            column.is_login == 1 ? 'text-green-700' : 'text-orange-500'
-          } mr-2`"
-        ></i>
-        {{ column.is_login == 1 ? "Online" : "Offline" }}
+       <span class="font-bold text-md">{{ column.campaigns }}</span>&nbsp;&nbsp; Campaigns
       </td>
 
       <td
@@ -84,7 +38,7 @@ export default {
     columns: {
       type: Array,
       default: function () {
-        return {}; // or any other appropriate default value
+        return {};
       },
     },
     types: {
@@ -94,21 +48,19 @@ export default {
 
   data() {
     return {
-      userData: [],
-      username: ""
+      username: '',
+      userData: []
     }
   },
 
-
   mounted() {
-    this.checkUserLogin();
+    this.checkUserLogin()
   },
 
   methods: {
     deletedData(id) {
       this.$emit("deleted-data", id);
     },
-
     checkUserLogin() {
       if (this?.token !== null) {
         const endPoint = `${this.api_url}/fitur/user-profile`;
@@ -140,6 +92,7 @@ export default {
         this.$router.replace("/");
       }
     },
-  },
+  }
+
 };
 </script>

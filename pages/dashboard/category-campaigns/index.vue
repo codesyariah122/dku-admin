@@ -3,10 +3,10 @@
     <div class="w-full mb-12 px-4">
       <cards-card-table
         color="dark"
-        title="Campaign Data"
+        title="Category Campaign"
         :headers="headers"
         :columns="items"
-        types="campaign-data"
+        types="category-campaign"
         @deleted-data="deletedCampaign"
       />
     </div>
@@ -19,11 +19,11 @@
  * @returns {string}
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
-import { CAMPAIGN_DATA_TABLE } from "~/utils/tables-organizations";
+import { CATEGORY_CAMPAIGN_DATA_TABLE } from "~/utils/tables-organizations";
 import { getData } from "~/hooks/getData/index";
 
 export default {
-  name: "campaigns-data",
+  name: "categpry-campaigns",
   layout: "admin",
 
   data() {
@@ -31,7 +31,7 @@ export default {
       notifs: [],
       dataNotifs: [],
       message: '',
-      headers: [...CAMPAIGN_DATA_TABLE],
+      headers: [...CATEGORY_CAMPAIGN_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
     };
@@ -43,7 +43,7 @@ export default {
   },
 
   mounted() {
-    this.getCampaignData();
+    this.getCategoryCampaignData();
   },
 
   methods: {
@@ -70,9 +70,9 @@ export default {
       );
     },
 
-    getCampaignData() {
+    getCategoryCampaignData() {
       getData({
-        api_url: `${this.api_url}/fitur/campaign-management`,
+        api_url: `${this.api_url}/fitur/category-campaigns-management`,
         token: this.token.token,
       })
         .then(({ data }) => {
@@ -80,13 +80,8 @@ export default {
           data.data.map((cell) => {
             const prepareCell = {
               id: cell.id,
-              title: cell.title,
-              banner: cell.banner,
-              is_headline: cell.is_headline,
-              publish: cell.publish,
-              end_campaign: cell.end_campaign,
-              author: cell.author,
-              limit: cell.without_limit
+              title: cell.name,
+              campaigns: this.$_.size(cell.campaigns)
             }
             cells.push(prepareCell)
           });
@@ -103,7 +98,7 @@ export default {
   watch: {
     notifs() {
       if (this.$_.size(this.notifs) > 0) {
-        this.getCampaignData();
+        this.getCategoryCampaignData();
       }
     },
     dataNotifs() {
@@ -113,7 +108,7 @@ export default {
           duration: 5000,
           position: "top-right",
         });
-        this.getCampaignData();
+        this.getCategoryCampaignData();
         this.getTotalCampaign();
       }
     },

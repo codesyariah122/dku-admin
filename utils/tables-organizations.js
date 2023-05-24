@@ -59,14 +59,29 @@ export const CAMPAIGN_DATA_TABLE = [
   },
   {
     id: 4,
-    title: 'Published'
+    title: 'published'
   },
   {
     id: 5,
-    title: 'author'
+    title: 'end campaign'
   },
   {
     id: 6,
+    title: 'author'
+  },
+  {
+    id: 7,
     title: 'limit'
+  }
+]
+
+export const CATEGORY_CAMPAIGN_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'Category  name'
+  },
+  {
+    id: 2,
+    title: 'Total Campaigns'
   }
 ]

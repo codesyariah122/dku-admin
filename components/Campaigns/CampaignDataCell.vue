@@ -40,6 +40,13 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
+       {{ column.end_campaign ? column.end_campaign : 'NULL' }}
+      </td>
+
+      <td
+
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
         {{ column.author }}
       </td>
 
@@ -58,9 +65,10 @@
       </td> -->
 
       <td
+        v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown :types="types"/>
+        <dropdowns-table-dropdown @deleted-data="deletedData" :id="column.id" :types="types" :username="username"/>
       </td>
     </tr>
   </tbody>
@@ -71,6 +79,9 @@ export default {
   props: {
     columns: {
       type: Array,
+      default: function () {
+        return {};
+      },
     },
     types: {
       type: String
@@ -79,9 +90,52 @@ export default {
 
   data() {
     return {
-      image_url: process.env.NUXT_ENV_STORAGE_URL
+      image_url: process.env.NUXT_ENV_STORAGE_URL,
+      username: '',
+      userData: []
     }
   },
+
+  mounted() {
+    this.checkUserLogin()
+  },
+
+  methods: {
+    deletedData(id) {
+      this.$emit("deleted-data", id);
+    },
+    checkUserLogin() {
+      if (this?.token !== null) {
+        const endPoint = `${this.api_url}/fitur/user-profile`;
+        const config = {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${this?.token?.token}`,
+          },
+        };
+        this.$api
+          .get(endPoint, config)
+          .then(({ data }) => {
+            this.userData = data.data.map((user) => user)[0]
+            data.data.map((user) => {
+              user.profiles.map((profile) => {
+                this.username = profile.username
+              })
+            })
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      } else {
+        this.$swal({
+          icon: "error",
+          title: "Oops...",
+          text: "Error Access!",
+        });
+        this.$router.replace("/");
+      }
+    },
+  }
 
 };
 </script>

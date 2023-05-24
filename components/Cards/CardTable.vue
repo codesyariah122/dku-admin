@@ -40,6 +40,13 @@
           @deleted-data="deletedData"
           :types="types"
         />
+
+        <campaigns-category-campaign-cell
+          v-if="types === 'category-campaign'"
+          :columns="columns"
+          @deleted-data="deletedData"
+          :types="types"
+        />
       </table>
     </div>
   </div>
