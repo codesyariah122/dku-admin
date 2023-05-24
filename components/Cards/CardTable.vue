@@ -66,8 +66,8 @@ export default {
     types: {
       type: String,
     },
-    usersData: {
-      type: Array,
+    userData: {
+      type: Object,
       required: false,
       default: function () {
         return {}; // or any other appropriate default value
