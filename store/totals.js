@@ -71,7 +71,6 @@ export const actions = {
             break;
 
           case "TOTAL_CAMPAIGN":
-            console.log(data.data)
             commit("TOTAL_DATA_CAMPAIGN", data?.total);
             commit("DATA_CAMPAIGN", data?.data);
             break;

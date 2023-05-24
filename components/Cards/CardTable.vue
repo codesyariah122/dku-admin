@@ -30,7 +30,6 @@
         <users-role-data-cell
           v-if="types === 'user-role'"
           :columns="columns"
-          :users="usersData"
           @deleted-data="deletedData"
           :types="types"
         />
@@ -65,20 +64,13 @@ export default {
     },
     types: {
       type: String,
-    },
-    userData: {
-      type: Object,
-      required: false,
-      default: function () {
-        return {}; // or any other appropriate default value
-      },
-    },
+    }
   },
 
   methods: {
     deletedData(id) {
       this.$emit("deleted-data", id);
-    },
+    }
   },
 };
 </script>

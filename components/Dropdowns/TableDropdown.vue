@@ -31,13 +31,13 @@
         >
           <i class="fa-solid fa-info"></i> &nbsp;&nbsp;Detailed Data
         </a>
-        <a
+        <a v-if="username === 'super_admin'"
           @click="deletedData"
           class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
         >
           <i class="fa-solid fa-trash"></i> &nbsp;&nbsp;Delete Data
         </a>
-        <a
+        <a v-if="username === 'super_admin'"
           href="javascript:void(0);"
           class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
         >
@@ -58,6 +58,9 @@ export default {
     types: {
       type: String,
     },
+    username: {
+      type: String,
+    }
   },
   data() {
     return {

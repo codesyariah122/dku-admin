@@ -195,7 +195,6 @@ export default {
 
     checkUserLogin() {
       if (this?.token !== null) {
-        this.loading = true;
         const endPoint = `${this.api_url}/fitur/user-profile`;
         const config = {
           headers: {

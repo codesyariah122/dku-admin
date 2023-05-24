@@ -83,8 +83,5 @@ export default {
     }
   },
 
-  mounted() {
-    console.log(this.image_url)
-  }
 };
 </script>

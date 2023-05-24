@@ -38,10 +38,9 @@
       </td>
 
       <td
-        v-if="column.name !== 'ADMIN'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown :types="types"/>
+        <dropdowns-table-dropdown :types="types" />
       </td>
     </tr>
   </tbody>
@@ -54,14 +53,8 @@ export default {
       type: Array,
     },
     types: {
-      type: String
-    },
-    users: {
-      type: Array,
-      default: function () {
-        return {}; // or any other appropriate default value
-      },
-    },
+      type: String,
+    }
   },
 };
 </script>
