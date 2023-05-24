@@ -10,6 +10,7 @@ export const strict = false;
 export const state = () => ({
   api_url: process.env.NUXT_ENV_API_URL,
   totalUser: 0,
+  userPerRole: {},
   totalCampaign: 0,
   userisonline: 0,
 });
@@ -20,6 +21,9 @@ export const mutations = {
   },
   TOTAL_USER_ONLINE(state, data) {
     state.userisonline = data;
+  },
+  USER_PER_ROLE(state, data) {
+    state.userPerRole = data;
   },
   TOTAL_DATA_CAMPAIGN(state, data) {
     state.totalCampaign = data;
@@ -53,12 +57,13 @@ export const actions = {
       },
     };
     const endPoint = `${param.api_url}/fitur/total-data?type=${param.type}`;
-    this.$axios
+    this.$api
       .get(endPoint, config)
       .then(({ data }) => {
         switch (param.type) {
           case "TOTAL_USER":
             commit("TOTAL_DATA_USER", data?.total);
+            commit("USER_PER_ROLE", data?.data);
             break;
 
           case "TOTAL_CAMPAIGN":
@@ -82,7 +87,7 @@ export const getters = {
   getTotalCampaign(state) {
     return state.totalCampaign;
   },
-  getUserIsOnline(state) {
-    return state.userisonline;
-  },
+  getUserPerRole(state) {
+    return state.userPerRole;
+  }
 };

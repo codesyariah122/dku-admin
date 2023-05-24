@@ -21,17 +21,34 @@
           </div>
         </div>
       </div>
-      <p class="text-sm text-blueGray-400 mt-4">
-        <span class="mr-2" :class="[statPercentColor]">
-          <i
-            :class="[
-              statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
-            ]"
-          ></i>
-          {{ data ? data : `${statPercent}%` }}
-        </span>
-        <span class="whitespace-nowrap">{{ statDescripiron }}</span>
-      </p>
+      <div v-if="data" class="text-sm text-blueGray-400 mt-4">
+        <ul>
+          <li>
+            <span class="mr-2" :class="[statPercentColor]">
+              {{ data ? data.user_online : `${statPercent}%` }}
+            </span>
+            <span class="whitespace-nowrap">{{ statDescripiron.user_online }}</span>
+          </li>
+          <li>
+            <span class="mr-2" :class="[statPercentColor]">
+              {{ data ? data.admin_dashboard : `${statPercent}%` }}
+            </span>
+            <span class="whitespace-nowrap">{{ statDescripiron.admin }}</span>
+          </li>
+          <li>
+            <span class="mr-2" :class="[statPercentColor]">
+              {{ data ? data.author : `${statPercent}%` }}
+            </span>
+            <span class="whitespace-nowrap">{{ statDescripiron.author }}</span>
+          </li>
+          <li>
+            <span class="mr-2" :class="[statPercentColor]">
+              {{ data ? data.user_donation : `${statPercent}%` }}
+            </span>
+            <span class="whitespace-nowrap">{{ statDescripiron.user }}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -48,8 +65,10 @@ export default {
       default: "350,897",
     },
     data: {
-      type: String,
-      default: ""
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     statArrow: {
       default: "up",
@@ -69,8 +88,10 @@ export default {
       default: "text-emerald-500",
     },
     statDescripiron: {
-      type: String,
-      default: "Since last month",
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     statIconName: {
       type: String,
@@ -83,5 +104,6 @@ export default {
       default: "bg-red-500",
     },
   },
+
 };
 </script>

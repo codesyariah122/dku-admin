@@ -160,6 +160,7 @@ export default {
     remember_me() {
       this.form.checked = true;
     },
+
     showingPassword() {
       const password = document.querySelector("#password");
       if (password.type === "password") {
@@ -217,8 +218,6 @@ export default {
           remember_me: this.form.checked ? this.form.checked : false,
         })
         .then(({ data }) => {
-          console.log(data);
-
           if (data.is_login) {
             this.$swal({
               icon: "warning",

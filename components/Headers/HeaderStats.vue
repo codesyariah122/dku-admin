@@ -11,6 +11,7 @@
               :statTitle="`${totalCampaign}`"
               statDataPercentColor="text-emerald-500"
               statIconName="far fa-chart-bar"
+              :statDescripiron="{text: 'Since yesterday'}"
               statIconColor="bg-red-500"
             />
           </div>
@@ -18,11 +19,16 @@
             <card-stats
               statSubtitle="TOTAL USERS"
               :statTitle="`${totalUser}`"
-              :data="`${userOnline}`"
+              :data="userPerRole"
               statArrow="up"
               statPercent="3.48"
               statPercentColor="text-emerald-500"
-              statDescripiron="User is online"
+              :statDescripiron="{
+                user_online: 'User is online',
+                admin: 'User Dashboard',
+                author: 'User Author',
+                user: ' User Donation'
+              }"
               statIconName="fas fa-users"
               statIconColor="bg-orange-500"
             />
@@ -34,7 +40,7 @@
               statArrow="down"
               statPercent="1.10"
               statPercentColor="text-orange-500"
-              statDescripiron="Since yesterday"
+              :statDescripiron="{text: 'Since yesterday'}"
               statIconName="fas fa-chart-pie"
               statIconColor="bg-pink-500"
             />
@@ -46,7 +52,7 @@
               statArrow="up"
               statPercent="12"
               statPercentColor="text-emerald-500"
-              statDescripiron="Since last month"
+              :statDescripiron="{text: 'Since last month'}"
               statIconName="fas fa-percent"
               statIconColor="bg-emerald-500"
             />
@@ -81,7 +87,6 @@ export default {
 
   mounted() {
     this.getTotalUser();
-    this.getUserOnline();
     this.getTotalCampaign();
   },
 
@@ -111,13 +116,6 @@ export default {
         token: this.token,
       });
     },
-
-    getUserOnline() {
-      this.$store.dispatch("totals/totalUserOnline", {
-        api_url: this.api_url,
-        token: this.token,
-      });
-    },
   },
 
   computed: {
@@ -129,15 +127,14 @@ export default {
       return this.$store.getters["totals/getTotalCampaign"];
     },
 
-    userOnline() {
-      return this.$store.getters["totals/getUserIsOnline"];
-    },
+    userPerRole() {
+      return this.$store.getters["totals/getUserPerRole"];
+    }
   },
   watch: {
     notifs() {
       if (this.notifs?.length > 0) {
         this.getTotalUser();
-        this.getUserOnline();
       }
     },
   },
