@@ -12,6 +12,7 @@ export const state = () => ({
   totalUser: 0,
   userPerRole: {},
   totalCampaign: 0,
+  dataCampaign: {},
   userisonline: 0,
 });
 
@@ -28,6 +29,9 @@ export const mutations = {
   TOTAL_DATA_CAMPAIGN(state, data) {
     state.totalCampaign = data;
   },
+  DATA_CAMPAIGN(state, data) {
+    state.dataCampaign = data
+  }
 };
 
 export const actions = {
@@ -67,7 +71,9 @@ export const actions = {
             break;
 
           case "TOTAL_CAMPAIGN":
+            console.log(data.data)
             commit("TOTAL_DATA_CAMPAIGN", data?.total);
+            commit("DATA_CAMPAIGN", data?.data);
             break;
 
           default:
@@ -86,6 +92,9 @@ export const getters = {
   },
   getTotalCampaign(state) {
     return state.totalCampaign;
+  },
+  getDataCampaign(state) {
+    return state.dataCampaign;
   },
   getUserPerRole(state) {
     return state.userPerRole;

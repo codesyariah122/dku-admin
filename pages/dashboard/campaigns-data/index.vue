@@ -83,6 +83,7 @@ export default {
               title: cell.title,
               banner: cell.banner,
               is_headline: cell.is_headline,
+              publish: cell.publish,
               author: cell.author,
               limit: cell.without_limit
             }

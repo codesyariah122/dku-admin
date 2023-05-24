@@ -67,7 +67,8 @@ export default {
       type: String,
     },
     usersData: {
-      type: Object,
+      type: Array,
+      required: false,
       default: function () {
         return {}; // or any other appropriate default value
       },

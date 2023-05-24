@@ -121,7 +121,6 @@ export default {
         .then(({ data }) => {
           let cells = []
           data.data.map((cell) => {
-            console.log(cell.logins);
             const prepareCell = {
               id: cell.id,
               name: cell.name,

@@ -59,10 +59,14 @@ export const CAMPAIGN_DATA_TABLE = [
   },
   {
     id: 4,
-    title: 'author'
+    title: 'Published'
   },
   {
     id: 5,
+    title: 'author'
+  },
+  {
+    id: 6,
     title: 'limit'
   }
 ]

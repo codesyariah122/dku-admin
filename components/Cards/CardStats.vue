@@ -21,33 +21,10 @@
           </div>
         </div>
       </div>
-      <div v-if="data" class="text-sm text-blueGray-400 mt-4">
-        <ul>
-          <li>
-            <span class="mr-2" :class="[statPercentColor]">
-              {{ data ? data.user_online : `${statPercent}%` }}
-            </span>
-            <span class="whitespace-nowrap">{{ statDescripiron.user_online }}</span>
-          </li>
-          <li>
-            <span class="mr-2" :class="[statPercentColor]">
-              {{ data ? data.admin_dashboard : `${statPercent}%` }}
-            </span>
-            <span class="whitespace-nowrap">{{ statDescripiron.admin }}</span>
-          </li>
-          <li>
-            <span class="mr-2" :class="[statPercentColor]">
-              {{ data ? data.author : `${statPercent}%` }}
-            </span>
-            <span class="whitespace-nowrap">{{ statDescripiron.author }}</span>
-          </li>
-          <li>
-            <span class="mr-2" :class="[statPercentColor]">
-              {{ data ? data.user_donation : `${statPercent}%` }}
-            </span>
-            <span class="whitespace-nowrap">{{ statDescripiron.user }}</span>
-          </li>
-        </ul>
+      <div v-if="$_.size(Object.entries(data)) > 0" class="text-sm text-blueGray-400 mt-4">
+        <molecules-cards-campaign-data v-if="statSubtitle === 'TOTAL CAMPAIGNS'"  :data="data" statePercentColor="text-blueGray-700" :statDescripiron="statDescripiron" :statPercent="statPercent" />
+
+        <molecules-cards-user-data v-if="statSubtitle === 'TOTAL USERS'" :data="data" statPercentColor="text-blueGray-700" :statDescripiron="statDescripiron" :statPercent="statPercent"/>
       </div>
     </div>
   </div>
@@ -60,45 +37,48 @@ export default {
       type: String,
       default: "Traffic",
     },
+
     statTitle: {
       type: String,
       default: "350,897",
     },
+
     data: {
       type: Object,
       default: () => {
         return {}
       }
     },
+
     statArrow: {
       default: "up",
       validator: function (value) {
-        // The value must match one of these strings
         return ["up", "down"].indexOf(value) !== -1;
       },
     },
+
     statPercent: {
       type: String,
       default: "3.48",
     },
-    // can be any of the text color utilities
-    // from tailwindcss
+
     statPercentColor: {
       type: String,
       default: "text-emerald-500",
     },
+
     statDescripiron: {
       type: Object,
       default: () => {
         return {}
       }
     },
+
     statIconName: {
       type: String,
       default: "far fa-chart-bar",
     },
-    // can be any of the background color utilities
-    // from tailwindcss
+
     statIconColor: {
       type: String,
       default: "bg-red-500",

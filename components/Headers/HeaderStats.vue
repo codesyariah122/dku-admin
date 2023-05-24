@@ -9,9 +9,16 @@
             <card-stats
               statSubtitle="TOTAL CAMPAIGNS"
               :statTitle="`${totalCampaign}`"
+              :data="dataCampaign"
               statDataPercentColor="text-emerald-500"
               statIconName="far fa-chart-bar"
-              :statDescripiron="{text: 'Since yesterday'}"
+              :statDescripiron="{
+                publish: 'Published Campaign',
+                most_viewer: {
+                  title: 'Most Viewer Campaign',
+                  views: 'Views'
+                }
+              }"
               statIconColor="bg-red-500"
             />
           </div>
@@ -125,6 +132,10 @@ export default {
 
     totalCampaign() {
       return this.$store.getters["totals/getTotalCampaign"];
+    },
+
+    dataCampaign() {
+      return this.$store.getters["totals/getDataCampaign"];
     },
 
     userPerRole() {

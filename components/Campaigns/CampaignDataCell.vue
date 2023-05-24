@@ -21,11 +21,19 @@
       >
        <img :src="`${image_url}/${column.banner}`" class="w-42 h-24"/>
       </td>
+
       <td
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
        {{ column.is_headline }}
+      </td>
+
+      <td
+
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
+       {{ column.publish === 1 ? 'Y' : 'N' }}
       </td>
 
       <td
