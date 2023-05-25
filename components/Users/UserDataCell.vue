@@ -1,5 +1,5 @@
 <template>
-  <tbody class="relative table-fixed">
+  <tbody>
     <tr v-for="column in columns" :key="column.id">
       <th
         v-if="column.name"
