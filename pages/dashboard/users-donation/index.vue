@@ -149,7 +149,7 @@ export default {
       }
     },
     dataNotifs() {
-      if (this.dataNotifs?.length > 0) {
+      if (this.$_.size(this.dataNotifs) > 0) {
         this.$toast.show(this.message, {
           type: "info",
           duration: 5000,

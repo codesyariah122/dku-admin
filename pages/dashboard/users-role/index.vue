@@ -55,25 +55,6 @@ export default {
       this.$store.dispatch("auth/storeAuthToken", "auth");
     },
 
-    checkNewData() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "EventNotification",
-        (e) => {
-          this.notifs.push(e[0]);
-        }
-      );
-    },
-
-    dataManagementEvent() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "DataManagementEvent",
-        (e) => {
-          this.message = e[0].notif;
-          this.dataNotifs.push(e[0]);
-        }
-      );
-    },
-
     getUserRole() {
       getData({
         api_url: `${this.api_url}/fitur/roles-management`,
@@ -96,7 +77,7 @@ export default {
 
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
+      if (this.$_.size(this.notifs) > 0) {
         if (this.notifs.type !== "added" || this.notifs.type !== "removed") {
           this.getUserRole();
         }

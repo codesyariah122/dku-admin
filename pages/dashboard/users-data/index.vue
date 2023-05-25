@@ -28,12 +28,9 @@ export default {
 
   data() {
     return {
-      notifs: [],
-      dataNotifs: [],
       headers: [...USER_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
-      message: ''
     };
   },
 
@@ -49,30 +46,6 @@ export default {
   },
 
   methods: {
-    authTokenStorage() {
-      this.$store.dispatch("auth/storeAuthToken", "auth");
-    },
-
-    checkNewData() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "EventNotification",
-        (e) => {
-          console.log(e[0])
-          this.notifs.push(e[0]);
-        }
-      );
-    },
-
-    dataManagementEvent() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "DataManagementEvent",
-        (e) => {
-          this.message = e[0].notif;
-          this.dataNotifs.push(e[0]);
-        }
-      );
-    },
-
     timerData(item, timeLeft) {
       const dataTime = {
         seconds: Math.floor((timeLeft / 1000) % 60),
@@ -155,7 +128,7 @@ export default {
       }
     },
     dataNotifs() {
-      if (this.dataNotifs?.length > 0) {
+      if (this.$_.size(this.dataNotifs) > 0) {
         this.$toast.show(this.message, {
           type: "info",
           duration: 5000,

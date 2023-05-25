@@ -47,6 +47,7 @@ export const USER_ROLE_TABLE = [
 export const CAMPAIGN_DATA_TABLE = [
   {
     id: 1,
+    type: 'campaign',
     title: 'campaign title'
   },
   {
