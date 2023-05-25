@@ -14,19 +14,14 @@
     <li>
       <hr class="my-4 md:min-w-full" />
     </li>
-    <li class="mb-2">
+    <li class="mb-1">
       <span class="whitespace-nowrap">{{ statDescripiron.most_viewer.title }} :</span>
       <br>
       <span class="mr-2" :class="[statPercentColor]">
-        <i
-          v-if="data.most_viewer"
-          class="fa-solid fa-newspaper text-xs"
-        ></i>
-
         {{ data.most_viewer ? data.most_viewer.title : `${statPercent}%` }}
       </span>
     </li>
-    <li class="mb-2">
+    <li>
       <span class="mr-2" :class="[statPercentColor]">
         <i
           v-if="data.most_viewer.views"

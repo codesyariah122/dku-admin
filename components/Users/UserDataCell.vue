@@ -1,5 +1,5 @@
 <template>
-  <tbody>
+  <tbody class="relative table-fixed">
     <tr v-for="column in columns" :key="column.id">
       <th
         v-if="column.name"
@@ -98,7 +98,6 @@ export default {
       username: ""
     }
   },
-
 
   mounted() {
     this.checkUserLogin();

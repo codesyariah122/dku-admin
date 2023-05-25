@@ -71,13 +71,13 @@ export default {
     },
     types: {
       type: String,
-    }
+    },
   },
 
   methods: {
     deletedData(id) {
       this.$emit("deleted-data", id);
-    }
+    },
   },
 };
 </script>

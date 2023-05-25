@@ -142,6 +142,7 @@ export default {
     "@nuxtjs/dotenv",
     "@nuxtjs/device",
     "@nuxtjs/moment",
+    // '@nuxtjs/style-resources'
     // "@nuxtjs/fontawesome",
   ],
 
@@ -168,7 +169,7 @@ export default {
     refreshOnResize: true,
   },
   styleResources: {
-    scss: [],
+    scss: ["~/assets/scss/_app.scss"],
   },
   moment: {
     timezone: true,
