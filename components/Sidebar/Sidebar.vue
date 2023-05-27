@@ -259,11 +259,12 @@ export default {
     checkIsLogin() {
       if (this.token !== null) {
         this.loadingData = true;
-        const endPoint = `${this.api_url}/fitur/user-profile`;
+        const endPoint = `/fitur/user-profile`;
         const config = {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${this.token.token}`,
+            'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
           },
         };
 

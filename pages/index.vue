@@ -210,7 +210,7 @@ export default {
       this.errorLogin = false;
       this.loadingLogin = true;
       this.validation = [];
-      const endPoint = `${this.api_url}/auth/login`;
+      const endPoint = `/auth/login`;
       this.$api
         .post(endPoint, {
           email: this.form.email,
@@ -242,6 +242,7 @@ export default {
             const token = data.data.map((d) =>
               d.logins.map((login) => login.user_token_login)
             )[0];
+            console.log(token);
             let expires = [];
             data.data.map((d) => {
               const prepare = {

@@ -49,7 +49,7 @@ export default {
   },
 
   mounted() {
-    this.refreshFirst();
+    // this.refreshFirst();
     this.checkExpires();
   },
 
@@ -70,11 +70,12 @@ export default {
     checkExpires() {
       if (this?.token !== null) {
         this.loading = true;
-        const endPoint = `${this.api_url}/fitur/user-profile`;
+        const endPoint = `/fitur/user-profile`;
         const config = {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${this?.token?.token}`,
+            'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
           },
         };
         this.$api
@@ -85,6 +86,7 @@ export default {
             const expires_at = this.$moment(data.data[0].expires_at).format(
               "LLL"
             );
+
             this.roles = roles;
 
             if (roles === "USER") {
@@ -115,13 +117,14 @@ export default {
             }, 1500)
           })
           .catch((err) => {
+            console.log(err)
             if (err) {
               this.$swal({
                 icon: "error",
                 title: "Oops...",
                 text: "Forbaiden Access!",
               });
-              // this.sesiLogout("");
+              this.sesiLogout("");
               this.$store.dispatch("auth/removeAuthToken", "auth");
               this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
               setTimeout(() => {

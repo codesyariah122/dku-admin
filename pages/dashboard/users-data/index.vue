@@ -90,10 +90,11 @@ export default {
       getData({
         api_url: `${this.api_url}/fitur/user-management`,
         token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN
       })
         .then(({ data }) => {
           let cells = []
-          data.data.map((cell) => {
+          data.map((cell) => {
             const prepareCell = {
               id: cell.id,
               name: cell.name,

@@ -66,7 +66,7 @@ export default {
     },
 
     roleUserExit() {
-      const endPoint = `${this.api_url}/auth/logout`;
+      const endPoint = `/auth/logout`;
       this.$api.defaults.headers.common["Accept"] = "application/json";
       this.$api.defaults.headers.common[
         "Authorization"
@@ -88,14 +88,14 @@ export default {
               } else {
                 this.$router.replace("/");
               }
-            }, 1500);
+            }, 500);
           }
         })
         .catch((err) => console.log(err));
     },
 
     sesiLogout(roles = "") {
-      const endPoint = `${this.api_url}/auth/logout`;
+      const endPoint = `/auth/logout`;
       this.$api.defaults.headers.common["Accept"] = "application/json";
       this.$api.defaults.headers.common[
         "Authorization"
@@ -113,7 +113,7 @@ export default {
               } else {
                 this.$router.replace("/");
               }
-            }, 1500);
+            }, 500);
           }
         })
         .catch((err) => console.log(err));
@@ -129,7 +129,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.globalLoading = true;
-          const endPoint = `${this.api_url}/auth/logout`;
+          const endPoint = `/auth/logout`;
           this.$api.defaults.headers.common["Accept"] = "application/json";
           this.$api.defaults.headers.common[
             "Authorization"
@@ -153,7 +153,7 @@ export default {
               }, 500);
             });
         } else if (result.isDenied) {
-          Swal.fire("Changes are not saved", "", "info");
+          this.$swal("Changes are not saved", "", "info");
         }
       });
     },
@@ -195,7 +195,7 @@ export default {
 
     checkUserLogin() {
       if (this?.token !== null) {
-        const endPoint = `${this.api_url}/fitur/user-profile`;
+        const endPoint = `/fitur/user-profile`;
         const config = {
           headers: {
             Accept: "application/json",

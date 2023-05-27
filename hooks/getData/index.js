@@ -13,7 +13,8 @@ export const getData = async (props) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + token,
+        'Dku-Api-Key': props.api_key
       }
     })
     const result = await parsed.json()

@@ -43,7 +43,7 @@ export const actions = {
       },
     };
     const endPoint = `${param.api_url}/fitur/user-online`;
-    this.$axios
+    this.$api
       .get(endPoint, config)
       .then(({ data }) => {
         commit("TOTAL_USER_ONLINE", data?.data);
