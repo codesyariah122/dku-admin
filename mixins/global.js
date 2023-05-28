@@ -12,11 +12,13 @@ export default {
       notifs: [],
       dataNotifs: [],
       updateProfileNotifs: [],
+      userDontaionLoginNotifs: [],
       messageNotifs: null,
+      userDonationLoginMessage: "",
       userEmail: "",
       emailForbaiden: "",
       cells: [],
-      userData: []
+      userData: [],
     };
   },
 
@@ -52,6 +54,17 @@ export default {
         "DataManagementEvent",
         (e) => {
           this.dataNotifs.push(e[0]);
+        }
+      );
+    },
+
+    userDonationEvent() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "UserDonationLoginEvent",
+        (e) => {
+          console.log(e)
+          this.userDontaionLoginNotifs.push(e[0])
+          this.userDonationLoginMessage = e[0].notif;
         }
       );
     },
