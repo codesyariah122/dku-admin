@@ -76,6 +76,7 @@ export default {
       this.$api.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${this.token.token}`;
+      this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
       this.$api
         .post(endPoint)
         .then(({ data }) => {
@@ -104,6 +105,7 @@ export default {
       this.$api.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${this.token.token}`;
+      this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
       this.$api
         .post(endPoint)
         .then(({ data }) => {
@@ -137,15 +139,16 @@ export default {
           this.$api.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${this.token.token}`;
+          this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
           this.$api
             .post(endPoint)
             .then(({ data }) => {
               if (data.success) {
                 this.$swal(`Logout Berhasil!`, "", "success");
-                this.removeToken();
+                this.removeAuth();
                 setTimeout(() => {
                   this.$router.replace("/");
-                }, 1000);
+                }, 500);
               }
             })
             .catch((err) => console.log(err))
@@ -202,8 +205,10 @@ export default {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${this?.token?.token}`,
+            'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
           },
         };
+        this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
         this.$api
           .get(endPoint, config)
           .then(({ data }) => {

@@ -37,6 +37,9 @@ export default {
 
   created() {
     this.checkUserLogin();
+  },
+
+  mounted() {
     this.expiredCountDown();
   },
 

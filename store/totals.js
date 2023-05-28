@@ -43,6 +43,7 @@ export const actions = {
       },
     };
     const endPoint = `${param.api_url}/fitur/user-online`;
+    this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
     this.$api
       .get(endPoint, config)
       .then(({ data }) => {
@@ -61,6 +62,7 @@ export const actions = {
       },
     };
     const endPoint = `${param.api_url}/fitur/total-data?type=${param.type}`;
+    this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
     this.$api
       .get(endPoint, config)
       .then(({ data }) => {
