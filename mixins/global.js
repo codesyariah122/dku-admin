@@ -119,6 +119,11 @@ export default {
         .catch((err) => console.log(err));
     },
 
+    removeAuth() {
+      this.$store.dispatch("auth/removeAuthToken", "auth");
+      this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
+    },
+
     logout() {
       this.$swal({
         title: `kamu akan segera keluar dari Dashboard ${this.roles} ?`,
@@ -139,8 +144,7 @@ export default {
             .then(({ data }) => {
               if (data.success) {
                 this.$swal(`Logout Berhasil!`, "", "success");
-                this.$store.dispatch("auth/removeAuthToken", "auth");
-                this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
+                this.removeToken();
                 setTimeout(() => {
                   this.$router.replace("/");
                 }, 1500);

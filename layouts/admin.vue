@@ -1,10 +1,7 @@
 <template>
-  <div>
+  <div v-if="this.userData.role !== 3">
     <sidebar />
-    <div
-      v-if="this.userData.role !== 3"
-      class="relative md:ml-64 bg-blueGray-100"
-    >
+    <div class="relative md:ml-64 bg-blueGray-100">
       <admin-navbar />
       <header-stats />
 
@@ -16,76 +13,80 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
-import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
-import Sidebar from "@/components/Sidebar/Sidebar.vue";
-import HeaderStats from "@/components/Headers/HeaderStats.vue";
-import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
-import global from "~/mixins/global";
+  import Vue from "vue";
+  import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
+  import Sidebar from "@/components/Sidebar/Sidebar.vue";
+  import HeaderStats from "@/components/Headers/HeaderStats.vue";
+  import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
+  import global from "~/mixins/global";
 
-Vue.mixin(global);
+  Vue.mixin(global);
 
-export default {
-  name: "admin-layout",
-  components: {
-    AdminNavbar,
-    Sidebar,
-    HeaderStats,
-    FooterAdmin,
-  },
-
-  data() {
-    return {
-      api_url: process.env.NUXT_ENV_API_URL,
-      expires_at: "",
-      loading: null,
-      roles: "",
-      userEmail: "",
-      userName: "",
-      userRoles: "",
-      emailForbaiden: "",
-
-    };
-  },
-
-  mounted() {
-    // this.refreshFirst();
-    this.checkExpires();
-  },
-
-  methods: {
-    refreshFirst() {
-      const detectFirst = localStorage.getItem("refresh-first")
-        ? JSON.parse(localStorage.getItem("refresh-first"))
-        : null;
-      if (detectFirst?.reload) {
-        window.location.reload();
-        localStorage.removeItem("refresh-first");
-      } else {
-        console.log("no action");
-        localStorage.removeItem("refresh-first");
-      }
+  export default {
+    name: "admin-layout",
+    components: {
+      AdminNavbar,
+      Sidebar,
+      HeaderStats,
+      FooterAdmin,
     },
 
-    checkExpires() {
-      if (this?.token !== null) {
-        this.loading = true;
-        const endPoint = `/fitur/user-profile`;
-        const config = {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${this?.token?.token}`,
-            'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
-          },
-        };
-        this.$api
+    data() {
+      return {
+        api_url: process.env.NUXT_ENV_API_URL,
+        expires_at: "",
+        loading: null,
+        roles: "",
+        userEmail: "",
+        userName: "",
+        userRoles: "",
+        emailForbaiden: "",
+
+      };
+    },
+
+    created() {
+      this.checkUserLogin();
+    },
+
+    mounted() {
+    // this.refreshFirst();
+      this.checkExpires();
+    },
+
+    methods: {
+      refreshFirst() {
+        const detectFirst = localStorage.getItem("refresh-first")
+        ? JSON.parse(localStorage.getItem("refresh-first"))
+        : null;
+        if (detectFirst?.reload) {
+          window.location.reload();
+          localStorage.removeItem("refresh-first");
+        } else {
+          console.log("no action");
+          localStorage.removeItem("refresh-first");
+        }
+      },
+
+      checkExpires() {
+        if (this?.token !== null) {
+          this.loading = true;
+          const endPoint = `/fitur/user-profile`;
+          const config = {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${this?.token?.token}`,
+              'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
+            },
+          };
+          this.$api
           .get(endPoint, config)
           .then(({ data }) => {
             const roles = this.$role(data.data[0].roles[0].name);
             const now = this.$moment().format("LLL");
             const expires_at = this.$moment(data.data[0].expires_at).format(
               "LLL"
-            );
+              );
 
             this.roles = roles;
 
@@ -129,34 +130,34 @@ export default {
               this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
               setTimeout(() => {
                 this.$router.replace("/");
-              }, 1500);
+              }, 500);
             }
           });
-      } else {
-        this.$swal({
-          icon: "error",
-          title: "Oops...",
-          text: "Error Access!",
-        });
-        this.$router.replace("/");
-      }
-    },
-  },
-
-  watch: {
-    notifs() {
-      if (this.$_.size(this.notifs) > 0) {
-        // console.log(this.notifs[0][0].emailForbaiden)
-        this.checkExpires();
-        if (this.notifs[0][0].emailForbaiden === this.userEmail) {
-          this.$toast.show(this.messageNotifs, {
-            type: "info",
-            duration: 5000,
-            position: "top-right",
+        } else {
+          this.$swal({
+            icon: "error",
+            title: "Oops...",
+            text: "Error Access!",
           });
+          this.$router.replace("/");
         }
-      }
+      },
     },
-  },
-};
+
+    watch: {
+      notifs() {
+        if (this.$_.size(this.notifs) > 0) {
+        // console.log(this.notifs[0][0].emailForbaiden)
+          this.checkExpires();
+          if (this.notifs[0][0].emailForbaiden === this.userEmail) {
+            this.$toast.show(this.messageNotifs, {
+              type: "info",
+              duration: 5000,
+              position: "top-right",
+            });
+          }
+        }
+      },
+    },
+  };
 </script>

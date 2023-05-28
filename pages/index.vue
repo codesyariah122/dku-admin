@@ -218,6 +218,7 @@ export default {
           remember_me: this.form.checked ? this.form.checked : false,
         })
         .then(({ data }) => {
+
           if (data.is_login) {
             this.$swal({
               icon: "warning",
@@ -238,11 +239,11 @@ export default {
 
 
           if (data.success) {
+            
             const roles = this.getRoles(data.data[0].roles[0].name);
             const token = data.data.map((d) =>
               d.logins.map((login) => login.user_token_login)
             )[0];
-            console.log(token);
             let expires = [];
             data.data.map((d) => {
               const prepare = {
@@ -252,11 +253,11 @@ export default {
               expires.push(prepare);
             });
 
-            this.saveExpires(expires[0]);
-
-            this.saveLogin(token[0]);
 
             if (roles !== "user") {
+              this.saveExpires(expires[0]);
+
+              this.saveLogin(token[0]);
               this.$swal({
                 position: "top-end",
                 icon: "success",
@@ -264,16 +265,24 @@ export default {
                 showConfirmButton: false,
                 timer: 1500,
               });
+              setTimeout(() => {
+                this.$router.replace({
+                  path: `/dashboard/${roles}`,
+                });
+                localStorage.setItem(
+                  "refresh-first",
+                  JSON.stringify({ reload: true })
+                  );
+              }, 1000);
+            } else {
+              this.$swal({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Anda tidak diizinkan mengakses dashboard !',
+              })
+              this.$router.push('/?error=true')
+              this.removeAuth();
             }
-            setTimeout(() => {
-              this.$router.replace({
-                path: `/dashboard/${roles}`,
-              });
-              localStorage.setItem(
-                "refresh-first",
-                JSON.stringify({ reload: true })
-              );
-            }, 1000);
           } else {
             this.errorLogin = data.message;
             this.$swal({

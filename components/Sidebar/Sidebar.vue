@@ -287,7 +287,6 @@ export default {
           })
           .catch((err) => {
             if (err.error) {
-              // this.$router.replace("/auth/login")
               this.sesiLogout(this.roles ? this.roles : "");
             }
           });
