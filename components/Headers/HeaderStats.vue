@@ -32,7 +32,7 @@
               statPercentColor="text-emerald-500"
               :statDescripiron="{
                 user_online: 'User is online',
-                admin: 'User Dashboard',
+                admin: 'User Admin',
                 author: 'User Author',
                 user: ' User Donation'
               }"

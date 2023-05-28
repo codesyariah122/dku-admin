@@ -253,11 +253,11 @@ export default {
               expires.push(prepare);
             });
 
+            this.saveExpires(expires[0]);
+
+            this.saveLogin(token[0]);
 
             if (roles !== "user") {
-              this.saveExpires(expires[0]);
-
-              this.saveLogin(token[0]);
               this.$swal({
                 position: "top-end",
                 icon: "success",
@@ -265,24 +265,16 @@ export default {
                 showConfirmButton: false,
                 timer: 1500,
               });
-              setTimeout(() => {
-                this.$router.replace({
-                  path: `/dashboard/${roles}`,
-                });
-                localStorage.setItem(
-                  "refresh-first",
-                  JSON.stringify({ reload: true })
-                  );
-              }, 1000);
-            } else {
-              this.$swal({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Anda tidak diizinkan mengakses dashboard !',
-              })
-              this.$router.push('/?error=true')
-              this.removeAuth();
             }
+            setTimeout(() => {
+              this.$router.replace({
+                path: `/dashboard/${roles}`,
+              });
+              localStorage.setItem(
+                "refresh-first",
+                JSON.stringify({ reload: true })
+                );
+            }, 1000);
           } else {
             this.errorLogin = data.message;
             this.$swal({

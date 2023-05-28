@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.userData.role !== 3">
+  <div v-if="roles !== 'USER'">
     <sidebar />
     <div class="relative md:ml-64 bg-blueGray-100">
       <admin-navbar />

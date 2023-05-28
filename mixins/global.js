@@ -65,6 +65,11 @@ export default {
       );
     },
 
+    removeAuth() {
+      this.$store.dispatch("auth/removeAuthToken", "auth");
+      this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
+    },
+
     roleUserExit() {
       const endPoint = `/auth/logout`;
       this.$api.defaults.headers.common["Accept"] = "application/json";
@@ -80,8 +85,7 @@ export default {
               title: "Oops...",
               text: "you are not allowed to access this page!",
             });
-            this.$store.dispatch("auth/removeAuthToken", "auth");
-            this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
+            this.removeAuth()
             setTimeout(() => {
               if (this.path === "/") {
                 location.reload();
@@ -105,8 +109,7 @@ export default {
         .then(({ data }) => {
           if (data.success) {
             this.$swal(`Sesi login habis!`, "", "success");
-            this.$store.dispatch("auth/removeAuthToken", "auth");
-            this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
+            this.removeAuth();
             setTimeout(() => {
               if (this.path === "/") {
                 location.reload();
@@ -117,11 +120,6 @@ export default {
           }
         })
         .catch((err) => console.log(err));
-    },
-
-    removeAuth() {
-      this.$store.dispatch("auth/removeAuthToken", "auth");
-      this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
     },
 
     logout() {
@@ -147,7 +145,7 @@ export default {
                 this.removeToken();
                 setTimeout(() => {
                   this.$router.replace("/");
-                }, 1500);
+                }, 1000);
               }
             })
             .catch((err) => console.log(err))
