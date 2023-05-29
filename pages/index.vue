@@ -225,14 +225,14 @@ export default {
       this.loadingLogin = true;
       this.validation = [];
       const endPoint = `/auth/login`;
+     
       this.$api
-        .post(endPoint, {
+        .post(endPoint,{
           email: this.form.email,
           password: this.form.password,
           remember_me: this.form.checked ? this.form.checked : false,
         })
         .then(({ data }) => {
-
           if (data.is_login) {
             this.$swal({
               icon: "warning",
@@ -253,7 +253,6 @@ export default {
 
 
           if (data.success) {
-            
             const roles = this.getRoles(data.data[0].roles[0].name);
             const token = data.data.map((d) =>
               d.logins.map((login) => login.user_token_login)
@@ -275,7 +274,7 @@ export default {
               this.$swal({
                 position: "top-end",
                 icon: "success",
-                title: "Your work has been saved",
+                title: `Selamat datang , ${data.data[0].name}`,
                 showConfirmButton: false,
                 timer: 1500,
               });

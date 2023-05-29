@@ -31,6 +31,7 @@ export default {
       headers: [...USER_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
+      notifs: []
     };
   },
 
@@ -54,6 +55,16 @@ export default {
         days: Math.floor(timeLeft / (1000 * 60 * 60 * 24))
       }
       return dataTime;
+    },
+
+    checkNewData() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "EventNotification",
+        (e) => {
+          // console.log(e[0].notif)
+          this.notifs.push(e);
+          this.messageNotifs = e[0].notif;        }
+      );
     },
 
     startCountdown() {

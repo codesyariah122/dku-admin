@@ -15,7 +15,9 @@ export default {
       ignore: ["renovate.json"],
     },
   },
-
+  server: {
+    port: 3031 // Set your desired port number here
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "DKU DASHBOARD",
