@@ -26,7 +26,7 @@
               >
                 <img
                   :src="require('~/assets/img/logo-dku.png')"
-                  style="max-width: 250px"
+                  style="max-width: 150px"
                 />
               </router-link>
             </div>
@@ -247,6 +247,7 @@ export default {
               title: "Oops...",
               text: data.message,
             });
+            this.errorUsers = true;
             this.error = true;
             this.form = {};
           }
@@ -295,6 +296,7 @@ export default {
               title: "Oops...",
               text: data.message,
             });
+            this.errorUsers = true;
             this.error = true;
             this.form = {};
           }
@@ -307,6 +309,7 @@ export default {
               title: "Oops...",
               text: err.response.data.error ? err.response.data.message : err.message,
             });
+            this.errorUsers = true;
             this.error = true;
             this.errorLogin = "";
             this.validation = err?.response?.data;
