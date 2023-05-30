@@ -3,7 +3,6 @@
     <li>
       <span class="mr-2" :class="[data.user_online ? 'text-emerald-600' : statPercentColor]">
         <i
-          v-if="data.publish"
           class="fa-solid fa-check-double text-success-600 text-xs"
         ></i>
 
@@ -18,7 +17,7 @@
       <span class="whitespace-nowrap">{{ statDescripiron.most_viewer.title }} :</span>
       <br>
       <span class="mr-2" :class="[statPercentColor]">
-        {{ data.most_viewer ? data.most_viewer.title : `${statPercent}%` }}
+        {{ data.most_viewer ? data.most_viewer.title : `0` }}
       </span>
     </li>
     <li>
@@ -28,7 +27,7 @@
           class="fa-solid fa-paperclip text-xs"
         ></i>
 
-        {{ data.most_viewer.views ? data.most_viewer.views : `${statPercent}%` }}
+        {{ data.most_viewer.views ? data.most_viewer.views : `0` }}
       </span>
       <span class="whitespace-nowrap">{{ statDescripiron.most_viewer.views }}</span>
     </li>

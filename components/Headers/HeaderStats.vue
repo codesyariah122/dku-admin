@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       notifs: [],
+      newViewersNotifs: [],
       api_url: process.env.NUXT_ENV_API_URL,
       dataPercent: {},
       messageNotif: "",
@@ -90,6 +91,7 @@ export default {
 
   created() {
     this.checkNewData();
+    this.checkNewViewer();
   },
 
   mounted() {
@@ -104,6 +106,16 @@ export default {
         (e) => {
           this.messageNotif = e[0].notif;
           this.notifs.push(e[0]);
+        }
+      );
+    },
+
+    checkNewViewer() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "CampaignViewerEvent",
+        (e) => {
+          this.messageNotif = e[0].notif;
+          this.newViewersNotifs.push(e[0]);
         }
       );
     },
@@ -144,10 +156,16 @@ export default {
   },
   watch: {
     notifs() {
-      if (this.notifs?.length > 0) {
+      if (this.$_.size(this.notifs)) {
         this.getTotalUser();
       }
     },
+
+    newViewersNotifs() {
+      if (this.$_.size(this.newViewersNotifs) > 0) {
+        this.getTotalCampaign()
+      }
+    }
   },
 };
 </script>
