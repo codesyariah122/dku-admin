@@ -187,8 +187,13 @@ export default {
   },
 
   workbox: {
-    workboxOptions: {
-      skipWaiting: true,
+    // workboxOptions: {
+    //   skipWaiting: true,
+    // },
+    cachingExtensions: '@/plugins/workbox-cache.js',
+    cacheOptions: {
+      cacheId: 'dku-cache',
+      clientsClaim: true,
     },
     offline: true,
     // offlineStrategy: 'NetworkFirst',

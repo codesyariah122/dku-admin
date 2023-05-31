@@ -248,7 +248,7 @@ export default {
           .finally(() => {
             setTimeout(() => {
               this.loadingMenu = false;
-            }, 1000);
+            }, 500);
           })
           .catch((err) => {
             console.log(err);
