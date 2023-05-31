@@ -1,13 +1,20 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
+
       <cards-card-table
         color="dark"
         title="User Donation"
         :headers="headers"
         :columns="items"
         types="user-data"
+        :loading="loading"
+        @deleted-data="deletedUser"
+        @activation-user="activationUser"
       />
+
+      <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+
     </div>
   </div>
 </template>
@@ -19,7 +26,7 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
  import { USER_DATA_TABLE } from "~/utils/tables-organizations";
-import { getData } from "~/hooks/getData/index";
+import { getData, activateUser } from "~/hooks/index";
 
 
 export default {
@@ -28,6 +35,10 @@ export default {
 
   data() {
     return {
+      loading: null,
+      options: '',
+      success: null,
+      message_success: '',
       notifs: [],
       dataNotifs: [],
       message: '',
@@ -40,6 +51,7 @@ export default {
   created() {
     this.checkNewData();
     this.dataManagementEvent();
+    this.checkUpdateEvent();
   },
 
   mounted() {
@@ -142,6 +154,39 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    deletedUser(id) {
+      console.log(id);
+    },
+
+    activationUser(id) {
+      this.loading = true
+      this.options = 'activation-user';
+      activateUser({
+        api_url: `${this.api_url}/auth/activation/${id}`,
+        token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN,
+        data: this.activation_id ? this.activation_id : null
+      })
+      .then(({data}) => {
+        if(data.status === 'ACTIVE') {
+          this.success = true;
+          this.message_success = `${data.name}, berhasil di aktivasi !`
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.options = ''
+        }, 1000)
+      })
+      .catch((err) => console.error(err))
+    },
+
+    closeSuccessAlert() {
+      this.success = false
+      this.message = ''
+    }
   },
 
   watch: {
@@ -160,6 +205,11 @@ export default {
         this.getUserData();
       }
     },
+    updateProfileNotifs() {
+      if(this.$_.size(this.updateProfileNotifs) > 0) {
+        this.getUserData();
+      }
+    }
   },
 };
 </script>

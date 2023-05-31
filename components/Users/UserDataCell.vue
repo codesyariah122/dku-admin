@@ -89,13 +89,13 @@ export default {
     },
     types: {
       type: String
-    }
+    },
   },
 
   data() {
     return {
       userData: [],
-      username: ""
+      username: "",
     }
   },
 
@@ -109,7 +109,7 @@ export default {
     },
 
     activationUser(id) {
-      this.$emit('activation-user', id)
+      this.$emit('activation-user', id);
     },
 
     checkUserLogin() {

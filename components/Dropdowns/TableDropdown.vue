@@ -102,7 +102,7 @@ export default {
       this.$emit('activation-user', user_id)
       setTimeout(() => {
         this.dropdownPopoverShow = false;
-      }, 2000)
+      }, 500)
     }
   },
 };

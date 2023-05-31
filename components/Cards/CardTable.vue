@@ -26,7 +26,6 @@
           :types="types"
           @deleted-data="deletedData"
           @activation-user="activationUser"
-          @handle-toggle-dropdown="handleToggleDropdown"
         />
 
         <users-role-data-cell
@@ -50,6 +49,9 @@
           @activation-user="activationUser"
           :types="types"
         />
+
+        <molecules-row-loading :loading="loading" :options="options" />
+
       </table>
     </div>
   </div>
@@ -75,6 +77,14 @@ export default {
     types: {
       type: String,
     },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    options: {
+      type: String,
+      default: ''
+    }
   },
 
   methods: {
