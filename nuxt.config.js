@@ -5,10 +5,11 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
 
-  loading: {
-    color: "#01d28e",
-    height: "11px",
-  },
+  // loading: {
+  //   color: "#01d28e",
+  //   height: "11px",
+  // },
+  loading: '~/components/Loading.vue',
   generate: {
     dir: "dist",
     cache: {
@@ -133,6 +134,7 @@ export default {
     { src: "~/plugins/lodash", ssr: false },
     { src: '~/plugins/truncate-html', ssr: false },
     { src: '~/plugins/he', ssr: false },
+    { src: '~/plugins/autoLogoutMixin.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

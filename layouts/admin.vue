@@ -14,6 +14,7 @@
 </template>
 <script>
   import Vue from "vue";
+  import autoLogoutMixin from '~/plugins/autoLogoutMixin.js';
   import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
   import Sidebar from "@/components/Sidebar/Sidebar.vue";
   import HeaderStats from "@/components/Headers/HeaderStats.vue";
@@ -21,8 +22,10 @@
   import global from "~/mixins/global";
 
   Vue.mixin(global);
+  Vue.mixin(autoLogoutMixin);
 
   export default {
+    mixins: [autoLogoutMixin],
     name: "admin-layout",
     components: {
       AdminNavbar,
@@ -45,16 +48,42 @@
       };
     },
 
+    // beforeRouteLeave(to, from, next) {
+    //   this.$nuxt.$loading.start();
+    //   next();
+    // },
+
+    // beforeRouteEnter(to, from, next) {
+    //   next(vm => {
+    //     vm.$nextTick(() => {
+    //       vm.$nuxt.$loading.finish();
+    //     });
+    //   });
+    // },
+
     created() {
       this.checkUserLogin();
     },
 
     mounted() {
+      // document.addEventListener("visibilitychange", this.handleVisibilityChange);
     // this.refreshFirst();
       this.checkExpires();
     },
 
+    // beforeDestroy() {
+    //   document.removeEventListener("visibilitychange", this.handleVisibilityChange);
+    // },
+
     methods: {
+      handleVisibilityChange() {
+        if (document.hidden) {
+          console.log("Automatic logout")
+        // Panggil fungsi logout di sini
+          this.roleUserExit();
+        }
+      },
+
       refreshFirst() {
         const detectFirst = localStorage.getItem("refresh-first")
         ? JSON.parse(localStorage.getItem("refresh-first"))

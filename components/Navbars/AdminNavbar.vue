@@ -81,7 +81,7 @@ export default {
 
         // Hentikan penghitungan waktu mundur jika waktu telah habis
         if (timeLeft < 0) {
-          clearInterval(countdownInterval);
+          // clearInterval();
           this.countdown = "Waktu telah habis!";
         }
       }, 1000);

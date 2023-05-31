@@ -189,7 +189,7 @@ export default {
     checkIsLogin() {
       if (this.token !== null) {
         this.loadingCheck = true;
-        const endPoint = `${this.api_url}/fitur/user-profile`;
+        const endPoint = `/fitur/user-profile`;
         const config = {
           headers: {
             Accept: "application/json",
