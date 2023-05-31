@@ -5,6 +5,11 @@ export default {
       logoutTimer: null,
     };
   },
+
+  beforeMount() {
+    this.authTokenStorage();
+  },
+
   mounted() {
     this.resetLogoutTimer();
     window.addEventListener('mousemove', this.resetLogoutTimer);
@@ -20,7 +25,7 @@ export default {
       clearTimeout(this.logoutTimer);
       this.logoutTimer = setTimeout(() => {
         // Panggil metode logout atau logika logout
-        this.logout();
+        this.logoutSession();
       }, this.idleTime);
     },
 
@@ -29,7 +34,7 @@ export default {
       this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
     },
 
-    logout() {
+    logoutSession() {
       const endPoint = `/auth/logout`;
       this.$api.defaults.headers.common["Accept"] = "application/json";
       this.$api.defaults.headers.common[
@@ -43,7 +48,7 @@ export default {
           this.$swal({
             icon: "error",
             title: "Bye ...",
-            text: "15 menit sesi tanpa activitas, auto logout!",
+            text: "Sesi login habis!",
           });
           this.removeAuth()
           setTimeout(() => {

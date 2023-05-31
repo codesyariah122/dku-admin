@@ -23,8 +23,10 @@
         <users-user-data-cell
           v-if="types === 'user-data'"
           :columns="columns"
-          @deleted-data="deletedData"
           :types="types"
+          @deleted-data="deletedData"
+          @activation-user="activationUser"
+          @handle-toggle-dropdown="handleToggleDropdown"
         />
 
         <users-role-data-cell
@@ -45,6 +47,7 @@
           v-if="types === 'category-campaign'"
           :columns="columns"
           @deleted-data="deletedData"
+          @activation-user="activationUser"
           :types="types"
         />
       </table>
@@ -77,6 +80,9 @@ export default {
   methods: {
     deletedData(id) {
       this.$emit("deleted-data", id);
+    },
+    activationUser(id) {
+      this.$emit("activation-user", id);
     },
   },
 };

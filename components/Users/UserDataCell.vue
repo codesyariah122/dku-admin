@@ -72,7 +72,7 @@
         v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown @deleted-data="deletedData" :id="column.id" :types="types" :username="username"/>
+        <dropdowns-table-dropdown @deleted-data="deletedData" @activation-user="activationUser" :id="column.id" :types="types" :username="username" :userStatus="{status: column.status, user_id: column.status === 'INACTIVE' ? column.id : null}"/>
       </td>
     </tr>
   </tbody>
@@ -106,6 +106,10 @@ export default {
   methods: {
     deletedData(id) {
       this.$emit("deleted-data", id);
+    },
+
+    activationUser(id) {
+      this.$emit('activation-user', id)
     },
 
     checkUserLogin() {
