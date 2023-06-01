@@ -4,14 +4,14 @@
 
       <cards-card-table
       color="dark"
-      title="User Dashboard"
+      title="User Trashed"
       :headers="headers"
       :columns="items"
       :loading="loading"
-      types="user-data"
+      types="user-trash"
       queryType="USER_DATA"
       @deleted-data="deletedUser"
-      @activation-user="activationUser"
+      @restored-data="restoreData"
       />
 
     </div>
@@ -27,8 +27,8 @@
  * @returns {string}
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
-  import { USER_DATA_TABLE } from "~/utils/tables-organizations";
-  import { getData, activateUser, deleteData } from "~/hooks/index";
+  import { USER_TRASH_DATA_TABLE } from "~/utils/tables-organizations";
+  import { getData, deleteData, totalTrash, restoredData } from "~/hooks/index";
 
   export default {
     name: "users-data",
@@ -40,11 +40,13 @@
         options: '',
         success: null,
         message_success: '',
-        headers: [...USER_DATA_TABLE],
+        headers: [...USER_TRASH_DATA_TABLE],
         api_url: process.env.NUXT_ENV_API_URL,
         items: [],
         notifs: [],
-        activation_id: null
+        activation_id: null,
+        queryParam: this.$route.query.type,
+        totals: 0
       };
     },
 
@@ -56,20 +58,9 @@
 
     mounted() {
       this.getUserTrash();
-      this.startCountdown();
     },
 
     methods: {
-      timerData(item, timeLeft) {
-        const dataTime = {
-          seconds: Math.floor((timeLeft / 1000) % 60),
-          minutes: Math.floor((timeLeft / 1000 / 60) % 60),
-          hours: Math.floor((timeLeft / (1000 * 60 * 60)) % 24),
-          days: Math.floor(timeLeft / (1000 * 60 * 60 * 24))
-        }
-        return dataTime;
-      },
-
       checkNewData() {
         window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
           "EventNotification",
@@ -80,60 +71,23 @@
             );
       },
 
-      startCountdown() {
-        setInterval(() => {
-          this.items.forEach((item) => {
-            const currentTime = new Date().getTime()
-            const timeLeft = item.endTime - currentTime
-            let {
-              seconds,
-              minutes,
-              hours,
-              days
-            } = this.timerData(item, timeLeft)
-
-
-            if (item.endTime !== null) {
-              item.countdown = `${days > 0 ? days + " hari, " : ""} ${
-                hours > 0 ? hours + " jam, " : ""
-              } ${minutes > 0 ? minutes + " menit, " : ""} ${
-                seconds > 0 ? seconds + " detik" : ""
-              }`;
-            } else {
-              item.countdown = null;
-            }
-
-            if (timeLeft < 0 && item.endTime !== null) {
-              item.countdown = "Sesi login berakhir!";
-            }
-          });
-        }, 1000);
-      },
 
       getUserTrash() {
-        getData({
-          api_url: `${this.api_url}/fitur/user-management`,
-          token: this.token.token,
-          api_key: process.env.NUXT_ENV_APP_TOKEN
+        totalTrash({
+        api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
+        api_key: process.env.NUXT_ENV_APP_TOKEN,
+        token: this.token.token
         })
         .then(({ data }) => {
+          this.totals = this.$_.size(data.data);
           let cells = []
-          data.map((cell) => {
+          data.data.map((cell) => {
             const prepareCell = {
               id: cell.id,
               name: cell.name,
               email: cell.email,
-              role: cell.role,
               phone: cell.phone,
               status: cell.status,
-              expires_at: cell.expires_at,
-              activation_id: cell.activation_id ? cell.activation_id : null,
-              token: cell.logins.map((data) => data.user_token_login)[0],
-              last_login: cell.last_login,
-              is_login: cell.is_login,
-              endTime: new Date(cell.expires_at),
-              countdown: "",
-              username: cell.profiles.map((profile) => profile.username)[0]
             }
             cells.push(prepareCell)
           });
@@ -165,19 +119,22 @@
         .catch((err) => console.log(err))
       },
 
-      activationUser(id) {
+      restoreData(id) {
         this.loading = true
-        this.options = 'activation-user';
-        activateUser({
-          api_url: `${this.api_url}/auth/activation/${id}`,
+        this.options = 'restore-user';
+        restoredData({
+          api_url: `${this.api_url}/fitur/trashed/${id}?type=${this.queryParam}`,
           token: this.token.token,
-          api_key: process.env.NUXT_ENV_APP_TOKEN,
-          data: this.activation_id ? this.activation_id : null
+          api_key: process.env.NUXT_ENV_APP_TOKEN
         })
         .then(({data}) => {
-          if(data.status === 'ACTIVE') {
-            this.success = true;
-            this.message_success = this.dataNotifs[0].notif
+          if(data.deleted_at === null) {
+            if(this.totals > 1) {
+              this.success = true;
+              this.message_success = this.dataNotifs[0].notif;
+            } else {
+              this.$router.go(-1)
+            }
           }
         })
         .finally(() => {
@@ -186,7 +143,9 @@
             this.options = ''
           }, 1000)
         })
-        .catch((err) => console.error(err))
+        .catch((err) => {
+          console.log(err)
+        })
       },
 
       closeSuccessAlert() {

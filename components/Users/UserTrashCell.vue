@@ -11,12 +11,6 @@
       <td
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-        {{ column.username }}
-      </td>
-
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
         {{ column.email }}
       </td>
 
@@ -37,42 +31,12 @@
         {{ column.status }}
       </td>
 
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        {{ column.last_login ? $moment(column.last_login).fromNow() : 'NULL' }}
-      </td>
-
-      <td
-        v-if="column.expires_at"
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        {{ column.countdown }}
-      </td>
-
-      <td
-        v-else
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        NULL
-      </td>
-
-      <td
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-      >
-        <i
-          :class="`fas fa-circle ${
-            column.is_login == 1 ? 'text-green-700' : 'text-orange-500'
-          } mr-2`"
-        ></i>
-        {{ column.is_login == 1 ? "Online" : "Offline" }}
-      </td>
-
+      
       <td
         v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown @deleted-data="deletedData" @activation-user="activationUser" :id="column.id" :types="types" :username="username" :userStatus="{status: column.status, user_id: column.status === 'INACTIVE' ? column.id : null}" cellType="data"/>
+        <dropdowns-table-dropdown @deleted-data="deletedData" @restored-data="restoredData" :id="column.id" :types="types" :username="username" :userStatus="{status: column.status, user_id: column.status === 'INACTIVE' ? column.id : null}" cellType="trash"/>
       </td>
     </tr>
   </tbody>
@@ -108,8 +72,8 @@ export default {
       this.$emit("deleted-data", id);
     },
 
-    activationUser(id) {
-      this.$emit('activation-user', id);
+    restoredData(id) {
+      this.$emit('restored-data', id)
     },
 
     checkUserLogin() {

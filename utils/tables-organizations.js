@@ -86,3 +86,23 @@ export const CATEGORY_CAMPAIGN_DATA_TABLE = [
     title: 'Total Campaigns'
   }
 ]
+
+export const USER_TRASH_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'fullname'
+  },
+
+  {
+    id: 2,
+    title: 'email',
+  },
+  {
+    id: 3,
+    title: 'phone number'
+  },
+  {
+    id: 4,
+    title: 'status'
+  },
+]

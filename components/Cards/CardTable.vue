@@ -14,13 +14,13 @@
           </h3>
         </div>
         <div v-if="!queryParam">
-          <button type="button" @click="
+          <button type="button" @click="total > 0 ?
           $router.push({
             path: `/dashboard/${queryMiddle}/trash`,
             query: {
               type: queryType
             }
-          });
+          }) : null;
           " class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
             <i class="fa-solid fa-trash"></i>
             <span class="sr-only">Notifications</span>
@@ -48,6 +48,8 @@
           @deleted-data="deletedData"
           :types="types"
         />
+
+        <users-user-trash-cell v-if="types === 'user-trash'" :columns="columns" :types="types" @deleted-data="deletedData" @restored-data="restoredData"/>
 
         <campaigns-campaign-data-cell
           v-if="types === 'campaign-data'"
@@ -114,7 +116,8 @@ export default {
   data () {
     return {
       total: 0,
-      queryParam: this.$route.query.type
+      queryParam: this.$route.query.type,
+      api_url: process.env.NUXT_ENV_API_URL
     }
   },
 
@@ -134,12 +137,15 @@ export default {
       this.$emit("activation-user", id);
     },
 
+    restoredData(id) {
+      this.$emit("restored-data", id);
+    },
+
     totalTrash() {
       totalTrash({
-        api_url: process.env.NUXT_ENV_API_URL,
+        api_url: `${this.api_url}/fitur/trashed?type=${this.queryType}`,
         api_key: process.env.NUXT_ENV_APP_TOKEN,
-        token: this.token.token,
-        query: this.queryType
+        token: this.token.token
       })
       .then(({data}) => {
         this.total = this.$_.size(data.data);

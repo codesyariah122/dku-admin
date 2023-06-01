@@ -4,12 +4,12 @@
  * @returns A promise
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
-export const totalTrash = async (props) => {
+export const restoredData = async (props) => {
   try {
     const api_url = props.api_url
     const token = props.token
     const parsed = await fetch(api_url, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
