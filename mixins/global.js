@@ -40,7 +40,6 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "EventNotification",
         (e) => {
-          console.log(e[0].notif)
           if(e[0].type !== 'logout') {
             this.notifs.push(e);
             this.messageNotifs = e[0].notif;
@@ -53,7 +52,6 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "DataManagementEvent",
         (e) => {
-          console.log(e[0].notif)
           this.dataNotifs.push(e[0]);
         }
       );
@@ -63,7 +61,6 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "UserDonationLoginEvent",
         (e) => {
-          console.log(e[0].notif)
           this.userDontaionLoginNotifs.push(e[0])
           this.userDonationLoginMessage = e[0].notif;
         }
@@ -74,7 +71,6 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "UpdateProfileEvent",
         (e) => {
-          console.log(e[0].notif)
           this.updateProfileNotifs.push(e[0]);
         }
       );

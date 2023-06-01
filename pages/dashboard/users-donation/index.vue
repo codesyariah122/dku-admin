@@ -9,6 +9,8 @@
         :columns="items"
         types="user-data"
         :loading="loading"
+        queryType="USER_DONATION"
+        queryMiddle="users-donation"
         @deleted-data="deletedUser"
         @activation-user="activationUser"
       />

@@ -7,6 +7,8 @@
         :headers="headers"
         :columns="items"
         types="user-role"
+        queryType="USER_ROLE"
+        queryMiddle="users-role"
         :usersData="Object.values(this.userData)"
       />
     </div>

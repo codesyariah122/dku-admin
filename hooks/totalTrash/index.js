@@ -4,12 +4,13 @@
  * @returns A promise
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
-export const deleteData = async (props) => {
+export const totalTrash = async (props) => {
   try {
     const api_url = props.api_url
     const token = props.token
-    const parsed = await fetch(api_url, {
-      method: 'DELETE',
+    const query = props.query
+    const parsed = await fetch(`${api_url}/fitur/trashed?type=${query}`, {
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

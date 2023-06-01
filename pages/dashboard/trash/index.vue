@@ -10,7 +10,6 @@
       :loading="loading"
       types="user-data"
       queryType="USER_DATA"
-      queryMiddle="users-data"
       @deleted-data="deletedUser"
       @activation-user="activationUser"
       />
@@ -56,7 +55,7 @@
     },
 
     mounted() {
-      this.getUserData();
+      this.getUserTrash();
       this.startCountdown();
     },
 
@@ -111,7 +110,7 @@
         }, 1000);
       },
 
-      getUserData() {
+      getUserTrash() {
         getData({
           api_url: `${this.api_url}/fitur/user-management`,
           token: this.token.token,
@@ -199,7 +198,7 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
-          this.getUserData();
+          this.getUserTrash();
         }
       },
       dataNotifs() {
@@ -209,13 +208,13 @@
             duration: 5000,
             position: "top-right",
           });
-          this.getUserData();
+          this.getUserTrash();
           this.getTotalUser();
         }
       },
       updateProfileNotifs() {
         if(this.$_.size(this.updateProfileNotifs) > 0) {
-          this.getUserData();
+          this.getUserTrash();
         }
       }
     },

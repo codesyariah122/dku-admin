@@ -4,7 +4,7 @@
     :class="[color === 'light' ? 'bg-white' : 'bg-blueGray-800 text-white']"
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
-      <div class="flex flex-wrap items-center">
+      <div class="flex flex-wrap items-between">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
           <h3
             class="font-semibold text-lg"
@@ -12,6 +12,20 @@
           >
             {{ title }}
           </h3>
+        </div>
+        <div v-if="!queryParam">
+          <button type="button" @click="
+          $router.push({
+            path: `/dashboard/${queryMiddle}/trash`,
+            query: {
+              type: queryType
+            }
+          });
+          " class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+            <i class="fa-solid fa-trash"></i>
+            <span class="sr-only">Notifications</span>
+            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{total}}</div>
+          </button>
         </div>
       </div>
     </div>
@@ -57,6 +71,8 @@
   </div>
 </template>
 <script>
+import { totalTrash } from '~/hooks/index';
+
 export default {
   props: {
     color: {
@@ -84,7 +100,30 @@ export default {
     options: {
       type: String,
       default: ''
+    },
+    queryType: {
+      type: String,
+      default: ''
+    },
+    queryMiddle: {
+      type: String,
+      default: ''
     }
+  },
+
+  data () {
+    return {
+      total: 0,
+      queryParam: this.$route.query.type
+    }
+  },
+
+  created() {
+    this.dataManagementEvent();
+  },
+
+  mounted() {
+    this.totalTrash();
   },
 
   methods: {
@@ -94,6 +133,32 @@ export default {
     activationUser(id) {
       this.$emit("activation-user", id);
     },
+
+    totalTrash() {
+      totalTrash({
+        api_url: process.env.NUXT_ENV_API_URL,
+        api_key: process.env.NUXT_ENV_APP_TOKEN,
+        token: this.token.token,
+        query: this.queryType
+      })
+      .then(({data}) => {
+        this.total = this.$_.size(data.data);
+      })
+      .catch((err) => console.log(err))
+    },
   },
+
+  watch: {
+    dataNotifs() {
+      if (this.$_.size(this.dataNotifs) > 0) {
+        this.$toast.show(this.message, {
+          type: "info",
+          duration: 5000,
+          position: "top-right",
+        });
+        this.totalTrash();
+      }
+    },
+  }
 };
 </script>

@@ -7,6 +7,8 @@
         :headers="headers"
         :columns="items"
         types="campaign-data"
+        queryType="CAMPAIGN_DATA"
+        queryMiddle="campaigns-data"
         @deleted-data="deletedCampaign"
       />
     </div>
