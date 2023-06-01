@@ -87,9 +87,6 @@ export default {
   created() {
     this.checkNewData();
     this.checkUpdateEvent();
-  },
-
-  mounted() {
     this.checkIsLogin();
   },
 
