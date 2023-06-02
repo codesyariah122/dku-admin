@@ -9,15 +9,22 @@
         :columns="items"
         types="user-data"
         :loading="loading"
-        queryType="USER_DONATION"
-        queryMiddle="users-donation"
+        queryType="USER_DATA"
+        queryMiddle="users-data"
         @deleted-data="deletedUser"
         @activation-user="activationUser"
       />
 
-      <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+      <div class="mt-12 mb-1">
+        <div class="flex justify-end items-end">
+          <molecules-pagination :links="links" :paging="paging" @fetch-data="getUserData"/>
+        </div>
+      </div>
 
     </div>
+
+    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+
   </div>
 </template>
 
@@ -28,7 +35,7 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
  import { USER_DATA_TABLE } from "~/utils/tables-organizations";
-import { getData, activateUser } from "~/hooks/index";
+import { getData, activateUser, deleteData } from "~/hooks/index";
 
 
 export default {
@@ -47,6 +54,14 @@ export default {
       headers: [...USER_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
+      links: [],
+      paging: {
+        current: null,
+        from: null,
+        last: null,
+        per_page: null,
+        total: null
+      },
     };
   },
 
@@ -126,39 +141,70 @@ export default {
     },
 
     getUserData() {
+      this.loading = true
       getData({
         api_url: `${this.api_url}/fitur/user-management?role=USER`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
-        .then(({ data }) => {
-          let cells = []
-          data.map((cell) => {
-            // console.log(cell)
-            const prepareCell = {
-              id: cell.id,
-              name: cell.name,
-              email: cell.email,
-              role: cell.role,
-              phone: cell.phone,
-              status: cell.status,
-              last_login: cell.last_login,
-              token: cell.logins.map((data) => data.user_token_login)[0],
-              expires_at: cell.expires_at,
-              is_login: cell.is_login,
-              endTime: new Date(cell.expires_at),
-              countdown: "",
-              username: cell.profiles.map((profile) => profile.username)[0]
-            }
-            cells.push(prepareCell)
-          });
-          this.items = [...cells]
-        })
+      .then((data) => {
+        let cells = []
+        data.data.map((cell) => {
+          const prepareCell = {
+            id: cell.id,
+            name: cell.name,
+            email: cell.email,
+            role: cell.role,
+            phone: cell.phone,
+            status: cell.status,
+            expires_at: cell.expires_at,
+            activation_id: cell.activation_id ? cell.activation_id : null,
+            token: cell.logins.map((data) => data.user_token_login)[0],
+            last_login: cell.last_login,
+            is_login: cell.is_login,
+            endTime: new Date(cell.expires_at),
+            countdown: "",
+            username: cell.profiles.map((profile) => profile.username)[0]
+          }
+          cells.push(prepareCell)
+        });
+        this.items = [...cells]
+        this.links = data.meta.links
+        this.paging.current = data.meta.current_page
+        this.paging.from = data.meta.from
+        this.paging.last = data.meta.last_page
+        this.paging.per_page = data.meta.per_page
+        this.paging.total = data.meta.total
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+        }, 500)
+      })
         .catch((err) => console.log(err));
     },
 
     deletedUser(id) {
-      console.log(id);
+      this.loading = true
+      this.options = 'delete-user';
+      deleteData({
+        api_url: `${this.api_url}/fitur/user-management/${id}`,
+        token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN
+      })
+      .then(({data}) => {
+        if(data.deleted_at != null) {
+          this.success = true;
+          this.message_success = this.dataNotifs[0].notif
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.options = ''
+        }, 1000)
+      })
+      .catch((err) => console.log(err))
     },
 
     activationUser(id) {

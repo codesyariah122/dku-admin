@@ -30,6 +30,7 @@ export default {
 
   data() {
     return {
+      loading: null,
       notifs: [],
       dataNotifs: [],
       message: '',
@@ -73,6 +74,7 @@ export default {
     },
 
     getCategoryCampaignData() {
+      this.loading = true;
       getData({
         api_url: `${this.api_url}/fitur/category-campaigns-management`,
         token: this.token.token,
@@ -89,6 +91,11 @@ export default {
             cells.push(prepareCell)
           });
           this.items = [...cells]
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.loading = false
+          }, 500)
         })
         .catch((err) => console.log(err));
     },
