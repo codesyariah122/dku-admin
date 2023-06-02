@@ -10,6 +10,7 @@
         queryType="USER_ROLE"
         queryMiddle="users-role"
         :usersData="Object.values(this.userData)"
+        :loading="loading"
       />
     </div>
   </div>
@@ -38,7 +39,8 @@ export default {
       items: [],
       headers: [...USER_ROLE_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
-      message: ""
+      message: "",
+      loading: null
     };
   },
 
@@ -58,6 +60,7 @@ export default {
     },
 
     getUserRole() {
+      this.loading = true
       getData({
         api_url: `${this.api_url}/fitur/roles-management`,
         token: this.token.token,
@@ -73,6 +76,11 @@ export default {
             });
           });
           this.items = [...cells];
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.loading = false
+          }, 1500)
         })
         .catch((err) => console.log(err));
     },

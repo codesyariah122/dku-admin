@@ -65,8 +65,9 @@
           @activation-user="activationUser"
           :types="types"
         />
-
-        <molecules-row-loading :loading="loading" :options="options" />
+        <tr v-if="loading">
+          <molecules-row-loading :loading="loading" :options="options" />
+        </tr>
 
       </table>
     </div>
@@ -97,7 +98,7 @@ export default {
     },
     loading: {
       type: Boolean,
-      default: false
+      default: null
     },
     options: {
       type: String,

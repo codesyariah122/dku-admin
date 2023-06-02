@@ -10,7 +10,7 @@
     <tr v-for="column in columns" :key="column.id">
       <th
         v-if="column.title"
-        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+        class="border-t-0 px-6  border-l-0 border-r-0 text-xs w-4 p-4 text-left" style="width: 10px;"
       >
         {{ column.title }}
       </th>

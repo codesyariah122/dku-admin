@@ -15,6 +15,12 @@
       @activation-user="activationUser"
       />
 
+      <div class="mt-12 mb-12">
+        <div class="flex justify-end items-end">
+          <molecules-pagination :links="links" :paging="paging" @fetch-data="getUserData"/>
+        </div>
+      </div>
+
     </div>
 
     <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
@@ -45,7 +51,15 @@
         api_url: process.env.NUXT_ENV_API_URL,
         items: [],
         notifs: [],
-        activation_id: null
+        activation_id: null,
+        links: [],
+        paging: {
+          current: null,
+          from: null,
+          last: null,
+          per_page: null,
+          total: null
+        },
       };
     },
 
@@ -111,15 +125,15 @@
         }, 1000);
       },
 
-      getUserData() {
+      getUserData(loading, loadingDelete, page=1, name='') {
         getData({
-          api_url: `${this.api_url}/fitur/user-management`,
+          api_url: `${this.api_url}/fitur/user-management?page=${page}&name=${name}`,
           token: this.token.token,
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
-        .then(({ data }) => {
+        .then((data) => {
           let cells = []
-          data.map((cell) => {
+          data.data.map((cell) => {
             const prepareCell = {
               id: cell.id,
               name: cell.name,
@@ -139,6 +153,12 @@
             cells.push(prepareCell)
           });
           this.items = [...cells]
+          this.links = data.meta.links
+          this.paging.current = data.meta.current_page
+          this.paging.from = data.meta.from
+          this.paging.last = data.meta.last_page
+          this.paging.per_page = data.meta.per_page
+          this.paging.total = data.meta.total
         })
         .catch((err) => console.log(err));
       },
