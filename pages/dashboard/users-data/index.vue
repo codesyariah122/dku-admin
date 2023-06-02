@@ -22,9 +22,7 @@
       </div>
 
     </div>
-
     <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
-
   </div>
 </template>
 
@@ -126,7 +124,6 @@
       },
 
       getUserData(loading, loadingDelete, page=1, name='') {
-        this.loading = true;
         getData({
           api_url: `${this.api_url}/fitur/user-management?page=${page}&name=${name}`,
           token: this.token.token,
@@ -161,11 +158,7 @@
           this.paging.per_page = data.meta.per_page
           this.paging.total = data.meta.total
         })
-        .finally(() => {
-          setTimeout(() => {
-            this.loading = false
-          }, 500)
-        })
+        
         .catch((err) => console.log(err));
       },
 

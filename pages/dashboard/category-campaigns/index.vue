@@ -74,30 +74,25 @@ export default {
     },
 
     getCategoryCampaignData() {
-      this.loading = true;
       getData({
         api_url: `${this.api_url}/fitur/category-campaigns-management`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
-        .then(({ data }) => {
-          let cells = []
-          data.data.map((cell) => {
-            const prepareCell = {
-              id: cell.id,
-              title: cell.name,
-              campaigns: this.$_.size(cell.campaigns)
-            }
-            cells.push(prepareCell)
-          });
-          this.items = [...cells]
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.loading = false
-          }, 500)
-        })
-        .catch((err) => console.log(err));
+      .then(({ data }) => {
+        let cells = []
+        data.data.map((cell) => {
+          const prepareCell = {
+            id: cell.id,
+            title: cell.name,
+            campaigns: this.$_.size(cell.campaigns)
+          }
+          cells.push(prepareCell)
+        });
+        this.items = [...cells]
+      })
+      
+      .catch((err) => console.log(err));
     },
 
     deletedCampaign(id) {

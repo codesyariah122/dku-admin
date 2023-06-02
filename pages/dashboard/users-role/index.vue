@@ -10,7 +10,6 @@
         queryType="USER_ROLE"
         queryMiddle="users-role"
         :usersData="Object.values(this.userData)"
-        :loading="loading"
       />
     </div>
   </div>
@@ -60,7 +59,6 @@ export default {
     },
 
     getUserRole() {
-      this.loading = true
       getData({
         api_url: `${this.api_url}/fitur/roles-management`,
         token: this.token.token,
@@ -76,11 +74,6 @@ export default {
             });
           });
           this.items = [...cells];
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.loading = false
-          }, 500)
         })
         .catch((err) => console.log(err));
     },

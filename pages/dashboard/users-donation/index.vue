@@ -141,7 +141,6 @@ export default {
     },
 
     getUserData() {
-      this.loading = true
       getData({
         api_url: `${this.api_url}/fitur/user-management?role=USER`,
         token: this.token.token,
@@ -176,12 +175,7 @@ export default {
         this.paging.per_page = data.meta.per_page
         this.paging.total = data.meta.total
       })
-      .finally(() => {
-        setTimeout(() => {
-          this.loading = false
-        }, 500)
-      })
-        .catch((err) => console.log(err));
+      .catch((err) => console.log(err));
     },
 
     deletedUser(id) {
