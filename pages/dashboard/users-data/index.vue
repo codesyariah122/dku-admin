@@ -135,6 +135,7 @@
             const prepareCell = {
               id: cell.id,
               name: cell.name,
+              photo: cell.profiles.map(profile => profile.photo ? profile.photo : profile.g_avatar)[0],
               email: cell.email,
               role: cell.role,
               phone: cell.phone,

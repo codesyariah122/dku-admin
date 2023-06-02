@@ -11,6 +11,12 @@
       <td
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
+        <img v-if="column.photo" :src="`${img_url}/${column.photo}`" class="rounded-full w-10 h-10" />
+      </td>
+
+      <td
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
         {{ column.username }}
       </td>
 
@@ -96,6 +102,7 @@ export default {
     return {
       userData: [],
       username: "",
+      img_url: process.env.NUXT_ENV_ASSET_PUBLIC_URL
     }
   },
 
