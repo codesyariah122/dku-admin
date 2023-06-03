@@ -19,7 +19,7 @@
   import { getData, activateUser, deleteData } from "~/hooks/index";
 
   export default {
-    name: "users-data-add",
+    name: "campaigns-data-add",
     layout: "admin",
 
     data() {
