@@ -1,13 +1,11 @@
 <template>
-  <div class="flex flex-wrap mt-4">
-    <div class="w-full mb-12 px-4">
-
-      <h1>
-        Add new user
-      </h1>
-
+  <div class="flex flex-wrap">
+    <div class="w-full lg:w-8/12 px-4">
+      <cards-card-settings />
     </div>
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+    <div class="w-full lg:w-4/12 px-4">
+      <cards-card-profile />
+    </div>
   </div>
 </template>
 
@@ -35,14 +33,6 @@
         items: [],
         notifs: [],
         activation_id: null,
-        links: [],
-        paging: {
-          current: null,
-          from: null,
-          last: null,
-          per_page: null,
-          total: null
-        },
       };
     },
 
@@ -54,20 +44,9 @@
 
     mounted() {
       this.getUserData();
-      this.startCountdown();
     },
 
     methods: {
-      timerData(item, timeLeft) {
-        const dataTime = {
-          seconds: Math.floor((timeLeft / 1000) % 60),
-          minutes: Math.floor((timeLeft / 1000 / 60) % 60),
-          hours: Math.floor((timeLeft / (1000 * 60 * 60)) % 24),
-          days: Math.floor(timeLeft / (1000 * 60 * 60 * 24))
-        }
-        return dataTime;
-      },
-
       checkNewData() {
         window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
           "EventNotification",
@@ -76,36 +55,6 @@
             this.notifs.push(e);
             this.messageNotifs = e[0].notif;        }
             );
-      },
-
-      startCountdown() {
-        setInterval(() => {
-          this.items.forEach((item) => {
-            const currentTime = new Date().getTime()
-            const timeLeft = item.endTime - currentTime
-            let {
-              seconds,
-              minutes,
-              hours,
-              days
-            } = this.timerData(item, timeLeft)
-
-
-            if (item.endTime !== null) {
-              item.countdown = `${days > 0 ? days + " hari, " : ""} ${
-                hours > 0 ? hours + " jam, " : ""
-              } ${minutes > 0 ? minutes + " menit, " : ""} ${
-                seconds > 0 ? seconds + " detik" : ""
-              }`;
-            } else {
-              item.countdown = null;
-            }
-
-            if (timeLeft < 0 && item.endTime !== null) {
-              item.countdown = "Sesi login berakhir!";
-            }
-          });
-        }, 1000);
       },
 
       getUserData(loading, loadingDelete, page=1, name='') {
@@ -136,12 +85,6 @@
             cells.push(prepareCell)
           });
           this.items = [...cells]
-          this.links = data.meta.links
-          this.paging.current = data.meta.current_page
-          this.paging.from = data.meta.from
-          this.paging.last = data.meta.last_page
-          this.paging.per_page = data.meta.per_page
-          this.paging.total = data.meta.total
         })
         
         .catch((err) => console.log(err));
@@ -168,35 +111,6 @@
           }, 1000)
         })
         .catch((err) => console.log(err))
-      },
-
-      activationUser(id) {
-        this.loading = true
-        this.options = 'activation-user';
-        activateUser({
-          api_url: `${this.api_url}/auth/activation/${id}`,
-          token: this.token.token,
-          api_key: process.env.NUXT_ENV_APP_TOKEN,
-          data: this.activation_id ? this.activation_id : null
-        })
-        .then(({data}) => {
-          if(data.status === 'ACTIVE') {
-            this.success = true;
-            this.message_success = this.dataNotifs[0].notif
-          }
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.loading = false
-            this.options = ''
-          }, 1000)
-        })
-        .catch((err) => console.error(err))
-      },
-
-      closeSuccessAlert() {
-        this.success = false
-        this.message = ''
       }
     },
 
