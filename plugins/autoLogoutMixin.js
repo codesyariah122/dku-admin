@@ -1,3 +1,10 @@
+/**
+ *
+ * @param  props
+ * @returns Inject
+ * @author Puji Ermanto <puji.ermanto@gmail.com>
+ */
+
 export default {
   data() {
     return {

@@ -235,6 +235,7 @@ export default {
   watch: {
     notifs() {
       if (this.$_.size(this.notifs) > 0) {
+        this.getTotalUser();
         this.getUserData();
       }
     },
@@ -245,11 +246,13 @@ export default {
           duration: 5000,
           position: "top-right",
         });
+        this.getTotalUser();
         this.getUserData();
       }
     },
     updateProfileNotifs() {
       if(this.$_.size(this.updateProfileNotifs) > 0) {
+        this.getTotalUser();
         this.getUserData();
       }
     }

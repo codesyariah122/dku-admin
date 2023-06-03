@@ -27,6 +27,13 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
+       {{ $format(column.donation_target) }}
+      </td>
+
+      <td
+
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
        {{ column.is_headline }}
       </td>
 
@@ -98,7 +105,7 @@ export default {
   },
 
   mounted() {
-    this.checkUserLogin()
+    this.checkUserLogin();
   },
 
   methods: {

@@ -1,3 +1,9 @@
+/**
+ *
+ * @param  props
+ * @returns Inject
+ * @author Puji Ermanto <puji.ermanto@gmail.com>
+ */
 
 const FormatCurrency = (number) => {
   // console.log(number)

@@ -2,16 +2,14 @@
  *
  * @param  props
  * @returns A promise
- * @author Puji Ermanto <puuji.ermanto@gmail.com>
+ * @author Puji Ermanto <puji.ermanto@gmail.com>
  */
-export const addData = async (props) => {
+export const addData = async (props, data) => {
   try {
     const api_url = props.api_url
     const token = props.token
-    const data = JSON.stringify(props.data)
     const formData = new FormData();
-    console.log(props.api_key)
-    
+
     const parsed = await fetch(api_url, {
       method: 'POST',
       headers: {
@@ -22,17 +20,10 @@ export const addData = async (props) => {
       },
       body: data
     })
-    if (!parsed.ok) {
-      const errorCode = parsed.status
-      const error = await parsed.json();
-      return {
-        code: errorCode,
-        data: error
-      };
-      throw new Error('Request failed with status ' + parsed.status);
-    }
-    const result = await parsed.json()
+
+    const result = !parsed.ok ? parsed : await parsed.json()
     return result
+
   } catch (error) {
     console.error('Error:', error);
   }

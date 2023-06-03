@@ -2,7 +2,7 @@
  *
  * @param  props
  * @returns A promise
- * @author Puji Ermanto <puuji.ermanto@gmail.com>
+ * @author Puji Ermanto <puji.ermanto@gmail.com>
  */
 export const deleteData = async (props) => {
   try {
@@ -17,7 +17,7 @@ export const deleteData = async (props) => {
         'Dku-Api-Key': props.api_key
       }
     })
-    const result = await parsed.json()
+    const result = !parsed.ok ? parsed : await parsed.json()
     return result
   } catch (err) {
     console.error(err)
