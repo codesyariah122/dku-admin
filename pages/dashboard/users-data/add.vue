@@ -1,11 +1,17 @@
 <template>
   <div class="flex flex-wrap">
+
     <div class="w-full lg:w-8/12 px-4">
-      <cards-card-settings />
+      <cards-card-settings 
+        pageType="userData"
+        title="Add New User"
+      />
     </div>
+
     <div class="w-full lg:w-4/12 px-4">
       <cards-card-profile />
     </div>
+
   </div>
 </template>
 

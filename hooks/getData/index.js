@@ -20,6 +20,6 @@ export const getData = async (props) => {
     const result = await parsed.json()
     return result
   } catch (err) {
-    console.error(err)
+    console.log(err)
   }
 };
