@@ -1,15 +1,20 @@
 <template>
   <div class="flex flex-wrap">
 
-    <div class="w-full lg:w-8/12 px-4">
+    <div :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-settings 
         pageType="userData"
         title="Add New User"
+        methodType="add"
       />
     </div>
 
     <div class="w-full lg:w-4/12 px-4">
-      <cards-card-profile />
+      <cards-card-profile 
+        pageType="userData"
+        title="Add New User"
+        methodType="add"
+      />
     </div>
 
   </div>
@@ -39,6 +44,7 @@
         items: [],
         notifs: [],
         activation_id: null,
+        routeName: this.$route.name.split('-').pop()
       };
     },
 
@@ -50,6 +56,7 @@
 
     mounted() {
       this.getUserData();
+      console.log(this.routeName)
     },
 
     methods: {

@@ -1,5 +1,5 @@
 <template>
-  <div
+  <div v-if="methodType !== 'add'"
     class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16"
   >
     <div class="px-6">
@@ -85,6 +85,20 @@
 import team2 from "@/assets/img/team-2-800x800.jpg";
 
 export default {
+  props: {
+    pageType: {
+      type: String,
+      default: null
+    },
+    methodType: {
+      type: String,
+      default: null
+    },
+    title: {
+      type: String,
+      default: null
+    }
+  },
   data() {
     return {
       team2,

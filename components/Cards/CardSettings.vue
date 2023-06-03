@@ -28,6 +28,10 @@
         type: String,
         default: null
       },
+      methodType: {
+        type: String,
+        default: null
+      },
       title: {
         type: String,
         default: null
@@ -35,12 +39,10 @@
     },
 
     mounted() {
-      console.log(this.title)
     },
 
     methods: {
       backTo() {
-        console.log("ANJKING")
         this.$router.go(-1)
       }
     }
