@@ -38,9 +38,6 @@
       }
     },
 
-    mounted() {
-    },
-
     methods: {
       backTo() {
         this.$router.go(-1)

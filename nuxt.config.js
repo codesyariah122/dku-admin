@@ -134,7 +134,8 @@ export default {
     { src: "~/plugins/lodash", ssr: false },
     { src: '~/plugins/truncate-html', ssr: false },
     { src: '~/plugins/he', ssr: false },
-    { src: '~/plugins/autoLogoutMixin.js', ssr: false }
+    { src: '~/plugins/autoLogoutMixin.js', ssr: false },
+    { src: "~/plugins/tel-input", ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

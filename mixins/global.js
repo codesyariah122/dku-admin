@@ -10,10 +10,12 @@ export default {
       expires_at: null,
       api_url: process.env.NUXT_ENV_API_URL,
       notifs: [],
+      newViewersNotifs: [],
       dataNotifs: [],
       updateProfileNotifs: [],
       userDontaionLoginNotifs: [],
       messageNotifs: null,
+      messageNotif: "",
       userDonationLoginMessage: "",
       userEmail: "",
       emailForbaiden: "",
@@ -48,10 +50,21 @@ export default {
       );
     },
 
+    checkNewViewer() {
+      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+        "CampaignViewerEvent",
+        (e) => {
+          this.messageNotif = e[0].notif;
+          this.newViewersNotifs.push(e[0]);
+        }
+      );
+    },
+
     dataManagementEvent() {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "DataManagementEvent",
         (e) => {
+          this.messageNotif = e[0].notif
           this.dataNotifs.push(e[0]);
         }
       );

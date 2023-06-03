@@ -66,11 +66,11 @@ export default {
       })
         .then(({ data }) => {
           let cells = [];
-          data.data.map((cell) => {
+          data?.data?.map((cell) => {
             cells.push({
-              id: cell.id,
-              name: this.$role(cell.name),
-              users: cell.users.map((user) => user.name),
+              id: cell?.id,
+              name: this.$role(cell?.name),
+              users: cell?.users?.map((user) => user?.name),
             });
           });
           this.items = [...cells];

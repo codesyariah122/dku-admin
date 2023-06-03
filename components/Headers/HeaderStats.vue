@@ -81,11 +81,8 @@ export default {
 
   data() {
     return {
-      notifs: [],
-      newViewersNotifs: [],
       api_url: process.env.NUXT_ENV_API_URL,
       dataPercent: {},
-      messageNotif: "",
     };
   },
 
@@ -100,26 +97,6 @@ export default {
   },
 
   methods: {
-    checkNewData() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "EventNotification",
-        (e) => {
-          this.messageNotif = e[0].notif;
-          this.notifs.push(e[0]);
-        }
-      );
-    },
-
-    checkNewViewer() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "CampaignViewerEvent",
-        (e) => {
-          this.messageNotif = e[0].notif;
-          this.newViewersNotifs.push(e[0]);
-        }
-      );
-    },
-
     getTotalUser() {
       this.$store.dispatch("totals/totalDataQuery", {
         api_url: this.api_url,

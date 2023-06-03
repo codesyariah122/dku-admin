@@ -131,33 +131,33 @@
         })
         .then((data) => {
           let cells = []
-          data.data.map((cell) => {
+          data?.data?.map((cell) => {
             const prepareCell = {
-              id: cell.id,
-              name: cell.name,
-              photo: cell.profiles.map(profile => profile.photo ? profile.photo : profile.g_avatar)[0],
-              email: cell.email,
-              role: cell.role,
-              phone: cell.phone,
-              status: cell.status,
-              expires_at: cell.expires_at,
-              activation_id: cell.activation_id ? cell.activation_id : null,
-              token: cell.logins.map((data) => data.user_token_login)[0],
-              last_login: cell.last_login,
-              is_login: cell.is_login,
-              endTime: new Date(cell.expires_at),
+              id: cell?.id,
+              name: cell?.name,
+              photo: cell.profiles.map(profile => profile?.photo ? profile?.photo : profile?.g_avatar)[0],
+              email: cell?.email,
+              role: cell?.role,
+              phone: cell?.phone,
+              status: cell?.status,
+              expires_at: cell?.expires_at,
+              activation_id: cell?.activation_id ? cell?.activation_id : null,
+              token: cell?.logins?.map((data) => data.user_token_login)[0],
+              last_login: cell?.last_login,
+              is_login: cell?.is_login,
+              endTime: new Date(cell?.expires_at),
               countdown: "",
-              username: cell.profiles.map((profile) => profile.username)[0]
+              username: cell?.profiles?.map((profile) => profile?.username)[0]
             }
             cells.push(prepareCell)
           });
           this.items = [...cells]
-          this.links = data.meta.links
-          this.paging.current = data.meta.current_page
-          this.paging.from = data.meta.from
-          this.paging.last = data.meta.last_page
-          this.paging.per_page = data.meta.per_page
-          this.paging.total = data.meta.total
+          this.links = data?.meta?.links
+          this.paging.current = data?.meta?.current_page
+          this.paging.from = data?.meta?.from
+          this.paging.last = data?.meta?.last_page
+          this.paging.per_page = data?.meta?.per_page
+          this.paging.total = data?.meta?.total
         })
         
         .catch((err) => console.log(err));
@@ -224,7 +224,7 @@
       },
       dataNotifs() {
         if (this.$_.size(this.dataNotifs) > 0) {
-          this.$toast.show(this.message, {
+          this.$toast.show(this.messageNotif, {
             type: "info",
             duration: 5000,
             position: "top-right",

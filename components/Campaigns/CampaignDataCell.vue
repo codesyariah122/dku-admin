@@ -19,7 +19,8 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-       <img :src="`${image_url}/${column.banner}`" class="w-42 h-24"/>
+       <img v-if="column.banner !== null" :src="`${image_url}/${column.banner}`" class="w-42 h-24"/>
+       <img v-else :src="require('~/assets/img/default.jpg')" class="w-42 h-24">
       </td>
 
       <td

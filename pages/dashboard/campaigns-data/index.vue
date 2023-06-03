@@ -11,6 +11,12 @@
         queryMiddle="campaigns-data"
         @deleted-data="deletedCampaign"
       />
+
+      <div class="mt-12 mb-12">
+        <div class="flex justify-end items-end">
+          <molecules-pagination :links="links" :paging="paging" @fetch-data="getCampaignData"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +42,14 @@ export default {
       headers: [...CAMPAIGN_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
+      links: [],
+      paging: {
+        current: null,
+        from: null,
+        last: null,
+        per_page: null,
+        total: null
+      },
     };
   },
 
@@ -72,28 +86,35 @@ export default {
       );
     },
 
-    getCampaignData() {
+    getCampaignData(loading, loadingDelete, page=1) {
       getData({
-        api_url: `${this.api_url}/fitur/campaign-management`,
+        api_url: `${this.api_url}/fitur/campaign-management?page=${page}`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
+
         .then(({ data }) => {
           let cells = []
-          data.data.map((cell) => {
+          data?.data?.map((cell) => {
             const prepareCell = {
-              id: cell.id,
-              title: cell.title,
-              banner: cell.banner,
-              is_headline: cell.is_headline,
-              publish: cell.publish,
-              end_campaign: cell.end_campaign,
-              author: cell.author,
-              limit: cell.without_limit
+              id: cell?.id,
+              title: cell?.title,
+              banner: cell?.banner,
+              is_headline: cell?.is_headline,
+              publish: cell?.publish,
+              end_campaign: cell?.end_campaign,
+              author: cell?.author,
+              limit: cell?.without_limit
             }
             cells.push(prepareCell)
           });
           this.items = [...cells]
+          this.links = data?.links
+          this.paging.current = data?.current_page
+          this.paging.from = data?.from
+          this.paging.last = data?.last_page
+          this.paging.per_page = data?.per_page
+          this.paging.total = data?.total
         })
         .catch((err) => console.log(err));
     },
