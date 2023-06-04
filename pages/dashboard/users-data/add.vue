@@ -24,7 +24,7 @@
 /**
  * @param {string}
  * @returns {string}
- * @author Puji Ermanto <puuji.ermanto@gmail.com>
+ * @author Puji Ermanto <puji.ermanto@gmail.com>
  */
   export default {
     name: "users-data-add",

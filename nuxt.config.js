@@ -135,7 +135,8 @@ export default {
     { src: '~/plugins/truncate-html', ssr: false },
     { src: '~/plugins/he', ssr: false },
     { src: '~/plugins/autoLogoutMixin.js', ssr: false },
-    { src: "~/plugins/tel-input", ssr: false }
+    { src: "~/plugins/tel-input", ssr: false },
+    { src: "~/plugins/vue-tiny-mce", ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

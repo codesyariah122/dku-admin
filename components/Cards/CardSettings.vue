@@ -15,7 +15,11 @@
     </div>
 
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+      
       <users-form-add v-if="pageType === 'userData'" />
+
+      <campaigns-form-add v-if="pageType === 'campaignData'" />
+
     </div>
 
   </div>

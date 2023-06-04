@@ -127,7 +127,7 @@
 						</svg>
 						Loading...
 					</div>
-					<span v-else>Add User</span>
+					<span v-else><i class="fa-solid fa-plus"></i> Add User</span>
 				</button>
 			</div>
 		</div>
