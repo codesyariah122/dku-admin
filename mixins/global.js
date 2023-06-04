@@ -187,41 +187,6 @@ export default {
       });
     },
 
-    tableCells(props) {
-      let cells = [];
-      switch (props.type) {
-        case "user-data":
-          props.cells.map((cell) => {
-            const prepareCell = {
-              name: cell.name,
-              email: cell.email,
-              phone: cell.phone,
-              status: cell.status,
-              last_login: cell.last_login,
-              expires_at: cell.expires_at,
-              is_login: cell.is_login,
-              countdown: cell.countdown,
-              endTime: cell.endTime
-            };
-            cells.push(prepareCell);
-          });
-          break;
-
-        case "user-role":
-          props.cells.map((cell) => {
-            const prepareCell = {
-              name: this.$role(cell.name),
-              users: cell.users.map(user => user.name)
-            };
-            cells.push(prepareCell);
-          });
-          break;
-        default:
-          cells.push([]);
-      }
-      this.cells = [...cells];
-    },
-
     checkUserLogin() {
       if (this?.token !== null) {
         const endPoint = `/fitur/user-profile`;

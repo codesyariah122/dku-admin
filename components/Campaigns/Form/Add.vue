@@ -11,9 +11,9 @@
 
 
 <template>
-	<form @submit.prevent="AddNewUser" enctype="multipart/form-data">
+	<form @submit.prevent="addNewCampaign" enctype="multipart/form-data">
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-			New user data
+			New campaign data
 		</h6>
 
 		<div class="flex flex-wrap">
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 
-			<div class="w-full lg:w-6/12 px-4 sm:py-6">
+			<div class="w-full lg:w-6/12 px-4">
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="slug">Slug</label>
 
@@ -48,7 +48,7 @@
 				</div>
 			</div>
 
-			<div class="w-full lg:w-6/12 px-4 py-6">
+			<div class="w-full lg:w-12/12 px-4 py-6">
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="description">Description</label>
 					<tinymce
@@ -71,8 +71,7 @@
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="phone">Donation Target</label>
 
-					<input @change="changeDonationTarget($event)" type="text" name="name" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-					placeholder="your fullname" v-model="input.donation_target"/>
+					<input @change="changeDonationTarget($event)" type="text" name="name" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="1000000" v-model="donation_currency"/>
 				</div>
 			</div>
 
@@ -81,8 +80,8 @@
 					<label for="status" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						Is Headline
 					</label>
-					<select @change="changeStatus($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected>Choose a is headline</option>
+					<select @change="changeIsHeadline($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+						<option selected value="">Choose a is headline</option>
 						<option value="Y">
 							Yes
 						</option>
@@ -102,10 +101,60 @@
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">				
 					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+						Publish Campaign
+					</label>
+					<select @change="changePublish($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+						<option selected value="">Choose a publish</option>
+						<option value="Y">
+							Yes
+						</option>
+						<option value="N">
+							No
+						</option>
+					</select>
+				</div>
+				<div v-if="validations.publish" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+					<i class="fa-solid fa-circle-info"></i>
+					<div class="px-2">
+						{{validations.publish[0]}}
+					</div>
+				</div>
+			</div>
+
+			<div class="w-full lg:w-6/12 px-4 py-6">
+				<div class="relative">				
+					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+						End Campaign
+					</label>
+					<input id="date" type="date" class="px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" v-model="input.end_campaign">
+				</div>
+			</div>
+
+			<div class="w-full lg:w-6/12 px-4 py-6">
+				<div class="relative">
+					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="created_by">Created By</label>
+
+					<input type="text" name="created_by" id="created_by" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+					placeholder="campaign-title-slug" v-model="userData.name" disabled />`
+				</div>
+			</div>
+
+			<div class="w-full lg:w-6/12 px-4 py-6">
+				<div class="relative">
+					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="author_email">Author Email</label>
+
+					<input type="text" name="author_email" id="author_email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+					placeholder="campaign-title-slug" v-model="userData.email" disabled />
+				</div>
+			</div>
+
+			<div class="w-full lg:w-6/12 px-4 py-6">
+				<div class="relative">				
+					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						Campaign Category
 					</label>
-					<select @change="changeRoles($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected>Choose a campaign category</option>
+					<select @change="changeCategory($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+						<option selected value="">Choose a campaign category</option>
 						<option v-for="category in categories" :key="category.id" :value="category.id">
 							{{category.name}}
 						</option>
@@ -115,6 +164,29 @@
 					<i class="fa-solid fa-circle-info"></i>
 					<div class="px-2">
 						{{validations.category_campaign[0]}}
+					</div>
+				</div>
+			</div>
+
+			<div class="w-full lg:w-6/12 px-4 py-6">
+				<div class="relative">				
+					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+						Limit
+					</label>
+					<select @change="changeLimit($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+						<option selected value="">Choose a limit</option>
+						<option value="Y">
+							Yes
+						</option>
+						<option value="N">
+							No
+						</option>
+					</select>
+				</div>
+				<div v-if="validations.publish" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+					<i class="fa-solid fa-circle-info"></i>
+					<div class="px-2">
+						{{validations.publish[0]}}
 					</div>
 				</div>
 			</div>
@@ -138,6 +210,7 @@
 						@dragleave="handleDragLeave"
 						@drop="handleDrop"
 						>
+						<h2 class="mb-4 text-sm text-gray-500 dark:text-gray-400">Upload Banner Here !</h2>
 						<i class="fa-solid fa-cloud-arrow-up text-5xl text-gray-500"></i>
 						<p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
 					</div>
@@ -165,6 +238,7 @@
 			</button>
 		</div>
 	</div>
+
 	<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 </form>
 </template>
@@ -183,6 +257,8 @@
 				categories: [],
 				error: null,
 				input: {},
+				banner: [],
+				donation_currency: null,
 				previewUrl: '',
 				isDragging: null,
 				validations: [],
@@ -202,21 +278,47 @@
 		},
 
 		mounted() {
-			this.getRoleLists();
+			this.getCategoryCampaignData();
+			this.checkUserLogin();
 		},
 
 		methods: {
 			changeSlug(e) {
-				const title = e.target.value
-				this.input.slug = slugify(title, {
-					lower: true,
-					strict: true,
-					trim: true
-				});
+				if(e.target.value) {					
+					const title = e.target.value
+					this.input.slug = slugify(title, {
+						lower: true,
+						strict: true,
+						trim: true
+					});
+				} else {
+					this.input.slug = ''
+				}
 			},
 
 			changeDonationTarget(e) {
-				this.input.donation_target = this.$format(e.target.value)
+				this.donation_currency = this.$format(e.target.value);
+				this.input.donation_target = e.target.value;
+			},
+
+			changeCategory(e) {
+				this.validations.role = '';
+				this.input.category_campaign = e.target.value;
+			},
+
+			changePublish(e) {
+				this.validations.publish = '';
+				this.input.publish = e.target.value;
+			},
+
+			changeLimit(e) {
+				this.validations.publish = '';
+				this.input.limit = e.target.value;
+			},
+
+			changeIsHeadline(e) {
+				this.validations.publish = ''
+				this.input.is_headline = e.target.value;
 			},
 
 			handleDragOver(event) {
@@ -232,15 +334,30 @@
 
 				const files = event.dataTransfer.files;
 				this.uploadFiles(files);
-				console.log(files);
+				// this.getFileNames(files);
 			},
 
 			handleFileInput(event) {
 				const files = event.target.files;
 				this.uploadFiles(files);
+				// this.getFileNames(files);
 			},
 
+			// getFileNames(fileList) {
+			// 	const fileNames = [];
+
+			// 	for (let i = 0; i < fileList.length; i++) {
+			// 		const file = fileList.item(i);
+			// 		fileNames.push(file.name);
+			// 	}
+
+			// 	console.log(fileNames[0]);
+
+			// 	this.input.banner = fileNames[0];
+			// },
+
 			uploadFiles(files) {
+				this.input.banner = files[0]
 				const fileInput = this.$refs.fileInput;
 
 				if (fileInput.files && fileInput.files.length > 0) {
@@ -253,6 +370,7 @@
 					};
 
 					reader.readAsDataURL(file);
+
 				} else {
 					event.preventDefault();
 					const file = files[0];
@@ -264,11 +382,12 @@
 					};
 
 					reader.readAsDataURL(file);
+
 				}
 			},
 
 			removePreview() {
-				this.previewUrl = ''
+				this.previewUrl = '';
 			},
 
 			closeSuccessAlert() {
@@ -276,7 +395,7 @@
 				this.message = '';
 			},
 
-			getRoleLists() {
+			getCategoryCampaignData() {
 				getData({
 					api_url: `${this.api_url}/fitur/category-campaigns-management`,
 					token: this.token.token,
@@ -288,26 +407,52 @@
 				.catch((err) => console.log(err))
 			},
 
-			AddNewUser() {
+			addNewCampaign() {
 				this.loading = true
+
 				const postData = {
-					name: this.input.name,
-					email: this.input.email,
-					password: this.input.password,
-					phone: this.input.phone,
-					role: this.input.role,
-					status: this.input.status
+					title: this.input.title,
+					slug: this.input.slug,
+					description: this.input.description,
+					donation_target: parseInt(this.input.donation_target),
+					is_headline: this.input.is_headline,
+					publish: this.input.publish,
+					end_campaign: this.input.end_campaign,
+					without_limit: this.input.limit,
+					created_by: this.userData.name,
+					author: this.userData.name,
+					author_email: this.userData.email,
+					category_campaign: this.input.category_campaign
 				}
-				const endPoint = `/fitur/user-management`;
+				
+				const endPoint = `/fitur/campaign-management`;
 				const config = {
 					headers: {
 						Accept: "application/json",
+						"Content-Type": "multipart/form-data"
 					},
 				};
+
+				let formData = new FormData();
+				formData.append('title', postData.title);
+				formData.append('slug', postData.slug);
+				formData.append('description', postData.description);
+				formData.append('donation_target', postData.donation_target);
+				formData.append('is_headline', postData.is_headline);
+				formData.append('banner', this.input.banner);
+				formData.append('publish', postData.publish);
+				formData.append('end_campaign', postData.end_campaign);
+				formData.append('without_limit', postData.without_limit);
+				formData.append('created_by', postData.created_by);
+				formData.append('author', postData.author);
+				formData.append('author_email', postData.author_email);
+				formData.append('category_campaign', postData.category_campaign);
+
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
-				this.$api.post(endPoint, postData)
+				this.$api.post(endPoint, formData, config)
 				.then(({data}) => {
+					console.log(data)
 					if(data.success) {
 						this.success = true;
 						this.message_success = this.messageNotif;
@@ -316,24 +461,17 @@
 				.finally(() => {
 					setTimeout(() => {
 						this.loading = false;
-						this.input = {}
-						this.input.role = ''
-						this.input.status = ''
+						this.input = {};
+						this.input.category_campaign = '';
+						this.input.publish = '';
+						this.input.without_limit = '';
+						this.input.is_headline = '';
+						this.previewUrl = '';
 					}, 1000)
 				})
 				.catch((err) => {
 					this.validations = err.response.data;
 				})
-			},
-
-			changeRoles(e) {
-				this.validations.role = ''
-				this.input.role = e.target.value
-			},
-
-			changeStatus(e) {
-				this.validations.status = ''
-				this.input.status = e.target.value
 			}
 		},
 
@@ -345,7 +483,8 @@
 						duration: 5000,
 						position: "top-right",
 					});
-					this.getTotalUser();
+					this.message_success = this.messageNotif;
+					this.getTotalCampaign();
 				}
 			},
 		}

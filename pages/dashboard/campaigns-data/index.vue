@@ -93,7 +93,7 @@ export default {
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
 
-        .then(({ data }) => {
+        .then(( data ) => {
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
@@ -110,12 +110,12 @@ export default {
             cells.push(prepareCell)
           });
           this.items = [...cells]
-          this.links = data?.links
-          this.paging.current = data?.current_page
-          this.paging.from = data?.from
-          this.paging.last = data?.last_page
-          this.paging.per_page = data?.per_page
-          this.paging.total = data?.total
+          this.links = data?.meta?.links
+          this.paging.current = data?.meta?.current_page
+          this.paging.from = data?.meta?.from
+          this.paging.last = data?.meta?.last_page
+          this.paging.per_page = data?.meta?.per_page
+          this.paging.total = data?.meta?.total
         })
         .catch((err) => console.log(err));
     },
