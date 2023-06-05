@@ -10,13 +10,14 @@
       :loading="loading"
       types="campaign-trash"
       queryType="CAMPAIGN_DATA"
+      :success="success"
+      :messageAlert="message_success"
+      @close-alert="closeSuccessAlert"
       @deleted-data="deletedData"
       @restored-data="restoreData"
       />
 
     </div>
-
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 
   </div>
 </template>
@@ -114,6 +115,7 @@
           if(data.deleted_at === null) {
             if(this.totals > 1) {
               this.success = true;
+              this.scrollToTop();
             } else {
               this.$router.go(-1)
             }

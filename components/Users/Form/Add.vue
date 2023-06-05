@@ -1,5 +1,8 @@
 <template>
 	<form @submit.prevent="AddNewUser">
+
+		<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
 			New user data
 		</h6>
@@ -21,7 +24,7 @@
 				</div>
 			</div>
 
-			<div class="w-full lg:w-6/12 px-4 sm:py-6">
+			<div class="w-full lg:w-6/12 px-4 sm:py-6 lg:py-0 xl:py-0">
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="email">Email Address</label>
 
@@ -55,7 +58,7 @@
 					@click="showingPassword"
 					:class="`fa ${
 						hidePassword ? 'fa-eye-slash' : 'fa-eye'
-					} eye_1 absolute top-[45px] right-3 cursor-pointer`"
+					} eye_1 absolute top-[40px] right-3 cursor-pointer`"
 					></i>
 				</div>
 				<div v-if="validations.password" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
@@ -71,7 +74,7 @@
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="phone">Phone</label>
 
 					<vue-tel-input name="phone" id="phone" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-					placeholder="62+xxxx xxxx xxx" v-model="input.phone"></vue-tel-input>
+					placeholder="62+xxxx xxxx xxx" v-model="input.phone" style="height: 50px;"></vue-tel-input>
 				</div>
 			</div>
 
@@ -131,7 +134,11 @@
 				</button>
 			</div>
 		</div>
-		<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+
+		<div v-if="loading">
+			<molecules-row-loading :loading="loading" :options="options" />
+		</div>
+
 	</form>
 </template>
 
@@ -142,6 +149,7 @@
 		data() {
 			return {
 				loading: null,
+				options: '',
 				hidePassword: true,
 				api_url: process.env.NUXT_ENV_API_URL,
 				api_token: process.env.NUXT_ENV_APP_TOKEN,
@@ -192,7 +200,8 @@
 			},
 
 			AddNewUser() {
-				this.loading = true
+				this.loading = true;
+				this.options = 'add-user';
 				const postData = {
 					name: this.input.name,
 					email: this.input.email,
@@ -213,12 +222,13 @@
 				.then(({data}) => {
 					if(data.success) {
 						this.success = true;
-						this.message_success = this.messageNotif;
+						this.scrollToTop();
 					}
 				})
 				.finally(() => {
 					setTimeout(() => {
 						this.loading = false;
+						this.options = '';
 						this.input = {}
 						this.input.role = ''
 						this.input.status = ''
@@ -248,6 +258,7 @@
 						duration: 5000,
 						position: "top-right",
 					});
+					this.message_success = this.messageNotif;
 					this.getTotalUser();
 				}
 			},

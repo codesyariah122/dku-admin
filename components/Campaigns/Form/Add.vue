@@ -12,6 +12,9 @@
 
 <template>
 	<form @submit.prevent="addNewCampaign" enctype="multipart/form-data">
+		
+		<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
 			New campaign data
 		</h6>
@@ -239,7 +242,10 @@
 		</div>
 	</div>
 
-	<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+	<div v-if="loading">
+		<molecules-row-loading :loading="loading" :options="options" />
+	</div>
+
 </form>
 </template>
 
@@ -251,6 +257,7 @@
 		data() {
 			return {
 				loading: null,
+				options: '',
 				hidePassword: true,
 				api_url: process.env.NUXT_ENV_API_URL,
 				api_token: process.env.NUXT_ENV_APP_TOKEN,
@@ -409,7 +416,7 @@
 
 			addNewCampaign() {
 				this.loading = true
-
+				this.options = 'add-campaign';
 				const endCampaign = this.$timestamp(this.input.end_campaign);
 				
 				const postData = {
@@ -457,12 +464,13 @@
 					console.log(data)
 					if(data.success) {
 						this.success = true;
-						this.message_success = this.messageNotif;
+						this.scrollToTop();
 					}
 				})
 				.finally(() => {
 					setTimeout(() => {
 						this.loading = false;
+						this.options = ''
 						this.input = {};
 						this.input.category_campaign = '';
 						this.input.publish = '';

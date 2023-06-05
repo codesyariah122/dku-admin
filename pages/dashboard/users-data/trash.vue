@@ -10,13 +10,14 @@
       :loading="loading"
       types="user-trash"
       queryType="USER_DATA"
+      :success="success"
+      :messageAlert="message_success"
+      @close-alert="closeSuccessAlert"
       @deleted-data="deletedUser"
       @restored-data="restoreData"
       />
 
     </div>
-
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 
   </div>
 </template>
@@ -96,7 +97,6 @@
         .then(({data}) => {
           if(data.deleted_at != null) {
             this.success = true;
-            this.message_success = this.dataNotifs[0].notif
           }
         })
         .finally(() => {
@@ -117,10 +117,10 @@
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
         .then(({data}) => {
-          console.log(data)
           if(data.deleted_at === null) {
             if(this.totals > 1) {
               this.success = true;
+              this.scrollToTop();
             } else {
               this.$router.go(-1)
             }

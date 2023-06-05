@@ -35,6 +35,10 @@
           </button>
         </div>
       </div>
+
+      <div v-if="success" class="flex flex-wrap items-center w-full bg-transparent">
+        <molecules-success-alert :success="success" :messageAlert="messageAlert" @close-alert="closeSuccessAlert"/>
+      </div>
     </div>
 
     <div class="block w-full overflow-x-auto">
@@ -133,6 +137,14 @@ export default {
     queryMiddle: {
       type: String,
       default: ''
+    },
+    success: {
+      type: Boolean,
+      default: null
+    },
+    messageAlert: {
+      type: String,
+      default: ''
     }
   },
 
@@ -175,6 +187,10 @@ export default {
       })
       .catch((err) => console.log(err))
     },
+
+    closeSuccessAlert() {
+      this.$emit('close-alert');
+    }
   },
 
   watch: {

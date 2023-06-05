@@ -8,22 +8,25 @@
       :headers="headers"
       :columns="items"
       :loading="loading"
+      :userName="userName"
       types="user-data"
       queryType="USER_DATA"
       queryMiddle="users-data"
+      :success="success"
+      :messageAlert="message_success"
+      @close-alert="closeSuccessAlert"
       @deleted-data="deletedUser"
       @activation-user="activationUser"
-      :userName="userName"
       />
 
-      <div class="mt-12 mb-12">
+      <div class="mt-6 -mb-2">
         <div class="flex justify-end items-end">
           <molecules-pagination :links="links" :paging="paging" @fetch-data="getUserData"/>
         </div>
       </div>
 
     </div>
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+
   </div>
 </template>
 
@@ -170,6 +173,7 @@
           console.log(data.deleted_at)
           if(data.deleted_at != null) {
             this.success = true;
+            this.scrollToTop();
           }
         })
         .finally(() => {

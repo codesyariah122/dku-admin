@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
+    
       <cards-card-table
         color="dark"
         title="Campaign Data"
@@ -10,18 +11,19 @@
         types="campaign-data"
         queryType="CAMPAIGN_DATA"
         queryMiddle="campaigns-data"
+        :success="success"
+        :messageAlert="message_success"
+        @close-alert="closeSuccessAlert"
         @deleted-data="deletedCampaign"
       />
 
-      <div class="mt-12 mb-12">
+      <div class="mt-6 -mb-2">
         <div class="flex justify-end items-end">
           <molecules-pagination :links="links" :paging="paging" @fetch-data="getCampaignData"/>
         </div>
       </div>
-
     </div>
 
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
   </div>
 </template>
 
@@ -115,9 +117,9 @@ export default {
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
       .then(({data}) => {
-        console.log(data)
         if(data.deleted_at !== null) {
           this.success = true;
+          this.scrollToBottom();
         }
       })
       .finally(() => {
