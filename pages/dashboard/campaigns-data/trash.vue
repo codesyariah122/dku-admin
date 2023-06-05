@@ -4,13 +4,13 @@
 
       <cards-card-table
       color="dark"
-      title="User Trashed"
+      title="Campaign Trashed"
       :headers="headers"
       :columns="items"
       :loading="loading"
-      types="user-trash"
-      queryType="USER_DATA"
-      @deleted-data="deletedUser"
+      types="campaign-trash"
+      queryType="CAMPAIGN_DATA"
+      @deleted-data="deletedData"
       @restored-data="restoreData"
       />
 
@@ -28,11 +28,11 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  * @vue tolol anjing developer vuejs mah
  */
-  import { USER_TRASH_DATA_TABLE } from "~/utils/tables-organizations";
+  import { CAMPAIGN_TRASH_DATA_TABLE } from "~/utils/tables-organizations";
   import { getData, deleteData, totalTrash, restoredData } from "~/hooks/index";
 
   export default {
-    name: "users-data",
+    name: "campaigns-data",
     layout: "admin",
 
     data() {
@@ -41,9 +41,10 @@
         options: '',
         success: null,
         message_success: '',
-        headers: [...USER_TRASH_DATA_TABLE],
+        headers: [...CAMPAIGN_TRASH_DATA_TABLE],
         api_url: process.env.NUXT_ENV_API_URL,
         items: [],
+        notifs: [],
         activation_id: null,
         queryParam: this.$route.query.type,
         totals: 0
@@ -57,11 +58,22 @@
     },
 
     mounted() {
-      this.getUserTrash();
+      this.getCampaignTrash();
     },
 
     methods: {
-      getUserTrash() {
+      checkNewData() {
+        window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
+          "EventNotification",
+          (e) => {
+          // console.log(e[0].notif)
+            this.notifs.push(e);
+            this.messageNotifs = e[0].notif;        }
+            );
+      },
+
+
+      getCampaignTrash() {
         totalTrash({
         api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
         api_key: process.env.NUXT_ENV_APP_TOKEN,
@@ -73,10 +85,11 @@
           data.data.map((cell) => {
             const prepareCell = {
               id: cell.id,
-              name: cell.name,
-              email: cell.email,
-              phone: cell.phone,
-              status: cell.status,
+              title: cell.title,
+              banner: cell.banner,
+              publish: cell.publish,
+              end_campaign: cell.end_campaign,
+              created_by: cell.created_by
             }
             cells.push(prepareCell)
           });
@@ -85,27 +98,8 @@
         .catch((err) => console.log(err));
       },
 
-      deletedUser(id) {
-        this.loading = true
-        this.options = 'delete-user';
-        deleteData({
-          api_url: `${this.api_url}/fitur/user-management/${id}`,
-          token: this.token.token,
-          api_key: process.env.NUXT_ENV_APP_TOKEN
-        })
-        .then(({data}) => {
-          if(data.deleted_at != null) {
-            this.success = true;
-            this.message_success = this.dataNotifs[0].notif
-          }
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.loading = false
-            this.options = ''
-          }, 1000)
-        })
-        .catch((err) => console.log(err))
+      deletedData(id) {
+        console.log(id);
       },
 
       restoreData(id) {
@@ -117,7 +111,6 @@
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
         .then(({data}) => {
-          console.log(data)
           if(data.deleted_at === null) {
             if(this.totals > 1) {
               this.success = true;
@@ -146,7 +139,7 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
-          this.getUserTrash();
+          this.getCampaignTrash();
         }
       },
       dataNotifs() {
@@ -157,13 +150,13 @@
             position: "top-right",
           });
           this.message_success = this.messageNotif
-          this.getUserTrash();
+          this.getCampaignTrash();
           this.getTotalUser();
         }
       },
       updateProfileNotifs() {
         if(this.$_.size(this.updateProfileNotifs) > 0) {
-          this.getUserTrash();
+          this.getCampaignTrash();
         }
       }
     },

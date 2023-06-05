@@ -56,7 +56,13 @@
           :types="types"
         />
 
-        <users-user-trash-cell v-if="types === 'user-trash'" :columns="columns" :types="types" @deleted-data="deletedData" @restored-data="restoredData"/>
+        <users-user-trash-cell 
+          v-if="types === 'user-trash'" 
+          :columns="columns" 
+          :types="types" 
+          @deleted-data="deletedData" 
+          @restored-data="restoredData"
+        />
 
         <campaigns-campaign-data-cell
           v-if="types === 'campaign-data'"
@@ -72,6 +78,15 @@
           @activation-user="activationUser"
           :types="types"
         />
+
+        <campaigns-campaign-trash-cell
+          v-if="types === 'campaign-trash'"
+          :columns="columns"
+          :types="types"
+          @deleted-data="deletedData"
+          @restored-data="restoredData"
+        />
+
         <tr v-if="loading">
           <molecules-row-loading :loading="loading" :options="options" />
         </tr>

@@ -6,6 +6,7 @@
         title="Campaign Data"
         :headers="headers"
         :columns="items"
+        :loading="loading"
         types="campaign-data"
         queryType="CAMPAIGN_DATA"
         queryMiddle="campaigns-data"
@@ -17,7 +18,10 @@
           <molecules-pagination :links="links" :paging="paging" @fetch-data="getCampaignData"/>
         </div>
       </div>
+
     </div>
+
+    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
   </div>
 </template>
 
@@ -28,7 +32,7 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
 import { CAMPAIGN_DATA_TABLE } from "~/utils/tables-organizations";
-import { getData } from "~/hooks/getData/index";
+import { getData, deleteData } from "~/hooks/index";
 
 export default {
   name: "campaigns-data",
@@ -36,9 +40,10 @@ export default {
 
   data() {
     return {
-      notifs: [],
-      dataNotifs: [],
-      message: '',
+      loading: null,
+      options: '',
+      success: null,
+      message_success: '',
       headers: [...CAMPAIGN_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
@@ -65,25 +70,6 @@ export default {
   methods: {
     authTokenStorage() {
       this.$store.dispatch("auth/storeAuthToken", "auth");
-    },
-
-    checkNewData() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "EventNotification",
-        (e) => {
-          this.notifs.push(e[0]);
-        }
-      );
-    },
-
-    dataManagementEvent() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "DataManagementEvent",
-        (e) => {
-          this.message = e[0].notif;
-          this.dataNotifs.push(e[0]);
-        }
-      );
     },
 
     getCampaignData(loading, loadingDelete, page=1) {
@@ -121,7 +107,31 @@ export default {
     },
 
     deletedCampaign(id) {
-      console.log(id);
+      this.loading = true
+      this.options = 'delete-campaign';
+      deleteData({
+        api_url: `${this.api_url}/fitur/campaign-management/${id}`,
+        token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN
+      })
+      .then(({data}) => {
+        console.log(data)
+        if(data.deleted_at !== null) {
+          this.success = true;
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.options = ''
+        }, 1000)
+      })
+      .catch((err) => console.log(err))
+    },
+
+    closeSuccessAlert() {
+      this.success = false
+      this.message = ''
     }
   },
 
@@ -133,11 +143,12 @@ export default {
     },
     dataNotifs() {
       if (this.$_.size(this.dataNotifs) > 0) {
-        this.$toast.show(this.message, {
+        this.$toast.show(this.messageNotif, {
           type: "info",
           duration: 5000,
           position: "top-right",
         });
+        this.message_success = this.messageNotif
         this.getCampaignData();
         this.getTotalCampaign();
       }

@@ -114,3 +114,28 @@ export const USER_TRASH_DATA_TABLE = [
     title: 'status'
   },
 ]
+
+
+export const CAMPAIGN_TRASH_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'title'
+  },
+
+  {
+    id: 2,
+    title: 'banner',
+  },
+  {
+    id: 3,
+    title: 'publish'
+  },
+  {
+    id: 4,
+    title: 'end campaign'
+  },
+  {
+    id: 5,
+    title: 'created by'
+  }
+]

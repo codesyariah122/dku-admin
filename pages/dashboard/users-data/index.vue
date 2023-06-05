@@ -13,6 +13,7 @@
       queryMiddle="users-data"
       @deleted-data="deletedUser"
       @activation-user="activationUser"
+      :userName="userName"
       />
 
       <div class="mt-12 mb-12">
@@ -48,7 +49,6 @@
         headers: [...USER_DATA_TABLE],
         api_url: process.env.NUXT_ENV_API_URL,
         items: [],
-        notifs: [],
         activation_id: null,
         links: [],
         paging: {
@@ -68,8 +68,13 @@
     },
 
     mounted() {
+      this.dataManagementEvent();
       this.getUserData();
       this.startCountdown();
+    },
+
+    beforeMount() {
+      this.dataManagementEvent()
     },
 
     methods: {
@@ -81,16 +86,6 @@
           days: Math.floor(timeLeft / (1000 * 60 * 60 * 24))
         }
         return dataTime;
-      },
-
-      checkNewData() {
-        window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-          "EventNotification",
-          (e) => {
-          // console.log(e[0].notif)
-            this.notifs.push(e);
-            this.messageNotifs = e[0].notif;        }
-            );
       },
 
       startCountdown() {
@@ -172,9 +167,9 @@
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
         .then(({data}) => {
+          console.log(data.deleted_at)
           if(data.deleted_at != null) {
             this.success = true;
-            this.message_success = this.dataNotifs[0].notif
           }
         })
         .finally(() => {
@@ -198,7 +193,6 @@
         .then(({data}) => {
           if(data.status === 'ACTIVE') {
             this.success = true;
-            this.message_success = this.dataNotifs[0].notif
           }
         })
         .finally(() => {
@@ -229,6 +223,7 @@
             duration: 5000,
             position: "top-right",
           });
+          this.message_success = this.messageNotif
           this.getUserData();
           this.getTotalUser();
         }

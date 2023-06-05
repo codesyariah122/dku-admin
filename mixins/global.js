@@ -21,6 +21,7 @@ export default {
       emailForbaiden: "",
       cells: [],
       userData: [],
+      userName: ''
     };
   },
 
@@ -202,6 +203,11 @@ export default {
           .get(endPoint, config)
           .then(({ data }) => {
             this.userData = {...data.data[0]}
+            data.data.map((user) => {
+              user.profiles.map((profile) => {
+                this.userName = profile.username
+              })
+            })
           })
           .catch((err) => {
             console.log(err)
