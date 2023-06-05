@@ -60,26 +60,30 @@ export const CAMPAIGN_DATA_TABLE = [
   },
   {
     id: 3,
-    title: 'Donation Target'
+    title: 'Qrcode'
   },
   {
     id: 4,
-    title: 'is headline'
+    title: 'Donation Target'
   },
   {
     id: 5,
-    title: 'published'
+    title: 'is headline'
   },
   {
     id: 6,
-    title: 'end campaign'
+    title: 'published'
   },
   {
     id: 7,
-    title: 'author'
+    title: 'end campaign'
   },
   {
     id: 8,
+    title: 'author'
+  },
+  {
+    id: 9,
     title: 'limit'
   }
 ]

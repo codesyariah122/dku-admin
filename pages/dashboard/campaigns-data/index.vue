@@ -88,6 +88,7 @@ export default {
               id: cell?.id,
               title: cell?.title,
               banner: cell?.banner,
+              barcode: cell?.barcode,
               donation_target: cell?.donation_target,
               is_headline: cell?.is_headline,
               publish: cell?.publish,
