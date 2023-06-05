@@ -25,7 +25,7 @@
       <td
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-        {{ $moment(column.end_campaign).format("LLLL") }}
+        {{ column.end_campaign ? $moment(column.end_campaign).format("LLLL") : 'NULL' }}
       </td>
 
       <td
