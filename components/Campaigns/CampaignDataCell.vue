@@ -41,7 +41,7 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-       {{ column.publish === 1 ? 'Y' : 'N' }}
+       {{ column.publish ? column.publish : 'NULL' }}
       </td>
 
       <td
@@ -111,38 +111,7 @@ export default {
   methods: {
     deletedData(id) {
       this.$emit("deleted-data", id);
-    },
-    checkUserLogin() {
-      if (this?.token !== null) {
-        const endPoint = `${this.api_url}/fitur/user-profile`;
-        const config = {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${this?.token?.token}`,
-          },
-        };
-        this.$api
-          .get(endPoint, config)
-          .then(({ data }) => {
-            this.userData = data.data.map((user) => user)[0]
-            data.data.map((user) => {
-              user.profiles.map((profile) => {
-                this.username = profile.username
-              })
-            })
-          })
-          .catch((err) => {
-            console.log(err)
-          });
-      } else {
-        this.$swal({
-          icon: "error",
-          title: "Oops...",
-          text: "Error Access!",
-        });
-        this.$router.replace("/");
-      }
-    },
+    }
   }
 
 };

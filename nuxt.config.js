@@ -136,7 +136,8 @@ export default {
     { src: '~/plugins/he', ssr: false },
     { src: '~/plugins/autoLogoutMixin.js', ssr: false },
     { src: "~/plugins/tel-input", ssr: false },
-    { src: "~/plugins/vue-tiny-mce", ssr: false }
+    { src: "~/plugins/vue-tiny-mce", ssr: false },
+    { src: "~/plugins/timestamp" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -410,6 +410,8 @@
 			addNewCampaign() {
 				this.loading = true
 
+				const endCampaign = this.$timestamp(this.input.end_campaign);
+				
 				const postData = {
 					title: this.input.title,
 					slug: this.input.slug,
@@ -417,7 +419,7 @@
 					donation_target: parseInt(this.input.donation_target),
 					is_headline: this.input.is_headline,
 					publish: this.input.publish,
-					end_campaign: this.input.end_campaign,
+					end_campaign: endCampaign,
 					without_limit: this.input.limit,
 					created_by: this.userData.name,
 					author: this.userData.name,

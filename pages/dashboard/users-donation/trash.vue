@@ -25,8 +25,7 @@
 /**
  * @param {string}
  * @returns {string}
- * @author Puji Ermanto <puuji.ermanto@gmail.com>
- * @vue tolol anjing developer vuejs mah
+ * @author Puji Ermanto <puji.ermanto@gmail.com>
  */
   import { USER_TRASH_DATA_TABLE } from "~/utils/tables-organizations";
   import { getData, deleteData, totalTrash, restoredData } from "~/hooks/index";
