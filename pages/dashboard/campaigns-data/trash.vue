@@ -151,7 +151,7 @@
           });
           this.message_success = this.messageNotif
           this.getCampaignTrash();
-          this.getTotalUser();
+          this.getTotalCampaign();
         }
       },
       updateProfileNotifs() {

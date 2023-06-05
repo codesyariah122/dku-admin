@@ -117,7 +117,7 @@
           .get(endPoint, config)
           .then(({ data }) => {
             const roles = this.$role(data.data[0].roles[0].name);
-            const now = this.$moment().format("LLL");
+            const now = this.$moment().format("LLLL");
             const expires_at = this.$moment(data.data[0].expires_at).format(
               "LLL"
               );
@@ -134,7 +134,8 @@
 
             this.userName = data.data[0].profiles[0].username;
 
-            if (now > expires_at) {
+            if (now > expires_at && data.data[0].remember_token === null) {
+              console.log("Kok kesini")
               this.$toast.show("Sesi login telah habis", {
                 type: "info",
                 duration: 2000,

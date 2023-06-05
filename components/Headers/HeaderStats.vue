@@ -96,23 +96,7 @@ export default {
     this.getTotalCampaign();
   },
 
-  methods: {
-    getTotalUser() {
-      this.$store.dispatch("totals/totalDataQuery", {
-        api_url: this.api_url,
-        type: "TOTAL_USER",
-        token: this.token,
-      });
-    },
-
-    getTotalCampaign() {
-      this.$store.dispatch("totals/totalDataQuery", {
-        api_url: this.api_url,
-        type: "TOTAL_CAMPAIGN",
-        token: this.token,
-      });
-    },
-  },
+ 
 
   computed: {
     totalUser() {
