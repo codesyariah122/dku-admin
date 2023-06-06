@@ -424,23 +424,6 @@
 			addNewCampaign() {
 				this.loading = true
 				this.options = 'add-campaign';
-				const endCampaign = this.$timestamp(this.input.end_campaign);
-				
-				const postData = {
-					title: this.input.title,
-					slug: this.input.slug,
-					description: this.input.description,
-					donation_target: parseInt(this.input.donation_target),
-					is_headline: this.input.is_headline,
-					banner: this.input.banner,
-					publish: this.input.publish,
-					end_campaign: endCampaign,
-					without_limit: this.input.limit,
-					created_by: this.userData.name,
-					author: this.userData.name,
-					author_email: this.userData.email,
-					category_campaign: this.input.category_campaign
-				}
 				
 				const endPoint = `/fitur/campaign-management`;
 				const config = {
@@ -452,22 +435,23 @@
 				console.log(postData.donation_target)
 
 				let formData = new FormData();
-				formData.append('title', postData.title);
-				formData.append('slug', postData.slug);
-				formData.append('description', postData.description);
-				// formData.append('donation_target', postData.donation_target);
-				formData.append('is_headline', postData.is_headline);
+				formData.append('title', this.input.title);
+				formData.append('slug', this.input.slug);
+				formData.append('description', this.input.description);
+				formData.append('donation_target', this.input.donation_target);
+				formData.append('is_headline', this.input.is_headline);
 				formData.append('banner', this.input.banner);
-				formData.append('publish', postData.publish);
-				formData.append('end_campaign', postData.end_campaign);
-				formData.append('without_limit', postData.without_limit);
-				formData.append('created_by', postData.created_by);
+				formData.append('publish', this.input.publish);
+				formData.append('end_campaign', this.$timestamp(this.input.end_campaign));
+				formData.append('without_limit', this.input.limit);
+				formData.append('created_by', this.userData.name);
 				formData.append('author', postData.author);
-				formData.append('author_email', postData.author_email);
-				formData.append('category_campaign', postData.category_campaign);
+				formData.append('author_email', this.userData.email);
+				formData.append('category_campaign', this.input.category_campaign);
 
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
+				
 				this.$api.post(endPoint, formData, config)
 				.then(({data}) => {
 					console.log(data)
@@ -481,11 +465,11 @@
 					setTimeout(() => {
 						this.loading = false;
 						this.options = ''
-						this.input = {};
-						this.input.category_campaign = '';
-						this.input.publish = '';
-						this.input.without_limit = '';
-						this.input.is_headline = '';
+						// this.input = {};
+						// this.input.category_campaign = '';
+						// this.input.publish = '';
+						// this.input.without_limit = '';
+						// this.input.is_headline = '';
 						this.previewUrl = '';
 					}, 1000)
 				})
