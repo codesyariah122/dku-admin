@@ -170,7 +170,6 @@
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
         .then(({data}) => {
-          console.log(data.deleted_at)
           if(data.deleted_at != null) {
             this.success = true;
             this.scrollToTop();

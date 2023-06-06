@@ -90,13 +90,19 @@
         this.loading = true
         this.options = 'delete-user';
         deleteData({
-          api_url: `${this.api_url}/fitur/user-management/${id}`,
+          api_url: `${this.api_url}/fitur/trashed/${id}?type=${this.queryParam}`,
           token: this.token.token,
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
-        .then(({data}) => {
-          if(data.deleted_at != null) {
+        .then((data) => {
+          if(data.success) {
             this.success = true;
+            if(this.totals > 1) {
+              this.message_success = data.message;
+              this.scrollToTop();
+            } else {
+              this.$router.go(-1);
+            }
           }
         })
         .finally(() => {
@@ -146,7 +152,14 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
+          this.$toast.show(this.messageNotif, {
+            type: "info",
+            duration: 5000,
+            position: "top-right",
+          });
+          this.message_success = this.messageNotif
           this.getUserTrash();
+          this.getTotalUser();
         }
       },
       dataNotifs() {
