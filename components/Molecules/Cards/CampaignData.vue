@@ -17,7 +17,7 @@
       <span class="whitespace-nowrap">{{ statDescripiron.most_viewer.title }} :</span>
       <br>
       <span class="mr-2" :class="[statPercentColor]">
-        {{ data.most_viewer ? data.most_viewer.title : `0` }}
+        {{ data.most_viewer.views > 0 ? data.most_viewer.title : '' }}
       </span>
     </li>
     <li>
@@ -27,7 +27,7 @@
           class="fa-solid fa-paperclip text-xs"
         ></i>
 
-        {{ data.most_viewer.views ? data.most_viewer.views : `0` }}
+        {{ data.most_viewer.views > 0 ? data.most_viewer.views : '' }}
       </span>
       <span class="whitespace-nowrap">{{ statDescripiron.most_viewer.views }}</span>
     </li>

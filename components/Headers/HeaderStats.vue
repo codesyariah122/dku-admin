@@ -124,6 +124,11 @@ export default {
 
     newViewersNotifs() {
       if (this.$_.size(this.newViewersNotifs) > 0) {
+        this.$toast.show(this.messageNotif, {
+          type: "info",
+          duration: 5000,
+          position: "top-right",
+        });
         this.getTotalCampaign()
       }
     }

@@ -53,9 +53,9 @@ export default {
       .then(({ data }) => {
         if (data.success) {
           this.$swal({
-            icon: "error",
+            icon: "warning",
             title: "Bye ...",
-            text: "Sesi login habis!",
+            text: "Sesi aktif screen habis!",
           });
           this.removeAuth()
           setTimeout(() => {

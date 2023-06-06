@@ -26,7 +26,7 @@
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
 
       <a
-        v-if="username === 'super_admin' && types !== 'user-role'"
+        v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
         @click.prevent="deletedData"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
@@ -64,7 +64,7 @@
       }"
     >
       <a
-        v-if="username === 'super_admin' && types !== 'user-role'"
+        v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
         @click="restoredData"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >

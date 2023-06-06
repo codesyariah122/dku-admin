@@ -21,7 +21,8 @@ export default {
       emailForbaiden: "",
       cells: [],
       userData: [],
-      userName: ''
+      userName: '',
+      tokenLogins: ''
     };
   },
 
@@ -124,7 +125,7 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    sesiLogout(roles = "") {
+    sesiLogout(roles) {
       const endPoint = `/auth/logout`;
       this.$api.defaults.headers.common["Accept"] = "application/json";
       this.$api.defaults.headers.common[
@@ -204,6 +205,9 @@ export default {
           .then(({ data }) => {
             this.userData = {...data.data[0]}
             data.data.map((user) => {
+              user.logins.map((login) => {
+                this.tokenLogins = login.user_token_login
+              })
               user.profiles.map((profile) => {
                 this.userName = profile.username
               })

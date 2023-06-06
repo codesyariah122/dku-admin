@@ -135,7 +135,6 @@
             this.userName = data.data[0].profiles[0].username;
 
             if (now > expires_at && data.data[0].remember_token === null) {
-              console.log("Kok kesini")
               this.$toast.show("Sesi login telah habis", {
                 type: "info",
                 duration: 2000,
@@ -160,7 +159,7 @@
                 title: "Oops...",
                 text: "Forbaiden Access!",
               });
-              this.sesiLogout("");
+              this.roleUserExit();
               this.$store.dispatch("auth/removeAuthToken", "auth");
               this.$store.dispatch("auth/removeExpiredLogin", "expired_at");
               setTimeout(() => {

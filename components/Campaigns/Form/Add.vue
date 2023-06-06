@@ -12,8 +12,9 @@
 
 <template>
 	<form @submit.prevent="addNewCampaign" enctype="multipart/form-data">
-		
-		<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+		<div v-if="success" class="flex justify-center w-full bg-transparent mt-4">
+			<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+		</div>
 
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
 			New campaign data
@@ -24,7 +25,7 @@
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="name">Campaign Title</label>
 
-					<input @keyup="changeSlug($event)" type="text" name="name" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+					<input @keyup="changeSlug($event),clearValidation()" type="text" name="name" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 					placeholder="your fullname" v-model="input.title"/>
 				</div>
 
@@ -58,7 +59,7 @@
 					name="description"
 					id="d1"
 					v-model="input.description"
-					:other_options="options"
+					:other_options="optionsObject"
 					:init="editorConfig"
 					></tinymce>
 				</div>
@@ -72,18 +73,24 @@
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">
-					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="phone">Donation Target</label>
+					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="donation_target">Donation Target</label>
 
-					<input @change="changeDonationTarget($event)" type="text" name="name" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="1000000" v-model="donation_currency"/>
+					<input @change="changeDonationTarget($event)" type="number" name="donation_target" id="donation_target" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="1000000" v-model="donation_currency"/>
+				</div>
+				<div v-if="validations.donation_target" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+					<i class="fa-solid fa-circle-info"></i>
+					<div class="px-2">
+						{{validations.donation_target[0]}}
+					</div>
 				</div>
 			</div>
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">					
-					<label for="status" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+					<label for="is_headline" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						Is Headline
 					</label>
-					<select @change="changeIsHeadline($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+					<select @change="changeIsHeadline($event)" id="is_headline" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
 						<option selected value="">Choose a is headline</option>
 						<option value="Y">
 							Yes
@@ -126,7 +133,7 @@
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">				
-					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+					<label for="date" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						End Campaign
 					</label>
 					<input id="date" type="date" class="px-3 py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" v-model="input.end_campaign">
@@ -173,10 +180,10 @@
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">				
-					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+					<label for="limit" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						Limit
 					</label>
-					<select @change="changeLimit($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+					<select @change="changeLimit($event)" id="limit" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
 						<option selected value="">Choose a limit</option>
 						<option value="Y">
 							Yes
@@ -271,7 +278,7 @@
 				validations: [],
 				success: null,
 				message_success: '',
-				options: {
+				optionsObject: {
 					menubar: false,
 				},
 				editorConfig: {
@@ -309,22 +316,18 @@
 			},
 
 			changeCategory(e) {
-				this.validations.role = '';
 				this.input.category_campaign = e.target.value;
 			},
 
 			changePublish(e) {
-				this.validations.publish = '';
 				this.input.publish = e.target.value;
 			},
 
 			changeLimit(e) {
-				this.validations.publish = '';
 				this.input.limit = e.target.value;
 			},
 
 			changeIsHeadline(e) {
-				this.validations.publish = ''
 				this.input.is_headline = e.target.value;
 			},
 
@@ -414,6 +417,10 @@
 				.catch((err) => console.log(err))
 			},
 
+			clearValidation() {
+				this.validations = [];
+			},
+
 			addNewCampaign() {
 				this.loading = true
 				this.options = 'add-campaign';
@@ -425,6 +432,7 @@
 					description: this.input.description,
 					donation_target: parseInt(this.input.donation_target),
 					is_headline: this.input.is_headline,
+					banner: this.input.banner,
 					publish: this.input.publish,
 					end_campaign: endCampaign,
 					without_limit: this.input.limit,
@@ -437,16 +445,17 @@
 				const endPoint = `/fitur/campaign-management`;
 				const config = {
 					headers: {
-						Accept: "application/json",
 						"Content-Type": "multipart/form-data"
 					},
 				};
+
+				console.log(postData.donation_target)
 
 				let formData = new FormData();
 				formData.append('title', postData.title);
 				formData.append('slug', postData.slug);
 				formData.append('description', postData.description);
-				formData.append('donation_target', postData.donation_target);
+				// formData.append('donation_target', postData.donation_target);
 				formData.append('is_headline', postData.is_headline);
 				formData.append('banner', this.input.banner);
 				formData.append('publish', postData.publish);
@@ -465,6 +474,7 @@
 					if(data.success) {
 						this.success = true;
 						this.scrollToTop();
+						this.input = {}
 					}
 				})
 				.finally(() => {
@@ -480,7 +490,9 @@
 					}, 1000)
 				})
 				.catch((err) => {
+					console.log(err.response.data)
 					this.validations = err.response.data;
+					this.scrollToTop();
 				})
 			}
 		},
@@ -488,12 +500,14 @@
 		watch: {
 			dataNotifs() {
 				if (this.$_.size(this.dataNotifs) > 0) {
-					this.$toast.show(this.messageNotif, {
-						type: "info",
-						duration: 5000,
-						position: "top-right",
-					});
-					this.message_success = this.messageNotif;
+					if(this.token.token) {						
+						this.$toast.show(this.messageNotif, {
+							type: "info",
+							duration: 5000,
+							position: "top-right",
+						});
+						this.message_success = this.messageNotif;
+					}
 					this.getTotalCampaign();
 				}
 			},

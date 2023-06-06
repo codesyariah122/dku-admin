@@ -64,9 +64,9 @@
     methods: {
       getUserTrash() {
         totalTrash({
-        api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
-        api_key: process.env.NUXT_ENV_APP_TOKEN,
-        token: this.token.token
+          api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
+          api_key: process.env.NUXT_ENV_APP_TOKEN,
+          token: this.token.token
         })
         .then(({ data }) => {
           this.totals = this.$_.size(data.data);
@@ -164,11 +164,13 @@
       },
       dataNotifs() {
         if (this.$_.size(this.dataNotifs) > 0) {
-          this.$toast.show(this.messageNotif, {
-            type: "info",
-            duration: 5000,
-            position: "top-right",
-          });
+          // if(this.token.token === this.tokenLogins) {            
+          //   this.$toast.show(this.messageNotif, {
+          //     type: "info",
+          //     duration: 5000,
+          //     position: "top-right",
+          //   });
+          // }
           this.message_success = this.messageNotif
           this.getUserTrash();
           this.getTotalUser();

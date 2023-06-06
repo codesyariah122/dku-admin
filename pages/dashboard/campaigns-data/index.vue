@@ -67,6 +67,7 @@ export default {
 
   mounted() {
     this.getCampaignData();
+    this.checkUserLogin();
   },
 
   methods: {
@@ -117,10 +118,10 @@ export default {
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
-      .then(({data}) => {
-        if(data.deleted_at !== null) {
+      .then((data) => {
+        if(data.success) {
           this.success = true;
-          this.scrollToBottom();
+          this.scrollToTop();
         }
       })
       .finally(() => {
@@ -146,12 +147,14 @@ export default {
     },
     dataNotifs() {
       if (this.$_.size(this.dataNotifs) > 0) {
-        this.$toast.show(this.messageNotif, {
-          type: "info",
-          duration: 5000,
-          position: "top-right",
-        });
-        this.message_success = this.messageNotif
+        if(this.token.token === this.tokenLogins) {          
+          // this.$toast.show(this.messageNotif, {
+          //   type: "info",
+          //   duration: 5000,
+          //   position: "top-right",
+          // });
+          this.message_success = this.messageNotif
+        }
         this.getCampaignData();
         this.getTotalCampaign();
       }

@@ -10,16 +10,26 @@
             class="font-semibold text-lg"
             :class="[color === 'light' ? 'text-blueGray-700' : 'text-white']"
           >
-            {{ title }}  
+            {{ title }} <i v-if="queryParam" class="fa-solid fa-trash-can-arrow-up text-lg"></i> 
           </h3>
         </div>
-        <div v-if="types !== 'user-role'">
+        <div v-if="!queryParam && types !== 'user-role'">
           <button type="button" @click="
             $router.push({
               path: `/dashboard/${queryMiddle}/add`
             })
           " class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"><i class="fa-solid fa-plus"></i> Add</button>
         </div>
+
+        <div v-else>
+          <button
+          @click="backTo"
+          class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+            >
+            Back
+          </button>
+        </div>
+
         <div v-if="!queryParam && types !== 'user-role'">
           <button type="button" @click="total > 0 ?
           $router.push({
@@ -36,7 +46,7 @@
         </div>
       </div>
 
-      <div v-if="success" class="flex flex-wrap items-center w-full bg-transparent">
+      <div v-if="success" ref="alertNotifs" class="flex justify-center w-full bg-transparent mt-4">
         <molecules-success-alert :success="success" :messageAlert="messageAlert" @close-alert="closeSuccessAlert"/>
       </div>
     </div>
@@ -165,6 +175,10 @@ export default {
   },
 
   methods: {
+    backTo() {
+      this.$router.go(-1);
+    },
+
     deletedData(id) {
       this.$emit("deleted-data", id);
     },
