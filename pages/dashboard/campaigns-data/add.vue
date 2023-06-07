@@ -1,22 +1,23 @@
 <template>
   <div class="flex flex-wrap">
-    
+
     <div v-if="successNew" :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-profile 
-        pageType="campaignData"
-        link="campaigns-data"
-        title="Add New Campaign"
-        methodType="add"
-        :successNew="successNew"
-        :detail="detail"
+      pageType="campaignData"
+      link="campaigns-data"
+      title="Add New Campaign"
+      methodType="add"
+      :successNew="successNew"
+      :detail="detail"
       />
     </div>
 
     <div v-else :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-settings 
-        pageType="campaignData" 
-        title="Add New Campaign"
-        methodType="add"
+      pageType="campaignData" 
+      title="Add New Campaign"
+      methodType="add"
+      @detail-data="detailCampaign"
       />
     </div>
 
@@ -29,8 +30,7 @@
  * @returns {string}
  * @author Puji Ermanto <puji.ermanto@gmail.com>
  */
-  import { USER_DATA_TABLE } from "~/utils/tables-organizations";
-  import { getData, activateUser, deleteData } from "~/hooks/index";
+  import { getData } from "~/hooks/index";
 
   export default {
     name: "campaigns-data-add",
@@ -54,9 +54,7 @@
     },
 
     mounted() {
-      if(this.formData) {
-        this.detailCampaign();
-      }
+      this.detailCampaign(this.formData ? this.formData.data.id : '');
     },
 
     methods: {
@@ -64,27 +62,27 @@
         this.$store.dispatch('success/storedFormData', 'success-form');
       },
 
-      detailCampaign() {
+      detailCampaign(detailId='') {
         this.loadingDetail = true
-        const detail_id = this.formData?.data?.id;
-
-        getData({
-          api_url: `${this.api_url}/fitur/campaign-management/${detail_id}`,
-          token: this.token.token,
-          api_key: process.env.NUXT_ENV_APP_TOKEN
-        })
-        .then(({data}) => {
-          if(data) {
-            this.successNew = true
-            this.detail = data
-          }
-        })
-        .finally(() => {
-          setTimeout(() => {
-            this.loadingDetail = false
-          }, 500)
-        })
-        .catch((err) => console.log(err));
+        if(detailId) {          
+          getData({
+            api_url: `${this.api_url}/fitur/campaign-management/${detailId}`,
+            token: this.token.token,
+            api_key: process.env.NUXT_ENV_APP_TOKEN
+          })
+          .then(({data}) => {
+            if(data) {
+              this.successNew = true
+              this.detail = data
+            }
+          })
+          .finally(() => {
+            setTimeout(() => {
+              this.loadingDetail = false
+            }, 500)
+          })
+          .catch((err) => console.log(err));
+        }
       }
     },
 
@@ -96,11 +94,9 @@
 
     watch: {
       dataNotifs() {
-        if (this.$_.size(this.dataNotifs) > 0) {
+        if (this.dataNotifs && this.$_.size(this.dataNotifs) > 0) {
           this.storedFormData();
-          if(this.formData) {
-            this.detailCampaign();
-          }
+          this.detailCampaign(this.formData ? this.formData.data.id : '');
         }
       },
     }

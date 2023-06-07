@@ -98,7 +98,6 @@
           if(data.success) {
             this.success = true;
             if(this.totals > 1) {
-              this.message_success = data.message;
               this.scrollToTop();
             } else {
               this.$router.go(-1);
@@ -109,7 +108,7 @@
           setTimeout(() => {
             this.loading = false
             this.options = ''
-          }, 1000)
+          }, 500)
         })
         .catch((err) => console.log(err))
       },
@@ -136,7 +135,7 @@
           setTimeout(() => {
             this.loading = false
             this.options = ''
-          }, 1000)
+          }, 500)
         })
         .catch((err) => {
           console.log(err)
@@ -152,12 +151,12 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
-          this.$toast.show(this.messageNotif, {
-            type: "info",
-            duration: 5000,
-            position: "top-right",
-          });
-          this.message_success = this.messageNotif
+          // this.$toast.show(this.messageNotifs, {
+          //   type: "info",
+          //   duration: 5000,
+          //   position: "top-right",
+          // });
+          this.message_success = this.messageNotifs
           this.getUserTrash();
           this.getTotalUser();
         }

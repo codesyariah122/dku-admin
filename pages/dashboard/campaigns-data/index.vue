@@ -72,7 +72,7 @@ export default {
 
   methods: {
     getCampaignData(loading, loadingDelete, page=1) {
-      this.loading = loading ? loading : true;
+      // this.loading = loading ? loading : true;
       getData({
         api_url: `${this.api_url}/fitur/campaign-management?page=${page}`,
         token: this.token.token,
@@ -104,11 +104,11 @@ export default {
           this.paging.per_page = data?.meta?.per_page
           this.paging.total = data?.meta?.total
         })
-        .finally(() => {
-          setTimeout(() => {
-            this.loading = false
-          }, 500)
-        })
+        // .finally(() => {
+        //   setTimeout(() => {
+        //     this.loading = false
+        //   }, 500)
+        // })
         .catch((err) => console.log(err));
     },
 

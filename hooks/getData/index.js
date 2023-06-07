@@ -17,7 +17,7 @@ export const getData = async (props) => {
         'Dku-Api-Key': props.api_key
       }
     });
-
+    
     const result = !parsed.ok ? parsed : await parsed.json()
     return result
 

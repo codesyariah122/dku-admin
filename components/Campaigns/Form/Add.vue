@@ -268,6 +268,7 @@
 	export default {
 		data() {
 			return {
+				param: '',
 				loading: null,
 				options: '',
 				hidePassword: true,
@@ -356,19 +357,6 @@
 				this.uploadFiles(files);
 			},
 
-			// getFileNames(fileList) {
-			// 	const fileNames = [];
-
-			// 	for (let i = 0; i < fileList.length; i++) {
-			// 		const file = fileList.item(i);
-			// 		fileNames.push(file.name);
-			// 	}
-
-			// 	console.log(fileNames[0]);
-
-			// 	this.input.banner = fileNames[0];
-			// },
-
 			uploadFiles(files) {
 				this.input.banner = files[0]
 				const fileInput = this.$refs.fileInput;
@@ -406,6 +394,7 @@
 			closeSuccessAlert() {
 				this.success = false;
 				this.message = '';
+				this.detailCampaign();
 			},
 
 			getCategoryCampaignData() {
@@ -446,23 +435,37 @@
 				formData.append('publish', this.input.publish || '');
 				formData.append('end_campaign', this.$timestamp(this.input.end_campaign) || null);
 				formData.append('without_limit', this.input.without_limit || '');
-				formData.append('created_by', this.userData.name || '');
-				formData.append('author', this.userData.name || '');
-				formData.append('author_email', this.userData.email || '');
 				formData.append('category_campaign', this.input.category_campaign || '');
 
+				// console.log(formData);
 
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
 				
 				this.$api.post(endPoint, formData, config)
 				.then(({data}) => {
-					console.log(data)
+					// console.log(data)
 					if(data.success) {
 						this.success = true;
 						this.scrollToTop();
 						this.input = {}
+						this.param = data.data[0].id;
+						this.detailCampaign(data.data[0].id);
 						this.$store.dispatch('success/storeSuccessFormData', data?.data[0]);
+					} else {
+						this.$swal({
+							icon: 'info',
+							title: 'Oops...',
+							text: data.message,
+						})
+						his.loading = false;
+						this.options = ''
+						this.input = {};
+						this.input.category_campaign = '';
+						this.input.publish = '';
+						this.input.without_limit = '';
+						this.input.is_headline = '';
+						this.previewUrl = '';
 					}
 				})
 				.finally(() => {
@@ -475,29 +478,28 @@
 						this.input.without_limit = '';
 						this.input.is_headline = '';
 						this.previewUrl = '';
-					}, 1000)
+					}, 1500)
 				})
 				.catch((err) => {
 					this.$swal({
 						icon: 'info',
 						title: 'Oops...',
-						text: 'Failed form data!',
+						text: err.reponse.message ? err.response.message : 'Failed form data!',
 					})
 					this.validations = err.response.data;
 					this.scrollToTop();
 				})
+			},
+
+			detailCampaign(detailId) {
+				this.$emit('detail-data', detailId)
 			}
 		},
 
 		watch: {
 			dataNotifs() {
 				if (this.$_.size(this.dataNotifs) > 0) {
-					if(this.token.token) {						
-						// this.$toast.show(this.messageNotif, {
-						// 	type: "info",
-						// 	duration: 5000,
-						// 	position: "top-right",
-						// });
+					if(this.token.token) {
 						this.message_success = this.messageNotif;
 					}
 					this.getTotalCampaign();

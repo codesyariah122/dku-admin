@@ -8,6 +8,13 @@
       :detail="detail"
       :link="link"
     />
+
+    <users-form-detail
+      v-if="pageType === 'userData'"
+      :detail="detail"
+      :link="link"
+      :methodType="methodType"
+    />
    
   </div>
 </template>
@@ -36,7 +43,9 @@ export default {
     },
     detail: {
       type: Object,
-      default: {}
+      default: function() {
+        return {}
+      }
     }
   }
 };

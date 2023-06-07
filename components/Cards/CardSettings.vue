@@ -16,9 +16,15 @@
 
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
       
-      <users-form-add v-if="pageType === 'userData'" />
+      <users-form-add 
+        v-if="pageType === 'userData'"
+        @detail-data="detailData" 
+      />
 
-      <campaigns-form-add v-if="pageType === 'campaignData'" />
+      <campaigns-form-add 
+        v-if="pageType === 'campaignData'"
+        @detail-data="detailData"
+      />
 
     </div>
 
@@ -45,6 +51,9 @@
     methods: {
       backTo() {
         this.$router.go(-1)
+      },
+      detailData(param) {
+        this.$emit('detail-data', param);
       }
     }
   }

@@ -3,7 +3,7 @@
       <div class="flex flex-wrap justify-center">
         <div class="w-full px-4 flex justify-center">
           <div class="relative">
-            <div v-html="$decode(detail.barcode)" class="shadow-xl rounded-md h-auto align-middle border-none bg-white absolute -m-16 -ml-20 lg:-ml-16 max-w-250-px"></div>
+            <div v-html="detail.barcode" class="shadow-xl rounded-md h-auto align-middle border-none bg-white absolute -m-16 -ml-20 lg:-ml-16 max-w-250-px"></div>
           </div>
         </div>
         <div class="w-full px-4 text-center mt-20">
@@ -53,7 +53,6 @@
             <div class="mb-4 text-lg leading-relaxed text-blueGray-700" 
               v-html="$decode(detail.description)"></div>
 
-
             <button @click="backTo" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               <i class="fa-solid fa-chevron-left fa-lg"></i> Back
             </button>
@@ -67,9 +66,11 @@
 	export default {
 		props: {
 			detail: {
-				type: Object,
-				default: {}
-			},
+        type: Object,
+        default: function() {
+          return {};
+        }
+      },
       link: {
         type: String,
         default: null

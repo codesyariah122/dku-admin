@@ -221,6 +221,7 @@ export default {
           remember_me: this.form.checked ? this.form.checked : false,
         })
         .then(({ data }) => {
+          console.log(data);
           if (data.is_login) {
             this.$swal({
               icon: "warning",

@@ -185,6 +185,7 @@
 			closeSuccessAlert() {
 				this.success = false;
 				this.message = '';
+				this.detailUser();
 			},
 
 			getRoleLists() {
@@ -197,6 +198,16 @@
 					this.roles = [...data.data]
 				})
 				.catch((err) => console.log(err))
+			},
+
+			changeRoles(e) {
+				this.validations.role = ''
+				this.input.role = e.target.value
+			},
+
+			changeStatus(e) {
+				this.validations.status = ''
+				this.input.status = e.target.value
 			},
 
 			AddNewUser() {
@@ -216,13 +227,18 @@
 						Accept: "application/json",
 					},
 				};
+
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
+				
 				this.$api.post(endPoint, postData)
 				.then(({data}) => {
+					// console.log(data)
 					if(data.success) {
 						this.success = true;
 						this.scrollToTop();
+						this.detailUser(data?.profiles[0]);
+						this.$store.dispatch('success/storeSuccessFormData', data?.profiles[0]);
 					}
 				})
 				.finally(() => {
@@ -239,14 +255,8 @@
 				})
 			},
 
-			changeRoles(e) {
-				this.validations.role = ''
-				this.input.role = e.target.value
-			},
-
-			changeStatus(e) {
-				this.validations.status = ''
-				this.input.status = e.target.value
+			detailUser(username) {
+				this.$emit('detail-data', username)
 			}
 		},
 
@@ -254,11 +264,6 @@
 			dataNotifs() {
 				if (this.$_.size(this.dataNotifs) > 0) {
 					if(this.token.token) {						
-						// this.$toast.show(this.messageNotif, {
-						// 	type: "info",
-						// 	duration: 5000,
-						// 	position: "top-right",
-						// });
 						this.message_success = this.messageNotif;
 					}
 					this.getTotalUser();
