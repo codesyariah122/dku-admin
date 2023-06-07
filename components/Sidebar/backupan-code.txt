@@ -608,3 +608,17 @@ backup-terbaru
       </div>
     </aside>
   </div>
+
+
+// getFileNames(fileList) {
+      //  const fileNames = [];
+
+      //  for (let i = 0; i < fileList.length; i++) {
+      //    const file = fileList.item(i);
+      //    fileNames.push(file.name);
+      //  }
+
+      //  console.log(fileNames[0]);
+
+      //  this.input.banner = fileNames[0];
+      // },

@@ -11,7 +11,7 @@
 
 
 <template>
-	<form @submit.prevent="addNewCampaign" enctype="multipart/form-data">
+	<form @submit.prevent="addNewCampaign">
 		<div v-if="success" class="flex justify-center w-full bg-transparent mt-4">
 			<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 		</div>
@@ -25,7 +25,7 @@
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="name">Campaign Title</label>
 
-					<input @keyup="changeSlug($event),clearValidation()" type="text" name="name" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+					<input @keyup="changeSlug($event),clearValidation()" type="text" name="title" id="name" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 					placeholder="your fullname" v-model="input.title"/>
 				</div>
 
@@ -75,7 +75,11 @@
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="donation_target">Donation Target</label>
 
-					<input @change="changeDonationTarget($event)" type="number" name="donation_target" id="donation_target" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="1000000" v-model="donation_currency"/>
+					<input @change="changeDonationTarget($event)" type="number" name="donation_target" id="donation_target" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="1000000" v-model="input.donation_target"/>
+
+					<small class="text-blueGray-600 font-italic px-4 py-2">
+						{{donation_currency}}
+					</small>
 				</div>
 				<div v-if="validations.donation_target" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
 					<i class="fa-solid fa-circle-info"></i>
@@ -160,10 +164,10 @@
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">				
-					<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+					<label for="category_campaign" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						Campaign Category
 					</label>
-					<select @change="changeCategory($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+					<select @change="changeCategory($event);" id="category_campaign" name="category_campaign" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
 						<option selected value="">Choose a campaign category</option>
 						<option v-for="category in categories" :key="category.id" :value="category.id">
 							{{category.name}}
@@ -183,7 +187,7 @@
 					<label for="limit" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
 						Limit
 					</label>
-					<select @change="changeLimit($event)" id="limit" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+					<select @change="changeLimit($event)" id="limit" name="without_limit" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
 						<option selected value="">Choose a limit</option>
 						<option value="Y">
 							Yes
@@ -193,10 +197,10 @@
 						</option>
 					</select>
 				</div>
-				<div v-if="validations.publish" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+				<div v-if="validations.without_limit" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
 					<i class="fa-solid fa-circle-info"></i>
 					<div class="px-2">
-						{{validations.publish[0]}}
+						{{validations.without_limit[0]}}
 					</div>
 				</div>
 			</div>
@@ -234,6 +238,7 @@
 				</label>
 			</div> 
 		</div>
+
 
 		<div class="flex-shrink-0 lg:w-12/12 w-full py-10">
 			<button type="submit" class="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
@@ -324,7 +329,7 @@
 			},
 
 			changeLimit(e) {
-				this.input.limit = e.target.value;
+				this.input.without_limit = e.target.value;
 			},
 
 			changeIsHeadline(e) {
@@ -344,13 +349,11 @@
 
 				const files = event.dataTransfer.files;
 				this.uploadFiles(files);
-				// this.getFileNames(files);
 			},
 
 			handleFileInput(event) {
 				const files = event.target.files;
 				this.uploadFiles(files);
-				// this.getFileNames(files);
 			},
 
 			// getFileNames(fileList) {
@@ -432,22 +435,22 @@
 					},
 				};
 
-				console.log(postData.donation_target)
-
 				let formData = new FormData();
-				formData.append('title', this.input.title);
-				formData.append('slug', this.input.slug);
-				formData.append('description', this.input.description);
-				formData.append('donation_target', this.input.donation_target);
-				formData.append('is_headline', this.input.is_headline);
-				formData.append('banner', this.input.banner);
-				formData.append('publish', this.input.publish);
-				formData.append('end_campaign', this.$timestamp(this.input.end_campaign));
-				formData.append('without_limit', this.input.limit);
-				formData.append('created_by', this.userData.name);
-				formData.append('author', postData.author);
-				formData.append('author_email', this.userData.email);
-				formData.append('category_campaign', this.input.category_campaign);
+
+				formData.append('title', this.input.title || '');
+				formData.append('slug', this.input.slug || '');
+				formData.append('description', this.input.description || '');
+				formData.append('donation_target', this.input.donation_target || '');
+				formData.append('is_headline', this.input.is_headline || '');
+				formData.append('banner', this.input.banner || null);
+				formData.append('publish', this.input.publish || '');
+				formData.append('end_campaign', this.$timestamp(this.input.end_campaign) || null);
+				formData.append('without_limit', this.input.without_limit || '');
+				formData.append('created_by', this.userData.name || '');
+				formData.append('author', this.userData.name || '');
+				formData.append('author_email', this.userData.email || '');
+				formData.append('category_campaign', this.input.category_campaign || '');
+
 
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
@@ -459,22 +462,27 @@
 						this.success = true;
 						this.scrollToTop();
 						this.input = {}
+						this.$store.dispatch('success/storeSuccessFormData', data?.data[0]);
 					}
 				})
 				.finally(() => {
 					setTimeout(() => {
 						this.loading = false;
 						this.options = ''
-						// this.input = {};
-						// this.input.category_campaign = '';
-						// this.input.publish = '';
-						// this.input.without_limit = '';
-						// this.input.is_headline = '';
+						this.input = {};
+						this.input.category_campaign = '';
+						this.input.publish = '';
+						this.input.without_limit = '';
+						this.input.is_headline = '';
 						this.previewUrl = '';
 					}, 1000)
 				})
 				.catch((err) => {
-					console.log(err.response.data)
+					this.$swal({
+						icon: 'info',
+						title: 'Oops...',
+						text: 'Failed form data!',
+					})
 					this.validations = err.response.data;
 					this.scrollToTop();
 				})
@@ -485,11 +493,11 @@
 			dataNotifs() {
 				if (this.$_.size(this.dataNotifs) > 0) {
 					if(this.token.token) {						
-						this.$toast.show(this.messageNotif, {
-							type: "info",
-							duration: 5000,
-							position: "top-right",
-						});
+						// this.$toast.show(this.messageNotif, {
+						// 	type: "info",
+						// 	duration: 5000,
+						// 	position: "top-right",
+						// });
 						this.message_success = this.messageNotif;
 					}
 					this.getTotalCampaign();
