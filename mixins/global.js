@@ -7,6 +7,7 @@ export default {
   data() {
     return {
       globalLoading: null,
+      globalMessage: '',
       expires_at: null,
       api_url: process.env.NUXT_ENV_API_URL,
       notifs: [],
@@ -123,6 +124,34 @@ export default {
           }
         })
         .catch((err) => console.log(err));
+    },
+
+    forceLogout(token) {
+      this.globalLoading = true
+      const endPoint = `/auth/logout`;
+      this.$api.defaults.headers.common["Accept"] = "application/json";
+      this.$api.defaults.headers.common[
+        "Authorization"
+        ] = `Bearer ${token.user_token_login}`;
+      this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
+      this.$api
+      .post(endPoint)
+      .then(({ data }) => {
+        if (data.success) {
+          setTimeout(() => {
+            this.$swal(`Silahkan login kembali!`, "", "info");
+            this.globalMessage = 'Silahkan login kembali !'
+            this.removeAuth();
+            this.$router.replace("/");
+          }, 1000);
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.globalLoading = false
+        }, 500)
+      })
+      .catch((err) => console.log(err));
     },
 
     sesiLogout(roles) {

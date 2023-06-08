@@ -2,6 +2,10 @@
   <div class="container mx-auto px-4 py-4 h-full">
     <div class="flex content-center items-center justify-center h-full">
       <div class="w-full lg:w-4/12 px-4">
+
+        <div v-if="globalLoading">
+          <molecules-row-loading :loading="globalLoading" options="user-login" />
+        </div>
         
         <div v-if="errorUsers" id="toast-warning" class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
           <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
@@ -208,6 +212,7 @@ export default {
           .catch((err) => console.log(err));
       }
     },
+    
     login() {
       this.errorLogin = false;
       this.loadingLogin = true;
@@ -221,12 +226,11 @@ export default {
           remember_me: this.form.checked ? this.form.checked : false,
         })
         .then(({ data }) => {
-          // console.log(data);
           if (data.is_login) {
             this.$swal({
               icon: "warning",
               title: "Oops...",
-              text: data.message,
+              text: data.message + data.quote,
             });
           }
 
@@ -273,21 +277,50 @@ export default {
               this.$router.replace({
                 path: `/dashboard/${roles}`,
               });
-              localStorage.setItem(
-                "refresh-first",
-                JSON.stringify({ reload: true })
-                );
+              // localStorage.setItem(
+              //   "refresh-first",
+              //   JSON.stringify({ reload: true })
+              //   );
             }, 1000);
           } else {
-            this.errorLogin = data.message;
-            this.$swal({
-              icon: "warning",
-              title: "Oops...",
-              text: data.message,
-            });
-            this.errorUsers = true;
-            this.error = true;
-            this.form = {};
+            if(data?.is_login && data?.data?.logins) {
+              this.errorLogin = data.message;
+              this.errorUsers = true;
+              this.error = true;
+              this.form = {};
+              const roles = this.getRoles(data?.data?.roles[0].name);
+              const prepareLogin = data?.data?.logins;
+              const authToken = prepareLogin[0];
+              const savings = [
+                {
+                  expires_at: data?.data?.expires_at,
+                  remember_token: data?.data?.remember_token
+                }
+              ];
+
+              this.$swal({
+                title: data.message,
+                text: data.quote,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Force Logout!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.errorLogin = ''
+                  this.errorUsers = false;
+                  this.error = false;
+                  this.form = {};
+                  this.forceLogout(authToken);
+                }
+              })
+            }
+            // this.$swal({
+            //   icon: "warning",
+            //   title: "Oops...",
+            //   text: data.message,
+            // });
           }
         })
         .catch((err) => {
@@ -298,6 +331,7 @@ export default {
               title: "Oops...",
               text: err.response.data.error ? err.response.data.message : err.message,
             });
+
             this.errorUsers = true;
             this.error = true;
             this.errorLogin = "";

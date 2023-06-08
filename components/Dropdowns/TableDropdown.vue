@@ -10,49 +10,50 @@
     </a>
     <div v-if="cellType === 'data'"
       ref="popoverDropdownRef"
-      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+      class="bg-white text-base z-50 py-2 list-none text-left rounded shadow-lg min-w-48"
       v-bind:class="{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
       }"
     >
-      <a
-        href="javascript:void(0);"
+      <button
+        @click="detailDataRedirect(queryData)"
+        role="button"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
         <i class="fa-solid fa-binoculars text-blue-700"></i> &nbsp;&nbsp;Detailed Data
-      </a>
+      </button>
 
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
 
-      <a
+      <button
         v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
         @click.prevent="deletedData"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
         <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
-      </a>
+      </button>
 
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
 
-      <a
+      <button
         v-if="username === 'super_admin' && types !== 'user-role'"
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
         <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
-      </a>
+      </button>
 
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
 
-      <a
+      <button
         v-if="userStatus.status === 'INACTIVE'"
         @click.prevent="activationUser(userStatus.user_id)"
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
         <i class="fa-solid fa-file-shield"></i> &nbsp;&nbsp;Activasi
-      </a>
+      </button>
     </div>
 
     <div v-if="cellType === 'trash'"
@@ -63,23 +64,23 @@
         block: dropdownPopoverShow,
       }"
     >
-      <a
+      <button
         v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
         @click="restoredData"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
         <i class="fa-solid fa-trash-can-arrow-up text-blue-700"></i> &nbsp;&nbsp;Restored
-      </a>
+      </button>
 
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
 
-      <a
+      <button
         v-if="username === 'super_admin' && types !== 'user-role'"
         @click="deletedData"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
       >
         <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Destroy
-      </a>
+      </button>
 
     </div>
   </div>
@@ -110,7 +111,15 @@ export default {
     cellType: {
       type: String,
       default: 'data'
-    }
+    },
+    queryMiddle: {
+      type: String,
+      default: ''
+    },
+    queryData: {
+      type: String,
+      default: ''
+    },
   },
   data() {
     return {
@@ -149,6 +158,10 @@ export default {
     restoredData() {
       this.$emit('restored-data', this.id);
       this.dropdownPopoverShow = false;
+    },
+
+    detailDataRedirect(param) {
+      this.$router.push({path: `/dashboard/${this.queryMiddle}/detail/${param}`})
     }
   },
 };

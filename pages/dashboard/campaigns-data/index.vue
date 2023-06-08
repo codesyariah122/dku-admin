@@ -85,6 +85,7 @@ export default {
             const prepareCell = {
               id: cell?.id,
               title: cell?.title,
+              slug: cell?.slug,
               banner: cell?.banner,
               barcode: cell?.barcode,
               donation_target: cell?.donation_target,

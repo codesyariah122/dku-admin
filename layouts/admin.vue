@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="this.globalLoading">
-      <molecules-row-loading :loading="true" options="logout-user" />
+    <div v-if="globalLoading">
+      <molecules-row-loading :loading="globalLoading" options="user-logout" />
     </div>
     <div v-if="roles !== 'USER'">
       <sidebar />
@@ -24,13 +24,13 @@
   import Sidebar from "@/components/Sidebar/Sidebar.vue";
   import HeaderStats from "@/components/Headers/HeaderStats.vue";
   import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
-  import global from "~/mixins/global";
+  import globalMixin from "~/mixins/global";
 
-  Vue.mixin(global);
+  Vue.mixin(globalMixin);
   Vue.mixin(autoLogoutMixin);
 
   export default {
-    mixins: [autoLogoutMixin],
+    mixins: [autoLogoutMixin, globalMixin],
     name: "admin-layout",
     components: {
       AdminNavbar,
@@ -72,7 +72,6 @@
 
     mounted() {
       // document.addEventListener("visibilitychange", this.handleVisibilityChange);
-    // this.refreshFirst();
       this.checkExpires();
     },
 

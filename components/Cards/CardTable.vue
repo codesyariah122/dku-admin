@@ -83,6 +83,7 @@
           :columns="columns"
           @deleted-data="deletedData"
           :types="types"
+          :queryMiddle="queryMiddle"
         />
 
         <campaigns-category-campaign-cell
