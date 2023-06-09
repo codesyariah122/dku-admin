@@ -132,7 +132,7 @@ export default {
       this.$api.defaults.headers.common["Accept"] = "application/json";
       this.$api.defaults.headers.common[
         "Authorization"
-        ] = `Bearer ${token.user_token_login}`;
+        ] = `Bearer ${token}`;
       this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
       this.$api
       .post(endPoint)

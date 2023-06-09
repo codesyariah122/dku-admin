@@ -288,39 +288,41 @@ export default {
               this.errorUsers = true;
               this.error = true;
               this.form = {};
-              const roles = this.getRoles(data?.data?.roles[0].name);
-              const prepareLogin = data?.data?.logins;
-              const authToken = prepareLogin[0];
-              const savings = [
-                {
-                  expires_at: data?.data?.expires_at,
-                  remember_token: data?.data?.remember_token
-                }
-              ];
+              // const roles = this.getRoles(data?.data?.roles[0].name);
+              // const prepareLogin = data?.data?.logins;
+              // const authToken = prepareLogin[0];
+              // const savings = [
+              //   {
+              //     expires_at: data?.data?.expires_at,
+              //     remember_token: data?.data?.remember_token
+              //   }
+              // ];
 
               this.$swal({
-                title: data.message,
-                text: data.quote,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Force Logout!'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  this.errorLogin = ''
-                  this.errorUsers = false;
-                  this.error = false;
-                  this.form = {};
-                  this.forceLogout(authToken);
-                }
-              })
+                icon: "warning",
+                title: "Oops...",
+                text: data.message,
+              });
+              
+
+              // this.$swal({
+              //   title: data.message,
+              //   text: data.quote,
+              //   icon: 'warning',
+              //   showCancelButton: true,
+              //   confirmButtonColor: '#3085d6',
+              //   cancelButtonColor: '#d33',
+              //   confirmButtonText: 'Force Logout!'
+              // }).then((result) => {
+              //   if (result.isConfirmed) {
+              //     this.errorLogin = ''
+              //     this.errorUsers = false;
+              //     this.error = false;
+              //     this.form = {};
+              //     this.forceLogout(authToken);
+              //   }
+              // })
             }
-            // this.$swal({
-            //   icon: "warning",
-            //   title: "Oops...",
-            //   text: data.message,
-            // });
           }
         })
         .catch((err) => {

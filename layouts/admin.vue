@@ -80,26 +80,13 @@
     // },
 
     methods: {
-      handleVisibilityChange() {
-        if (document.hidden) {
-          console.log("Automatic logout")
-        // Panggil fungsi logout di sini
-          this.roleUserExit();
-        }
-      },
-
-      refreshFirst() {
-        const detectFirst = localStorage.getItem("refresh-first")
-        ? JSON.parse(localStorage.getItem("refresh-first"))
-        : null;
-        if (detectFirst?.reload) {
-          window.location.reload();
-          localStorage.removeItem("refresh-first");
-        } else {
-          console.log("no action");
-          localStorage.removeItem("refresh-first");
-        }
-      },
+      // handleVisibilityChange() {
+      //   if (document.hidden) {
+      //     console.log("Automatic logout")
+      //   // Panggil fungsi logout di sini
+      //     this.roleUserExit();
+      //   }
+      // },
 
       checkExpires() {
         if (this?.token !== null) {

@@ -1,0 +1,50 @@
+async asyncData({store, $api, params}) {
+		let {campaign} = {}
+
+		try {
+			const {authToken} = this.token;
+			const {slug} = params;
+			const endPoint = `/fitur/campaign-management/${slug}`;
+
+			console.log(authToken);
+
+			$api.setHeader('Authorization', `Bearer ${authToken}`);
+			$api.defaults.headers.common['Content-Type'] = 'application/json';
+			$api.defaults.headers.common['Dku-Api-Key'] = process.env.NUXT_ENV_APP_TOKEN;
+			const response = await $api.get(endPoint);
+
+			campaign = response.data
+		} catch(err) {
+			console.error(err);
+		}
+
+		return {
+			campaign
+		}
+	}
+
+
+
+	try {
+			const {authToken} = this.$data.myToken;
+			const {slug} = params;
+			const endPoint = `/fitur/campaign-management/${slug}`;
+
+			console.log(authToken);
+
+
+			$api.setHeader('Authorization', `Bearer ${authToken}`);
+			$api.defaults.headers.common['Content-Type'] = 'application/json';
+			$api.defaults.headers.common['Dku-Api-Key'] = process.env.NUXT_ENV_APP_TOKEN;
+			const response = await $api.get(endPoint);
+			const data = response.data;
+
+			return {
+				myData: data,
+			};
+		} catch(err) {
+			console.error(err);
+			return {
+				myData: null,
+			};
+		}

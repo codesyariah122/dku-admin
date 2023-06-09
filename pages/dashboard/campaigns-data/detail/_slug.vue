@@ -1,12 +1,8 @@
 <template>
   <div class="flex flex-wrap">
   	<div class="w-full lg:w-12/12 px-4">
-  		<!-- <cards-card-detail-data :detail="campaign.data" /> -->
+  		<cards-card-detail-data :detail="campaign" />
   	</div>
-  	<pre>
-
-
-  	</pre>
   </div>
 </template>
 
@@ -22,8 +18,21 @@ export default {
 	layout: 'admin',
 
 	async asyncData({params, $api}) {
-		const { slug } = params;
+		const store = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : null;
+		const {token} = store;
+		const {slug} = params;
+		const endPoint = `/fitur/campaign-management/${slug}`;
+
+		$api.setHeader('Authorization', `Bearer ${token}`);
+		$api.defaults.headers.common['Content-Type'] = 'application/json';
+		$api.defaults.headers.common['Dku-Api-Key'] = process.env.NUXT_ENV_APP_TOKEN;
+
+		const response = await $api.$get(endPoint);
+		const campaign = response?.data;
+
+		return {
+			campaign
+		}
 	}
-	
 }
 </script>

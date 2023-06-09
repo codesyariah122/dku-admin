@@ -33,11 +33,12 @@
           {{detail?.title}}
         </h3>
         <div class="mt-4 mb-4">
-          <img
+          <img v-if="detail.banner"
           alt="detail-campaign-banner"
           :src="`${image_url}/${detail?.banner}`"
-          class="shadow-xl h-auto"
+          class="shadow-xl h-auto w-full"
           />
+          <img v-else :src="require('~/assets/img/default.jpg')" class="shadow-xl h-auto w-full" alt="default-campaign-banner" />
         </div>
         <div
           class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase"
@@ -83,10 +84,6 @@ export default {
     return {
       image_url: process.env.NUXT_ENV_STORAGE_URL,
     };
-  },
-
-  mounted() {
-    console.log(this.detail)
   },
 
   methods: {
