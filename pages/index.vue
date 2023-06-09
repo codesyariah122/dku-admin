@@ -283,55 +283,24 @@ export default {
               //   );
             }, 1000);
           } else {
-            if(data?.is_login && data?.data?.logins) {
-              this.errorLogin = data.message;
-              this.errorUsers = true;
-              this.error = true;
-              this.form = {};
-              // const roles = this.getRoles(data?.data?.roles[0].name);
-              // const prepareLogin = data?.data?.logins;
-              // const authToken = prepareLogin[0];
-              // const savings = [
-              //   {
-              //     expires_at: data?.data?.expires_at,
-              //     remember_token: data?.data?.remember_token
-              //   }
-              // ];
-
-              this.$swal({
-                icon: "warning",
-                title: "Oops...",
-                text: data.message,
-              });
-              
-
-              // this.$swal({
-              //   title: data.message,
-              //   text: data.quote,
-              //   icon: 'warning',
-              //   showCancelButton: true,
-              //   confirmButtonColor: '#3085d6',
-              //   cancelButtonColor: '#d33',
-              //   confirmButtonText: 'Force Logout!'
-              // }).then((result) => {
-              //   if (result.isConfirmed) {
-              //     this.errorLogin = ''
-              //     this.errorUsers = false;
-              //     this.error = false;
-              //     this.form = {};
-              //     this.forceLogout(authToken);
-              //   }
-              // })
-            }
-          }
-        })
-        .catch((err) => {
-          console.log(err.response.data.message)
-          if (err?.response) {
+            this.errorLogin = data.message;
+            this.errorUsers = true;
+            this.error = true;
+            this.form = {};
             this.$swal({
               icon: "warning",
               title: "Oops...",
-              text: err.response.data.error ? err.response.data.message : err.message,
+              text: data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          if (err?.message === 'Request failed with status code 400') {
+            this.$swal({
+              icon: "warning",
+              title: "Oops...",
+              text: "Column email & password cannot be empty",
             });
 
             this.errorUsers = true;

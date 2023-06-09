@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-
       <cards-card-table
         color="dark"
         title="User Donation"
@@ -10,7 +9,7 @@
         types="user-data"
         :loading="loading"
         queryType="USER_DATA"
-        queryMiddle="users-data"
+        queryMiddle="users-donation"
         @deleted-data="deletedUser"
         @activation-user="activationUser"
       />
@@ -20,7 +19,6 @@
           <molecules-pagination :links="links" :paging="paging" @fetch-data="getUserData"/>
         </div>
       </div>
-
     </div>
 
     <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
@@ -39,7 +37,7 @@ import { getData, activateUser, deleteData } from "~/hooks/index";
 
 
 export default {
-  name: "uses-donation",
+  name: "users-donation",
   layout: "admin",
 
   data() {
@@ -187,10 +185,10 @@ export default {
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
-      .then(({data}) => {
-        if(data.deleted_at != null) {
+      .then((data) => {
+        if(data.success) {
           this.success = true;
-          this.message_success = this.dataNotifs[0].notif
+          this.scrollToTop();
         }
       })
       .finally(() => {

@@ -59,6 +59,7 @@
           v-if="types === 'user-data'"
           :columns="columns"
           :types="types"
+          :queryMiddle="queryMiddle"
           @deleted-data="deletedData"
           @activation-user="activationUser"
         />

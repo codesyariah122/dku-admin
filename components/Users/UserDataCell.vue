@@ -78,7 +78,17 @@
         v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
-        <dropdowns-table-dropdown @deleted-data="deletedData" @activation-user="activationUser" :id="column.id" :types="types" :username="username" :userStatus="{status: column.status, user_id: column.status === 'INACTIVE' ? column.id : null}" cellType="data"/>
+        <dropdowns-table-dropdown 
+          @deleted-data="deletedData"
+          @activation-user="activationUser"
+          :id="column.id"
+          :types="types"
+          :username="username"
+          :userStatus="{status: column.status, user_id: column.status === 'INACTIVE' ? column.id : null}"
+          cellType="data"
+          :queryMiddle="queryMiddle"
+          :queryData="column.username"
+        />
       </td>
     </tr>
   </tbody>
@@ -95,6 +105,10 @@ export default {
     },
     types: {
       type: String
+    },
+    queryMiddle: {
+      type: String,
+      default: ''
     },
   },
 

@@ -151,7 +151,7 @@ export default {
           this.globalLoading = false
         }, 500)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.message));
     },
 
     sesiLogout(roles) {

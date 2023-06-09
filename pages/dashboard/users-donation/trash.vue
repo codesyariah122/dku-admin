@@ -10,6 +10,8 @@
       :loading="loading"
       types="user-trash"
       queryType="USER_DATA"
+      :success="success"
+      :messageAlert="message_success"
       @deleted-data="deletedUser"
       @restored-data="restoreData"
       />
@@ -100,21 +102,25 @@
         this.loading = true
         this.options = 'delete-user';
         deleteData({
-          api_url: `${this.api_url}/fitur/user-management/${id}`,
+          api_url: `${this.api_url}/fitur/trashed/${id}?type=${this.queryParam}`,
           token: this.token.token,
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
-        .then(({data}) => {
-          if(data.deleted_at != null) {
+        .then((data) => {
+          if(data.success) {
             this.success = true;
-            this.message_success = this.dataNotifs[0].notif
+            if(this.totals > 1) {
+              this.scrollToTop();
+            } else {
+              this.$router.go(-1);
+            }
           }
         })
         .finally(() => {
           setTimeout(() => {
             this.loading = false
             this.options = ''
-          }, 1000)
+          }, 500)
         })
         .catch((err) => console.log(err))
       },
