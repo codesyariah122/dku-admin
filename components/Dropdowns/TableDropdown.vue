@@ -141,7 +141,7 @@ export default {
   },
 
   mounted() {
-    // console.log(this.queryMiddle)
+    // console.log(this.queryType)
   },
 
   methods: {

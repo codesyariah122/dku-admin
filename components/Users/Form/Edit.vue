@@ -42,14 +42,14 @@
 			</div>
 
 
-			<div class="w-full lg:w-6/12 px-4 py-6">
+			<!-- <div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="phone">Phone</label>
 
 					<vue-tel-input name="phone" id="phone" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 					placeholder="62+xxxx xxxx xxx" v-model="input.phone" style="height: 50px;"></vue-tel-input>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">					
@@ -179,7 +179,7 @@
 				this.input = {
 					name: prepare.name,
 					email: prepare.email,
-					phone: prepare.phone ? prepare.phone : '',
+					// phone: prepare.phone ? prepare.phone : '',
 					role: prepare.role,
 					status: prepare.status
 				}
@@ -201,6 +201,8 @@
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
 						prepareRoles = [...roles];
+						const roleNameEdit = roles.filter((role) => role.id === this.input.role)[0].name;
+						this.roleNameEdit = this.$role(roleNameEdit);
 					}
 					this.roles = [...prepareRoles]
 				})
@@ -224,7 +226,7 @@
 					name: this.input.name,
 					email: this.input.email,
 					password: this.input.password,
-					phone: this.input.phone,
+					// phone: this.input.phone,
 					role: this.input.role,
 					status: this.input.status
 				}
@@ -240,7 +242,6 @@
 				
 				this.$api.put(endPoint, postData)
 				.then(({data}) => {
-					console.log(data)
 					if(data.success) {
 						this.success = true;
 						this.message_success=data.message
@@ -271,6 +272,7 @@
 						this.message_success = this.messageNotif;
 					}
 					this.getTotalUser();
+					this.setUpUserEdit();
 				}
 			},
 		}
