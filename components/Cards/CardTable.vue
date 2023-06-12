@@ -13,7 +13,7 @@
             {{ title }} <i v-if="queryParam" class="fa-solid fa-trash-can-arrow-up text-lg"></i> 
           </h3>
         </div>
-        <div v-if="!queryParam && types !== 'user-role'">
+        <div v-if="!queryParam && types !== 'user-role' && queryRole !== 'USER'">
           <button type="button" @click="
             $router.push({
               path: `/dashboard/${queryMiddle}/add`
@@ -22,7 +22,7 @@
         </div>
 
         <div v-else>
-          <button
+          <button v-if="types !== 'user-data'"
           @click="backTo"
           class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
             >
@@ -35,7 +35,8 @@
           $router.push({
             path: `/dashboard/${queryMiddle}/trash`,
             query: {
-              type: queryType
+              type: queryType,
+              roles: queryRole
             }
           }) : null;
           " class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
@@ -60,6 +61,7 @@
           :columns="columns"
           :types="types"
           :queryMiddle="queryMiddle"
+          :queryRole="queryRole"
           @deleted-data="deletedData"
           @activation-user="activationUser"
         />
@@ -146,6 +148,10 @@ export default {
       type: String,
       default: ''
     },
+    queryRole: {
+      type: String,
+      default: ''
+    },
     queryMiddle: {
       type: String,
       default: ''
@@ -174,6 +180,7 @@ export default {
 
   mounted() {
     this.totalTrash();
+    console.log(this.queryRole);
   },
 
   methods: {
@@ -194,7 +201,7 @@ export default {
 
     totalTrash() {
       totalTrash({
-        api_url: `${this.api_url}/fitur/trashed?type=${this.queryType}`,
+        api_url: `${this.api_url}/fitur/trashed?type=${this.queryType}${this.queryRole ? '&roles='+this.queryRole : ''}`,
         api_key: process.env.NUXT_ENV_APP_TOKEN,
         token: this.token.token
       })

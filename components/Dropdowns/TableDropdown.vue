@@ -16,7 +16,7 @@
       }"
     >
       <button
-        v-if="queryMiddle !== 'users-data'"
+       
         @click="detailDataRedirect(queryData)"
         role="button"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
@@ -140,8 +140,6 @@ export default {
         createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
           placement: "bottom-start",
         });
-
-          // Menambahkan event listener pada dokumen
         document.addEventListener("click", this.hideDropdown);
       } else {
           // Menghapus event listener dari dokumen

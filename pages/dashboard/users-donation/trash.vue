@@ -76,7 +76,7 @@
 
       getUserTrash() {
         totalTrash({
-        api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
+        api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}&roles=USER`,
         api_key: process.env.NUXT_ENV_APP_TOKEN,
         token: this.token.token
         })

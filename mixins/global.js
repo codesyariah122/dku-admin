@@ -3,8 +3,6 @@
  * @globals: method reusable for any component and any source
  */
 
-import { createPopper } from "@popperjs/core";
-
 export default {
   data() {
     return {
@@ -190,6 +188,7 @@ export default {
         denyButtonText: `Batal`,
       }).then((result) => {
         if (result.isConfirmed) {
+          console.log("Ya")
           this.globalLoading = true;
           const endPoint = `/auth/logout`;
           this.$api.defaults.headers.common["Accept"] = "application/json";
@@ -215,6 +214,7 @@ export default {
               }, 500);
             });
         } else if (result.isDenied) {
+          this.globalLoading = false;
           this.$swal("Changes are not saved", "", "info");
         }
       });
@@ -306,6 +306,6 @@ export default {
       if (this.$_.size(this.notifs) > 0) {
         console.log(":CREATED");
       }
-    },
+    }
   },
 };

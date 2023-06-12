@@ -95,7 +95,7 @@ export default {
       this.dropdownPopoverShow = !this.dropdownPopoverShow;
 
       if (this.dropdownPopoverShow) {
-        createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
+        createPopper(this.$refs?.btnDropdownRef, this.$refs?.popoverDropdownRef, {
           placement: "bottom-start",
         });
 
@@ -112,8 +112,8 @@ export default {
 
         // Mengecek apakah elemen yang diklik berada di luar elemen referensi dan elemen popover
         if (
-          !this.$refs.btnDropdownRef.contains(targetElement) &&
-          !this.$refs.popoverDropdownRef.contains(targetElement)
+          !this.$refs?.btnDropdownRef.contains(targetElement) &&
+          !this.$refs?.popoverDropdownRef.contains(targetElement)
           ) {
           this.dropdownPopoverShow = false;
 

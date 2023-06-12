@@ -11,6 +11,7 @@
       :userName="userName"
       types="user-data"
       queryType="USER_DATA"
+      queryRole="DASHBOARD"
       queryMiddle="users-data"
       :success="success"
       :messageAlert="message_success"

@@ -9,6 +9,7 @@
         types="user-data"
         :loading="loading"
         queryType="USER_DATA"
+        queryRole="USER"
         queryMiddle="users-donation"
         @deleted-data="deletedUser"
         @activation-user="activationUser"

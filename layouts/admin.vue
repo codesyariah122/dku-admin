@@ -48,8 +48,7 @@
         userEmail: "",
         userName: "",
         userRoles: "",
-        emailForbaiden: "",
-
+        emailForbaiden: ""
       };
     },
 
@@ -73,7 +72,7 @@
     mounted() {
       // document.addEventListener("visibilitychange", this.handleVisibilityChange);
       this.checkExpires();
-      console.log(this.$refs.layoutRef.$children[1].$refs.popoverDropdownRef)
+      console.log(this.globalLoading)
     },
 
     // beforeDestroy() {

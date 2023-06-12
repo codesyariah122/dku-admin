@@ -10,6 +10,7 @@
       :loading="loading"
       types="user-trash"
       queryType="USER_DATA"
+      queryRole="DASHBOARD"
       :success="success"
       :messageAlert="message_success"
       @close-alert="closeSuccessAlert"
@@ -64,7 +65,7 @@
     methods: {
       getUserTrash() {
         totalTrash({
-          api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
+          api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}&roles=DASHBOARD`,
           api_key: process.env.NUXT_ENV_APP_TOKEN,
           token: this.token.token
         })

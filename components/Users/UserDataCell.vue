@@ -110,6 +110,10 @@ export default {
       type: String,
       default: ''
     },
+    queryRole: {
+      type: String,
+      default: ''
+    },
   },
 
   data() {
