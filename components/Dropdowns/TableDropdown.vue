@@ -3,8 +3,7 @@
     <a
       class="text-blueGray-400 py-1 px-6 font-bold text-lg"
       href="#!"
-      ref="btnDropdownRef"
-      v-on:click="toggleDropdown($event)"
+      @click="toggleDropdown" ref="btnDropdownRef"
     >
       <i class="fas fa-ellipsis-v"></i>
     </a>
@@ -133,15 +132,34 @@ export default {
   },
 
   methods: {
-    toggleDropdown: function (event) {
-      event.preventDefault();
+    toggleDropdown(event) {
+      event.preventDefault()
+      this.dropdownPopoverShow = !this.dropdownPopoverShow;
+
       if (this.dropdownPopoverShow) {
-        this.dropdownPopoverShow = false;
-      } else {
-        this.dropdownPopoverShow = true;
         createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
-          placement: "top-end",
+          placement: "bottom-start",
         });
+
+          // Menambahkan event listener pada dokumen
+        document.addEventListener("click", this.hideDropdown);
+      } else {
+          // Menghapus event listener dari dokumen
+        document.removeEventListener("click", this.hideDropdown);
+      }
+    },
+
+    hideDropdown(event) {
+        const targetElement = event.target;
+
+        if (
+          !this.$refs.btnDropdownRef.contains(targetElement) &&
+          !this.$refs.popoverDropdownRef.contains(targetElement)
+          ) {
+          this.dropdownPopoverShow = false;
+
+          // Menghapus event listener dari dokumen
+        document.removeEventListener("click", this.hideDropdown);
       }
     },
 

@@ -3,6 +3,8 @@
  * @globals: method reusable for any component and any source
  */
 
+import { createPopper } from "@popperjs/core";
+
 export default {
   data() {
     return {

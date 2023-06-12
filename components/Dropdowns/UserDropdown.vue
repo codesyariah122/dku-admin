@@ -3,8 +3,7 @@
     <a
       class="text-blueGray-500 block"
       href="!#"
-      ref="btnDropdownRef"
-      v-on:click="toggleDropdown($event)"
+      @click="toggleDropdown" ref="btnDropdownRef"
     >
       <div class="items-center flex">
         <span
@@ -91,17 +90,38 @@ export default {
   },
 
   methods: {
-    toggleDropdown: function (event) {
-      event.preventDefault();
+    toggleDropdown(event) {
+      event.preventDefault()
+      this.dropdownPopoverShow = !this.dropdownPopoverShow;
+
       if (this.dropdownPopoverShow) {
-        this.dropdownPopoverShow = false;
-      } else {
-        this.dropdownPopoverShow = true;
         createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
           placement: "bottom-start",
         });
+
+          // Menambahkan event listener pada dokumen
+        document.addEventListener("click", this.hideDropdown);
+      } else {
+          // Menghapus event listener dari dokumen
+        document.removeEventListener("click", this.hideDropdown);
       }
     },
+
+    hideDropdown(event) {
+        const targetElement = event.target;
+
+        // Mengecek apakah elemen yang diklik berada di luar elemen referensi dan elemen popover
+        if (
+          !this.$refs.btnDropdownRef.contains(targetElement) &&
+          !this.$refs.popoverDropdownRef.contains(targetElement)
+          ) {
+          this.dropdownPopoverShow = false;
+
+          // Menghapus event listener dari dokumen
+        document.removeEventListener("click", this.hideDropdown);
+      }
+    },
+
 
     checkNewData() {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(

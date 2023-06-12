@@ -3,10 +3,10 @@
     <div v-if="globalLoading">
       <molecules-row-loading :loading="globalLoading" options="user-logout" />
     </div>
-    <div v-if="roles !== 'USER'">
+    <div v-else>
       <sidebar />
       <div class="relative md:ml-64 bg-blueGray-100">
-        <admin-navbar />
+        <admin-navbar ref="layoutRef"/>
         <header-stats />
 
         <div class="px-4 md:px-10 mx-auto w-full -m-24 py-6">
@@ -73,6 +73,7 @@
     mounted() {
       // document.addEventListener("visibilitychange", this.handleVisibilityChange);
       this.checkExpires();
+      console.log(this.$refs.layoutRef.$children[1].$refs.popoverDropdownRef)
     },
 
     // beforeDestroy() {
