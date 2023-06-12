@@ -17,12 +17,18 @@
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
       
       <users-form-add 
-        v-if="pageType === 'userData'"
-        @detail-data="detailData" 
+        v-if="methodType === 'add'"
+        @detail-data="detailData"
+        :type="type"
       />
 
       <campaigns-form-add 
-        v-if="pageType === 'campaignData'"
+        v-if="pageType === 'campaignData' && methodType === 'add'"
+        @detail-data="detailData"
+      />
+
+      <users-form-edit
+        v-if="methodType === 'edit'"
         @detail-data="detailData"
       />
 
@@ -45,7 +51,11 @@
       title: {
         type: String,
         default: null
-      }
+      },
+      type: {
+        type: String,
+        default: null
+      },
     },
 
     methods: {

@@ -4,7 +4,7 @@
 		<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-			New user data
+			Edit user data
 		</h6>
 
 		<div class="flex flex-wrap">
@@ -84,7 +84,7 @@
 						Role User
 					</label>
 					<select @change="changeRoles($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected v-if="type !== 'USER'">Choose a role</option>
+						<option selected>Choose a role</option>
 						<option v-for="role in roles" :key="role.id" :value="role.id">
 							{{$role(role.name)}}
 						</option>
@@ -146,12 +146,6 @@
 	import {getData} from '~/hooks/index'
 
 	export default {
-		props: {
-			type: {
-				type: String,
-				default: null
-			},
-		},
 		data() {
 			return {
 				loading: null,
@@ -201,26 +195,7 @@
 					api_key: this.api_token
 				})
 				.then(({data}) => {
-					let prepareRoles = [];
-					console.log(this.type);
-					if(this.type === 'DASHBOARD') {					
-						data.data.map((role) => {
-							if(this.$role(role.name) !== this.type) {
-								prepareRoles.push(
-									{id: role.id, name: role.name}
-								)
-							}
-						})
-					} else {
-						data.data.map((role) => {
-							if(this.$role(role.name) === this.type) {
-								prepareRoles.push(
-									{id: role.id, name: role.name}
-								)
-							}
-						})
-					}
-					this.roles = [...prepareRoles]
+					this.roles = [...data.data]
 				})
 				.catch((err) => console.log(err))
 			},

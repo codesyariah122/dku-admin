@@ -3,8 +3,9 @@
     <div class="w-full lg:w-8/12 px-4">
       <cards-card-settings 
         pageType="userData"
-        title="Add New User"
+        title="Add New User Donation"
         methodType="add"
+        :type="type"
       />
     </div>
     <div class="w-full lg:w-4/12 px-4">
@@ -29,7 +30,8 @@
 
     data() {
       return {
-        routeName: this.$route.name.split('-').pop()
+        routeName: this.$route.name.split('-').pop(),
+        type: this.$route.query['type']
       };
     }
   };

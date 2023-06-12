@@ -16,10 +16,9 @@
       <cards-card-settings 
       pageType="userData"
       link="users-data"
-      title="Add New User Dashboard Admin"
-      methodType="add"
+      :title="`Edit User ${param}`"
+      methodType="edit"
       @detail-data="detailUser"
-      :type="type"
       />
     </div>
 
@@ -35,7 +34,7 @@
   import { getData } from "~/hooks/index";
 
   export default {
-    name: "users-data-add",
+    name: "users-data-edit",
     layout: "admin",
 
     data() {
@@ -44,7 +43,7 @@
         loadingDetail: null,
         successNew: null,
         detail: {},
-        type: this.$route.query['type']
+        param: this.$route.params.username
       };
     },
 
@@ -58,7 +57,7 @@
 
     mounted() {
       this.detailUser(this.formData ? this.formData.data[0] : '');
-      console.log(this.type);
+      console.log(this.param);
     },
 
     methods: {

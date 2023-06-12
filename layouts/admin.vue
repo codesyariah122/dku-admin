@@ -72,7 +72,6 @@
     mounted() {
       // document.addEventListener("visibilitychange", this.handleVisibilityChange);
       this.checkExpires();
-      console.log(this.globalLoading)
     },
 
     // beforeDestroy() {

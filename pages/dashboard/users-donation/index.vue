@@ -13,6 +13,9 @@
         queryMiddle="users-donation"
         @deleted-data="deletedUser"
         @activation-user="activationUser"
+        @close-alert="closeSuccessAlert"
+        :success="success"
+        :messageAlert="message_success"
       />
 
       <div class="mt-12 mb-1">
@@ -21,8 +24,6 @@
         </div>
       </div>
     </div>
-
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 
   </div>
 </template>
@@ -211,6 +212,7 @@ export default {
         data: this.activation_id ? this.activation_id : null
       })
       .then(({data}) => {
+        console.log(data);
         if(data.status === 'ACTIVE') {
           this.success = true;
           this.message_success = `${data.name}, berhasil di aktivasi !`

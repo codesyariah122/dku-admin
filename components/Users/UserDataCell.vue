@@ -87,6 +87,8 @@
           :userStatus="{status: column.status, user_id: column.status === 'INACTIVE' ? column.id : null}"
           cellType="data"
           :queryMiddle="queryMiddle"
+          queryType="DASHBOARD"
+          :param="column.username"
           :queryData="column.username"
         />
       </td>

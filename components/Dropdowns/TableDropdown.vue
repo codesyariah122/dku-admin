@@ -9,79 +9,83 @@
     </a>
     <div v-if="cellType === 'data'"
       ref="popoverDropdownRef"
-      class="bg-white text-base z-50 py-2 list-none text-left rounded shadow-lg min-w-48"
+       class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
       v-bind:class="{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
       }"
     >
-      <button
-       
-        @click="detailDataRedirect(queryData)"
-        role="button"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-binoculars text-blue-700"></i> &nbsp;&nbsp;Detailed Data
-      </button>
+      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+        <li>
+          <button
 
-      <div class="h-0 my-2 border border-solid border-blueGray-100" />
-
-      <button
-        v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
-        @click.prevent="deletedData"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
-      </button>
-
-      <div class="h-0 my-2 border border-solid border-blueGray-100" />
-
-      <button
-        v-if="username === 'super_admin' && types !== 'user-role'"
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
-      </button>
-
-      <div class="h-0 my-2 border border-solid border-blueGray-100" />
-
-      <button
-        v-if="userStatus.status === 'INACTIVE'"
-        @click.prevent="activationUser(userStatus.user_id)"
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-file-shield"></i> &nbsp;&nbsp;Activasi
-      </button>
+            @click="detailDataRedirect(queryData)"
+            role="button"
+            class="text-sm py-2 px-4 font-normal block w-full bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+            >
+            <i class="fa-solid fa-binoculars text-blue-700"></i> &nbsp;&nbsp;Detailed Data
+          </button>
+        </li>
+        <li>
+          <button
+            v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
+            @click.prevent="deletedData"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+            >
+            <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
+          </button>
+        </li>
+        <li>
+          <button
+            v-if="username === 'super_admin' && types !== 'user-role'"
+            @click="editUserPage"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+            >
+            <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
+          </button>
+        </li>
+        <li>
+          <button
+            v-if="userStatus.status === 'INACTIVE'"
+            @click.prevent="activationUser(userStatus.user_id)"
+            href="javascript:void(0);"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+            >
+            <i class="fa-solid fa-file-shield"></i> &nbsp;&nbsp;Activasi
+          </button>
+        </li>
+      </ul>
     </div>
 
     <div v-if="cellType === 'trash'"
       ref="popoverDropdownRef"
-      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+      class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
       v-bind:class="{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
       }"
     >
-      <button
-        v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
-        @click="restoredData"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-trash-can-arrow-up text-blue-700"></i> &nbsp;&nbsp;Restored
-      </button>
+     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+        <li>      
+          <button
+            v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
+            @click="restoredData"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+          >
+            <i class="fa-solid fa-trash-can-arrow-up text-blue-700"></i> &nbsp;&nbsp;Restored
+          </button>
+        </li>
 
-      <div class="h-0 my-2 border border-solid border-blueGray-100" />
-
-      <button
-        v-if="username === 'super_admin' && types !== 'user-role'"
-        @click="deletedData"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
-      >
-        <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Destroy
-      </button>
-
+        <li>      
+          <button
+            v-if="username === 'super_admin' && types !== 'user-role'"
+            @click="deletedData"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+          >
+            <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Destroy
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -92,12 +96,15 @@ export default {
   props: {
     id: {
       type: Number,
+      default: ''
     },
     types: {
       type: String,
+      default: ''
     },
     username: {
       type: String,
+      default: ''
     },
     userStatus: {
       type: Object,
@@ -116,10 +123,18 @@ export default {
       type: String,
       default: ''
     },
+    queryType: {
+      type: String,
+      default: ''
+    },
     queryData: {
       type: String,
       default: ''
     },
+    param: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -155,11 +170,20 @@ export default {
           !this.$refs.popoverDropdownRef.contains(targetElement)
           ) {
           this.dropdownPopoverShow = false;
-
           // Menghapus event listener dari dokumen
         document.removeEventListener("click", this.hideDropdown);
       }
     },
+
+    editUserPage() {
+      this.$router.push({
+        'path': `/dashboard/${this.queryMiddle}/edit/${this.param}`,
+        query: {
+          type: this.queryType
+        }
+      })
+    },
+
 
     deletedData() {
       this.$emit("deleted-data", this.id);
