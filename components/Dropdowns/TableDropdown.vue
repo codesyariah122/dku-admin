@@ -16,9 +16,8 @@
       }"
     >
       <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-        <li>
+        <li v-if="types !== 'user-role'">
           <button
-
             @click="detailDataRedirect(queryData)"
             role="button"
             class="text-sm py-2 px-4 font-normal block w-full bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
@@ -35,7 +34,7 @@
             <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
           </button>
         </li>
-        <li>
+        <li v-if="userStatus.status === 'ACTIVE'">
           <button
             v-if="username === 'super_admin' && types !== 'user-role'"
             @click="editUserPage"
@@ -44,14 +43,13 @@
             <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
           </button>
         </li>
-        <li>
+        <li v-if="userStatus.status === 'INACTIVE'">
           <button
-            v-if="userStatus.status === 'INACTIVE'"
             @click.prevent="activationUser(userStatus.user_id)"
             href="javascript:void(0);"
             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
-            <i class="fa-solid fa-file-shield"></i> &nbsp;&nbsp;Activasi
+            <i class="fa-solid fa-file-shield text-orange-500"></i> &nbsp;&nbsp;Activasi
           </button>
         </li>
       </ul>

@@ -202,23 +202,12 @@
 				})
 				.then(({data}) => {
 					let prepareRoles = [];
-					console.log(this.type);
 					if(this.type === 'DASHBOARD') {					
-						data.data.map((role) => {
-							if(this.$role(role.name) !== this.type) {
-								prepareRoles.push(
-									{id: role.id, name: role.name}
-								)
-							}
-						})
+						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
+						prepareRoles = [...roles];
 					} else {
-						data.data.map((role) => {
-							if(this.$role(role.name) === this.type) {
-								prepareRoles.push(
-									{id: role.id, name: role.name}
-								)
-							}
-						})
+						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
+						prepareRoles = [...roles];
 					}
 					this.roles = [...prepareRoles]
 				})

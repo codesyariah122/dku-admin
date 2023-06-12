@@ -202,6 +202,7 @@
         .then(({data}) => {
           if(data.status === 'ACTIVE') {
             this.success = true;
+            this.message_success = `${data.name}, berhasil di aktivasi !`
           }
         })
         .finally(() => {

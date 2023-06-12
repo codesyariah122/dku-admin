@@ -29,7 +29,8 @@
 
       <users-form-edit
         v-if="methodType === 'edit'"
-        @detail-data="detailData"
+        :type="type"
+        :detail="data"
       />
 
     </div>
@@ -55,6 +56,12 @@
       type: {
         type: String,
         default: null
+      },
+      data: {
+        type: Object,
+        default: function() {
+          return {}
+        }
       },
     },
 

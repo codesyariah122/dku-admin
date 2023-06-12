@@ -98,13 +98,15 @@ export default {
     },
 
     roleUserExit() {
-      const endPoint = `/auth/logout`;
-      this.$api.defaults.headers.common["Accept"] = "application/json";
-      this.$api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${this.token.token}`;
-      // this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
-      this.$api
+      try {        
+        const endPoint = `/auth/logout`;
+        this.$api.defaults.headers.common["Accept"] = "application/json";
+        this.$api.defaults.headers.common[
+          "Authorization"
+          ] = `Bearer ${this.token.token}`;
+        this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
+        
+        this.$api
         .post(endPoint)
         .then(({ data }) => {
           if (data.success) {
@@ -124,6 +126,9 @@ export default {
           }
         })
         .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err)
+      }
     },
 
     forceLogout(token) {
@@ -180,23 +185,23 @@ export default {
     },
 
     logout() {
-      this.$swal({
-        title: `kamu akan segera keluar dari Dashboard ${this.roles} ?`,
-        showDenyButton: false,
-        showCancelButton: true,
-        confirmButtonText: "Keluar",
-        denyButtonText: `Batal`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log("Ya")
-          this.globalLoading = true;
-          const endPoint = `/auth/logout`;
-          this.$api.defaults.headers.common["Accept"] = "application/json";
-          this.$api.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${this.token.token}`;
-          this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
-          this.$api
+      try {
+        this.$swal({
+          title: `kamu akan segera keluar dari Dashboard ${this.roles} ?`,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Keluar",
+          denyButtonText: `Batal`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.globalLoading = true;
+            const endPoint = `/auth/logout`;
+            this.$api.defaults.headers.common["Accept"] = "application/json";
+            this.$api.defaults.headers.common[
+              "Authorization"
+              ] = `Bearer ${this.token.token}`;
+            this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
+            this.$api
             .post(endPoint)
             .then(({ data }) => {
               if (data.success) {
@@ -213,25 +218,29 @@ export default {
                 this.globalLoading = false;
               }, 500);
             });
-        } else if (result.isDenied) {
-          this.globalLoading = false;
-          this.$swal("Changes are not saved", "", "info");
-        }
-      });
+          } else if (result.isDenied) {
+            this.globalLoading = false;
+            this.$swal("Changes are not saved", "", "info");
+          }
+        });
+      } catch (err) {
+        console.log(err)
+      }
     },
 
     checkUserLogin() {
-      if (this?.token !== null) {
-        const endPoint = `/fitur/user-profile`;
-        const config = {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${this?.token?.token}`,
-            'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
-          },
-        };
-        this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
-        this.$api
+      try {
+        if (this?.token !== null) {
+          const endPoint = `/fitur/user-profile`;
+          const config = {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${this?.token?.token}`,
+              'Dku-Api-Key': process.env.NUXT_ENV_APP_TOKEN
+            },
+          };
+          this.$api.defaults.headers.common["Dku-Api-Key"] = process.env.NUXT_ENV_APP_TOKEN;
+          this.$api
           .get(endPoint, config)
           .then(({ data }) => {
             this.userData = {...data.data[0]}
@@ -247,13 +256,16 @@ export default {
           .catch((err) => {
             console.log(err)
           });
-      } else {
-        this.$swal({
-          icon: "error",
-          title: "Oops...",
-          text: "Error Access!",
-        });
-        this.$router.replace("/");
+        } else {
+          this.$swal({
+            icon: "error",
+            title: "Oops...",
+            text: "Error Access!",
+          });
+          this.$router.replace("/");
+        }
+      } catch (err) {
+        console.log(err)
       }
     },
 

@@ -1,7 +1,9 @@
 <template>
-	<form @submit.prevent="AddNewUser">
+	<form @submit.prevent="updateUser">
 
-		<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+		<div v-if="success">
+			<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+		</div>
 
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
 			Edit user data
@@ -39,35 +41,6 @@
 				</div>
 			</div>
 
-			<div class="w-full lg:w-6/12 px-4 py-6">
-				<div class="relative">
-					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="password">Password</label>
-					<input
-					@keyup="() => validations.password = ''"
-					id="password"
-					:class="`${
-						error
-						? 'pass1 h-12 w-full rounded-lg outline-none p-2 border border-solid border-red-600 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-red-600 focus:outline-red-600'
-						: 'pass1 h-12 w-full border mt-0 rounded-lg outline-none p-2'
-					}`"
-					type="password"
-					placeholder="Password"
-					v-model="input.password"
-					/>
-					<i
-					@click="showingPassword"
-					:class="`fa ${
-						hidePassword ? 'fa-eye-slash' : 'fa-eye'
-					} eye_1 absolute top-[40px] right-3 cursor-pointer`"
-					></i>
-				</div>
-				<div v-if="validations.password" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-					<i class="fa-solid fa-circle-info"></i>
-					<div class="px-2">
-						{{validations.password[0]}}
-					</div>
-				</div>
-			</div>
 
 			<div class="w-full lg:w-6/12 px-4 py-6">
 				<div class="relative">
@@ -84,8 +57,8 @@
 						Role User
 					</label>
 					<select @change="changeRoles($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected>Choose a role</option>
-						<option v-for="role in roles" :key="role.id" :value="role.id">
+						<option selected :value="input.role">{{roleNameEdit}}</option>
+						<option v-for="role in roles.filter(role => role.id !== input.role)" :key="role.id" :value="role.id">
 							{{$role(role.name)}}
 						</option>
 					</select>
@@ -104,9 +77,8 @@
 						Status User
 					</label>
 					<select @change="changeStatus($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected>Choose a status</option>
-						<option value="ACTIVE">
-							ACTIVE
+						<option selected :value="input.status">
+							{{input.status}}
 						</option>
 						<option value="INACTIVE">
 							INACTIVE
@@ -130,7 +102,7 @@
 						</svg>
 						Loading...
 					</div>
-					<span v-else><i class="fa-solid fa-plus"></i> Add User</span>
+					<span v-else><i class="fa-solid fa-plus"></i> Update User</span>
 				</button>
 			</div>
 		</div>
@@ -146,6 +118,19 @@
 	import {getData} from '~/hooks/index'
 
 	export default {
+		props: {
+			type: {
+				type: String,
+				default: null
+			},
+			detail: {
+				type: Object,
+				default: function() {
+					return {}
+				}
+			}
+		},
+
 		data() {
 			return {
 				loading: null,
@@ -154,6 +139,7 @@
 				api_url: process.env.NUXT_ENV_API_URL,
 				api_token: process.env.NUXT_ENV_APP_TOKEN,
 				roles: [],
+				roleNameEdit: '',
 				error: null,
 				input: {},
 				validations: [],
@@ -168,6 +154,7 @@
 
 		mounted() {
 			this.getRoleLists();
+			this.setUpUserEdit();
 		},
 
 		methods: {
@@ -185,7 +172,17 @@
 			closeSuccessAlert() {
 				this.success = false;
 				this.message = '';
-				this.detailUser();
+			},
+
+			setUpUserEdit() {
+				const prepare = this.detail.users.map((user) => user)[0];
+				this.input = {
+					name: prepare.name,
+					email: prepare.email,
+					phone: prepare.phone ? prepare.phone : '',
+					role: prepare.role,
+					status: prepare.status
+				}
 			},
 
 			getRoleLists() {
@@ -195,7 +192,17 @@
 					api_key: this.api_token
 				})
 				.then(({data}) => {
-					this.roles = [...data.data]
+					let prepareRoles = [];
+					if(this.type === 'DASHBOARD') {					
+						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
+						prepareRoles = [...roles];
+						const roleNameEdit = roles.filter((role) => role.id === this.input.role)[0].name;
+						this.roleNameEdit = this.$role(roleNameEdit);
+					} else {
+						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
+						prepareRoles = [...roles];
+					}
+					this.roles = [...prepareRoles]
 				})
 				.catch((err) => console.log(err))
 			},
@@ -210,9 +217,9 @@
 				this.input.status = e.target.value
 			},
 
-			AddNewUser() {
+			updateUser() {
 				this.loading = true;
-				this.options = 'add-user';
+				this.options = 'edit-user';
 				const postData = {
 					name: this.input.name,
 					email: this.input.email,
@@ -221,7 +228,7 @@
 					role: this.input.role,
 					status: this.input.status
 				}
-				const endPoint = `/fitur/user-management`;
+				const endPoint = `/fitur/user-management/${this.detail.username}`;
 				const config = {
 					headers: {
 						Accept: "application/json",
@@ -231,32 +238,29 @@
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
 				
-				this.$api.post(endPoint, postData)
+				this.$api.put(endPoint, postData)
 				.then(({data}) => {
-					// console.log(data)
+					console.log(data)
 					if(data.success) {
 						this.success = true;
+						this.message_success=data.message
 						this.scrollToTop();
-						this.detailUser(data?.profiles[0]);
-						this.$store.dispatch('success/storeSuccessFormData', data?.profiles[0]);
 					}
 				})
 				.finally(() => {
 					setTimeout(() => {
 						this.loading = false;
 						this.options = '';
-						this.input = {}
-						this.input.role = ''
-						this.input.status = ''
 					}, 1000)
 				})
 				.catch((err) => {
-					this.validations = err.response.data;
+					console.log(err);
 				})
 			},
 
-			detailUser(username) {
-				this.$emit('detail-data', username)
+			colseAlert() {
+				this.success = false;
+				this.message_success = ''
 			}
 		},
 

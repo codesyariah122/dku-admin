@@ -1,24 +1,15 @@
 <template>
   <div class="flex flex-wrap">
 
-    <div v-if="successNew" :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
-      <cards-card-profile 
-      pageType="userData"
-      link="users-data"
-      title="Add New User"
-      methodType="add"
-      :successNew="successNew"
-      :detail="detail"
-      />
-    </div>
-
-    <div v-else :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
+    <div :class="`w-full ${routeName === 'edit' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-settings 
       pageType="userData"
       link="users-data"
       :title="`Edit User ${param}`"
       methodType="edit"
       @detail-data="detailUser"
+      :type="type"
+      :data="detail"
       />
     </div>
 
@@ -40,70 +31,35 @@
     data() {
       return {
         routeName: this.$route.name.split('-').pop(),
-        loadingDetail: null,
-        successNew: null,
-        detail: {},
-        param: this.$route.params.username
+        param: this.$route.params.username,
+        type: this.$route.query['type'],
       };
     },
 
-    beforeMount() {
-      this.storedFormData();
-    },
 
-    created() {
-      this.dataManagementEvent();
-    },
+    async asyncData({params, $api}) {
+      try {        
+        const store = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : null;
+        const {token} = store;
+        const {username} = params;
+        const endPoint = `/fitur/user-management/${username}`;
 
-    mounted() {
-      this.detailUser(this.formData ? this.formData.data[0] : '');
-      console.log(this.param);
-    },
+        $api.setHeader('Authorization', `Bearer ${token}`);
+        $api.defaults.headers.common['Content-Type'] = 'application/json';
+        $api.defaults.headers.common['Dku-Api-Key'] = process.env.NUXT_ENV_APP_TOKEN;
+        const response = await $api.$get(endPoint);
+        const detail = response?.data;
 
-    methods: {
-      storedFormData() {
-        this.$store.dispatch('success/storedFormData', 'success-form');
-      },
-
-      detailUser(username = '') {
-        this.loadingDetail = true
-
-        if(username) {          
-          getData({
-            api_url: `${this.api_url}/fitur/user-management/${username}`,
-            token: this.token.token,
-            api_key: process.env.NUXT_ENV_APP_TOKEN
-          })
-          .then(({data}) => {
-            // console.log(data)
-            if(data) {
-              this.successNew = true
-              this.detail = data
-            }
-          })
-          .finally(() => {
-            setTimeout(() => {
-              this.loadingDetail = false
-            }, 500)
-          })
-          .catch((err) => console.log(err));
+        return {
+          detail
+        }
+      } catch (err) {
+        console.log(err)
+        return {
+          detail: {}
         }
       }
-    },
 
-    computed: {
-      formData() {
-        return this.$store.getters['success/formData'];
-      }
-    },
-
-    watch: {
-      dataNotifs() {
-        if (this.dataNotifs && this.$_.size(this.dataNotifs) > 0) {
-          this.storedFormData();
-          this.detailUser(this.formData ? this.formData.data[0] : '')
-        }
-      },
     }
 
   };

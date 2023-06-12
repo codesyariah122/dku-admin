@@ -58,7 +58,7 @@
 
     mounted() {
       this.detailUser(this.formData ? this.formData.data[0] : '');
-      console.log(this.type);
+      console.log(this.routeName);
     },
 
     methods: {
