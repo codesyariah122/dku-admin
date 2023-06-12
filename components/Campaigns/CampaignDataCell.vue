@@ -83,6 +83,7 @@
           cellType="data"
           :queryMiddle="queryMiddle"
           :queryData="column.slug"
+          :param="column.slug"
         />
       </td>
     </tr>

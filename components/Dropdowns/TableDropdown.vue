@@ -34,10 +34,17 @@
             <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
           </button>
         </li>
-        <li v-if="userStatus.status === 'ACTIVE'">
-          <button
-            v-if="username === 'super_admin' && types !== 'user-role'"
-            @click="editUserPage"
+        <li v-if="types === 'user-data' && username === 'super_admin' && types !== 'user-role'">
+          <button v-if="userStatus.status !== 'INACTIVE'"
+            @click="redirectEditPage"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+            >
+            <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
+          </button>
+        </li>
+        <li v-else>
+          <button v-if="username === 'super_admin' && types !== 'user-role'"
+            @click="redirectEditPage"
             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
             <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
@@ -134,6 +141,7 @@ export default {
       default: ''
     }
   },
+
   data() {
     return {
       dropdownPopoverShow: false,
@@ -141,7 +149,7 @@ export default {
   },
 
   mounted() {
-    // console.log(this.queryType)
+    console.log(this.param)
   },
 
   methods: {
@@ -173,13 +181,18 @@ export default {
       }
     },
 
-    editUserPage() {
-      this.$router.push({
-        'path': `/dashboard/${this.queryMiddle}/edit/${this.param}`,
-        query: {
-          type: this.queryType
-        }
-      })
+    redirectEditPage() {
+      if(this.type === 'user-data') {      
+        this.$router.push({
+          'path': `/dashboard/${this.queryMiddle}/edit/${this.param}`,
+          query: {
+            type: this.queryType
+          }
+        })
+      } else {
+        this.$router.push({path: `/dashboard/${this.queryMiddle}/edit/${this.param}`})
+      }
+
     },
 
 
