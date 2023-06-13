@@ -5,14 +5,13 @@
  * @author Puji Ermanto <puji.ermanto@gmail.com>
  */
 
-
 import he from 'he'
 
 const decodeString = (string) => {
-	const decodedString = he.decode(string);
-	return decodedString;
-};
+    const decodestring = he.decode(string)
+    return decodestring
+}
 
-export default ({ app }, inject) => {
-	inject("decode", decodeString);
-};
+export default ({app}, inject) => {
+    inject('decode', decodeString)
+}

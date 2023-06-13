@@ -1,18 +1,13 @@
 <template>
-  <div>
-    <div v-if="globalLoading">
-      <molecules-row-loading :loading="globalLoading" options="user-logout" />
-    </div>
-    <div v-else>
-      <sidebar />
-      <div class="relative md:ml-64 bg-blueGray-100">
-        <admin-navbar ref="layoutRef"/>
-        <header-stats />
+  <div v-if="roles !== 'USER'">
+    <sidebar />
+    <div class="relative md:ml-64 bg-blueGray-100">
+      <admin-navbar ref="layoutRef"/>
+      <header-stats />
 
-        <div class="px-4 md:px-10 mx-auto w-full -m-24 py-6">
-          <Nuxt />
-          <footer-admin />
-        </div>
+      <div class="px-4 md:px-10 mx-auto w-full -m-24 py-6">
+        <Nuxt />
+        <footer-admin />
       </div>
     </div>
   </div>

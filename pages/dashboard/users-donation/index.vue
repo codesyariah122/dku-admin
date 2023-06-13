@@ -147,8 +147,10 @@ export default {
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
       .then((data) => {
+        console.log(data)
         let cells = []
         data?.data?.map((cell) => {
+          console.log(cell)
           const prepareCell = {
             id: cell?.id,
             name: cell?.name,
