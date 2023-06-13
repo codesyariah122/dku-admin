@@ -13,26 +13,30 @@ export const USER_DATA_TABLE = [
   },
   {
     id: 4,
-    title: 'email',
+    title: 'role'
   },
   {
     id: 5,
-    title: 'phone number'
+    title: 'email',
   },
   {
     id: 6,
-    title: 'status'
+    title: 'phone number'
   },
   {
     id: 7,
-    title: 'last login'
+    title: 'status'
   },
   {
     id: 8,
-    title: 'expires in'
+    title: 'last login'
   },
   {
     id: 9,
+    title: 'expires in'
+  },
+  {
+    id: 10,
     title: 'is login'
   }
 ]

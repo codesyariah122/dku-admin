@@ -125,6 +125,10 @@ export default {
     };
   },
 
+  mounted() {
+    console.log(this.link)
+  },
+
   methods: {
     backTo() {
       setTimeout(() => {

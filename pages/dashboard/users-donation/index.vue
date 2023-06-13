@@ -154,7 +154,7 @@ export default {
             name: cell?.name,
             photo: cell?.profiles?.map(profile => profile?.photo ? profile?.photo : profile?.g_avatar)[0],
             email: cell?.email,
-            role: cell?.role,
+            role: this.$role(cell?.roles.map(role => role.name)),
             phone: cell?.phone,
             status: cell?.status,
             expires_at: cell?.expires_at,

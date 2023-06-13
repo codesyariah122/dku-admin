@@ -8,6 +8,7 @@
       title="Add New User"
       methodType="add"
       :successNew="successNew"
+      :messageNew="messageNew"
       :detail="detail"
       />
     </div>
@@ -43,6 +44,7 @@
         routeName: this.$route.name.split('-').pop(),
         loadingDetail: null,
         successNew: null,
+        messageNew: '',
         detail: {},
         type: this.$route.query['type']
       };
@@ -58,7 +60,7 @@
 
     mounted() {
       this.detailUser(this.formData ? this.formData.data[0] : '');
-      console.log(this.routeName);
+      // console.log(this.routeName);
     },
 
     methods: {
@@ -79,6 +81,7 @@
             // console.log(data)
             if(data) {
               this.successNew = true
+              this.messageNew = `${data.username}, data successfully added !`
               this.detail = data
             }
           })

@@ -4,7 +4,7 @@
     <div v-if="successNew" :class="`w-full ${routeName === 'username' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-profile 
       pageType="userData"
-      link="users-data"
+      link="users-donation"
       title="Add New User"
       methodType="add"
       :successNew="successNew"
@@ -17,7 +17,7 @@
     <div v-else :class="`w-full ${routeName === 'username' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-settings 
       pageType="userData"
-      link="users-data"
+      link="users-donation"
       :title="`Edit User ${param}`"
       methodType="edit"
       :type="type"
