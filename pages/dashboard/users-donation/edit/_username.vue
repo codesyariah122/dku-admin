@@ -1,7 +1,20 @@
 <template>
   <div class="flex flex-wrap">
 
-    <div :class="`w-full ${routeName === 'edit' ? 'lg:w-12/12' :'lg:w-12/12'} px-4`">
+    <div v-if="successNew" :class="`w-full ${routeName === 'username' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
+      <cards-card-profile 
+      pageType="userData"
+      link="users-data"
+      title="Add New User"
+      methodType="add"
+      :successNew="successNew"
+      :messageNew="messageNew"
+      :detail="detail"
+      @close-alert="closeSuccessAlert"
+      />
+    </div>
+
+    <div v-else :class="`w-full ${routeName === 'username' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
       <cards-card-settings 
       pageType="userData"
       link="users-data"
@@ -9,6 +22,7 @@
       methodType="edit"
       :type="type"
       :data="detail"
+      @detail-data="detailUser"
       />
     </div>
 
@@ -32,7 +46,74 @@
         routeName: this.$route.name.split('-').pop(),
         param: this.$route.params.username,
         type: this.$route.query['type'],
+        loadingDetail: null,
+        successNew: null,
+        messagenew: '',
+        detail: {}
       };
+    },
+
+    beforeMount() {
+      this.storedFormData();
+    },
+
+    created() {
+      this.dataManagementEvent();
+    },
+
+    mounted() {
+      // console.log(this.routeName)
+      // this.detailUser(this.formData ? this.formData.data[0] : this.param);
+    },
+
+    methods: {
+      storedFormData() {
+        this.$store.dispatch('success/storedFormData', 'success-form');
+      },
+
+      detailUser(username = '') {
+        this.loadingDetail = true
+        if(username) {          
+          getData({
+            api_url: `${this.api_url}/fitur/user-management/${username}`,
+            token: this.token.token,
+            api_key: process.env.NUXT_ENV_APP_TOKEN
+          })
+          .then(({data}) => {
+            if(data) {
+              this.successNew = true
+              this.messageNew = `${data.username}, data successfully updated !`
+              this.detail = data
+            }
+          })
+          .finally(() => {
+            setTimeout(() => {
+              this.loadingDetail = false
+            }, 500)
+          })
+          .catch((err) => console.log(err));
+        }
+      },
+
+      closeSuccessAlert() {
+        this.successNew = false
+        this.messageNew = ''
+      }
+    },
+
+    computed: {
+      formData() {
+        return this.$store.getters['success/formData'];
+      }
+    },
+
+    watch: {
+      dataNotifs() {
+        if (this.dataNotifs && this.$_.size(this.dataNotifs) > 0) {
+          this.storedFormData();
+          this.detailUser(this.formData ? this.formData.data[0] : this.param)
+        }
+      },
     },
 
 
