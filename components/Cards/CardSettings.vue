@@ -17,7 +17,7 @@
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
       
       <users-form-add 
-        v-if="pageType==='userData' && methodType === 'add'"
+        v-if="pageType === 'userData' && methodType === 'add'"
         @detail-data="detailData"
         :type="type"
       />

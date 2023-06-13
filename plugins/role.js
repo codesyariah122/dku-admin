@@ -5,9 +5,13 @@
  */
 
 const getRoles = (data) => {
-  const checkRole = JSON.parse(data);
-  const roles = checkRole[0].toString();
-  return roles;
+  if(data.length > 0) {  
+    const checkRole = JSON.parse(data);
+    const roles = checkRole[0].toString();
+    return roles;
+  } else {
+    return null;
+  }
 };
 
 export default ({ app }, inject) => {

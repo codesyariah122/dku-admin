@@ -208,6 +208,7 @@
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
 						prepareRoles = [...roles];
+						this.input.role = roles.map((role) => role.id)[0];
 					}
 					this.roles = [...prepareRoles]
 				})
@@ -247,21 +248,21 @@
 				
 				this.$api.post(endPoint, postData)
 				.then(({data}) => {
-					// console.log(data)
+					console.log(data)
 					if(data.success) {
 						this.success = true;
 						this.scrollToTop();
 						this.detailUser(data?.profiles[0]);
 						this.$store.dispatch('success/storeSuccessFormData', data?.profiles[0]);
+						this.input = {}
+						this.input.role = ''
+						this.input.status = ''
 					}
 				})
 				.finally(() => {
 					setTimeout(() => {
 						this.loading = false;
 						this.options = '';
-						this.input = {}
-						this.input.role = ''
-						this.input.status = ''
 					}, 1000)
 				})
 				.catch((err) => {

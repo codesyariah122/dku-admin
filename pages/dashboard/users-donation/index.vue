@@ -81,25 +81,6 @@ export default {
       this.$store.dispatch("auth/storeAuthToken", "auth");
     },
 
-    checkNewData() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "EventNotification",
-        (e) => {
-          this.notifs.push(e[0]);
-        }
-      );
-    },
-
-    dataManagementEvent() {
-      window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-        "DataManagementEvent",
-        (e) => {
-          this.message = e[0].notif;
-          this.dataNotifs.push(e[0]);
-        }
-      );
-    },
-
     timerData(item, timeLeft) {
       const dataTime = {
         seconds: Math.floor((timeLeft / 1000) % 60),
@@ -147,16 +128,14 @@ export default {
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
       .then((data) => {
-        console.log(data)
         let cells = []
         data?.data?.map((cell) => {
-          console.log(cell)
           const prepareCell = {
             id: cell?.id,
             name: cell?.name,
             photo: cell?.profiles?.map(profile => profile?.photo ? profile?.photo : profile?.g_avatar)[0],
             email: cell?.email,
-            role: this.$role(cell?.roles.map(role => role.name)),
+            role: this.$role(cell?.roles.map(role => role?.name)),
             phone: cell?.phone,
             status: cell?.status,
             expires_at: cell?.expires_at,
@@ -214,7 +193,6 @@ export default {
         data: this.activation_id ? this.activation_id : null
       })
       .then(({data}) => {
-        console.log(data);
         if(data.status === 'ACTIVE') {
           this.success = true;
           this.message_success = `${data.name}, berhasil di aktivasi !`
@@ -238,24 +216,25 @@ export default {
   watch: {
     notifs() {
       if (this.$_.size(this.notifs) > 0) {
-        this.getTotalUser();
         this.getUserData();
       }
     },
     dataNotifs() {
       if (this.$_.size(this.dataNotifs) > 0) {
-        this.$toast.show(this.message, {
-          type: "info",
-          duration: 5000,
-          position: "top-right",
-        });
-        this.getTotalUser();
+          // if(this.token.token === this.tokenLogins) {
+          //   this.$toast.show(this.messageNotif, {
+          //     type: "info",
+          //     duration: 5000,
+          //     position: "top-right",
+          //   });
+          // }
+        this.message_success = this.messageNotif
         this.getUserData();
+        this.getTotalUser();
       }
     },
     updateProfileNotifs() {
       if(this.$_.size(this.updateProfileNotifs) > 0) {
-        this.getTotalUser();
         this.getUserData();
       }
     }

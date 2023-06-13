@@ -5,7 +5,7 @@
       <cards-card-profile 
       pageType="userData"
       link="users-data"
-      title="Add New User"
+      title="Add New User Dashboard Admin"
       methodType="add"
       :successNew="successNew"
       :messageNew="messageNew"
@@ -19,8 +19,8 @@
       link="users-data"
       title="Add New User Dashboard Admin"
       methodType="add"
-      @detail-data="detailUser"
       :type="type"
+      @detail-data="detailUser"
       />
     </div>
 
@@ -59,8 +59,7 @@
     },
 
     mounted() {
-      this.detailUser(this.formData ? this.formData.data[0] : '');
-      // console.log(this.routeName);
+      this.detailUser(this.formData ? this.formData.data[0] : this.routeName);
     },
 
     methods: {
