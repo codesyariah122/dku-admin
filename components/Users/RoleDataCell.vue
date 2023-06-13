@@ -37,12 +37,12 @@
         <i class="fa-regular fa-hourglass"></i>
       </td>
 
-      <td
+     <!--  <td
         v-if="column.token !== token.token && column.username !== 'super_admin'"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
         <dropdowns-table-dropdown @deleted-data="deletedData" :id="column.id" :types="types" :username="username" cellType="data"/>
-      </td>
+      </td> -->
     </tr>
   </tbody>
 </template>

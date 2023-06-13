@@ -57,7 +57,11 @@
 
     <div class="block w-full overflow-x-auto">
       <table class="items-center w-full bg-transparent border-collapse">
-        <molecules-table-header :headers="headers" :color="color" />
+        <molecules-table-header 
+          :headers="headers" 
+          :color="color"
+          :types="types"
+        />
 
         <users-user-data-cell
           v-if="types === 'user-data'"
@@ -72,8 +76,8 @@
         <users-role-data-cell
           v-if="types === 'user-role'"
           :columns="columns"
-          @deleted-data="deletedData"
           :types="types"
+          @deleted-data="deletedData"
         />
 
         <users-user-trash-cell 
@@ -87,17 +91,17 @@
         <campaigns-campaign-data-cell
           v-if="types === 'campaign-data'"
           :columns="columns"
-          @deleted-data="deletedData"
           :types="types"
           :queryMiddle="queryMiddle"
+          @deleted-data="deletedData"
         />
 
         <campaigns-category-campaign-cell
           v-if="types === 'category-campaign'"
           :columns="columns"
+          :types="types"
           @deleted-data="deletedData"
           @activation-user="activationUser"
-          :types="types"
         />
 
         <campaigns-campaign-trash-cell

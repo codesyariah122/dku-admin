@@ -15,6 +15,7 @@
       </th>
 
       <th
+        v-if="types !== 'user-role'"
         class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
         :class="[
           color === 'light'
@@ -39,6 +40,10 @@ export default {
     },
     headers: {
       type: Array,
+    },
+    types: {
+      type: String,
+      default: ''
     },
   },
 };

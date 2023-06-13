@@ -106,7 +106,8 @@ export default {
       },
     },
     types: {
-      type: String
+      type: String,
+      default: ''
     },
     queryMiddle: {
       type: String,
