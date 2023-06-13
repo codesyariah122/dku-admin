@@ -196,12 +196,12 @@
 					if(this.type === 'DASHBOARD') {					
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
 						prepareRoles = [...roles];
-						const roleNameEdit = roles.filter((role) => role.id === this.input.role)[0].name;
+						const roleNameEdit = roles.filter((role) => role.id === this.input.role).map((role) => role.name);
 						this.roleNameEdit = this.$role(roleNameEdit);
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
 						prepareRoles = [...roles];
-						const roleNameEdit = roles.filter((role) => role.id === this.input.role)[0].name;
+						const roleNameEdit = roles.filter((role) => role.id === this.input.role).map((role) => role.name);
 						this.roleNameEdit = this.$role(roleNameEdit);
 					}
 					this.roles = [...prepareRoles]
