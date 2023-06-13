@@ -14,6 +14,9 @@
       :detail="detail"
       :link="link"
       :methodType="methodType"
+      :successNew="successNew"
+      :messageNew="messageNew"
+      @close-alert="closeSuccessAlert"
     />
    
   </div>
@@ -41,11 +44,21 @@ export default {
       type: Boolean,
       default: null
     },
+    messageNew: {
+      type: String,
+      default: ''
+    },
     detail: {
       type: Object,
       default: function() {
         return {}
       }
+    }
+  },
+
+  methods: {
+    closeSuccessAlert() {
+      this.$emit('close-alert')
     }
   }
 };

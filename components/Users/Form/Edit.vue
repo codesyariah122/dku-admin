@@ -1,9 +1,9 @@
 <template>
 	<form @submit.prevent="updateUser">
 
-		<div v-if="success">
+		<!-- <div v-if="success">
 			<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
-		</div>
+		</div> -->
 
 		<h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
 			Edit user data
@@ -245,7 +245,8 @@
 					if(data.success) {
 						this.success = true;
 						this.message_success=data.message
-						this.scrollToTop();
+						this.$emit('detail-data', data?.data?.profiles[0].username);
+						this.$store.dispatch('success/storeSuccessFormData', data?.data?.profiles[0].username);
 					}
 				})
 				.finally(() => {
@@ -262,7 +263,8 @@
 			colseAlert() {
 				this.success = false;
 				this.message_success = ''
-			}
+			},
+			
 		},
 
 		watch: {
@@ -272,7 +274,6 @@
 						this.message_success = this.messageNotif;
 					}
 					this.getTotalUser();
-					this.setUpUserEdit();
 				}
 			},
 		}

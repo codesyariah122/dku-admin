@@ -31,10 +31,12 @@
         v-if="pageType==='userData' && methodType === 'edit'"
         :type="type"
         :detail="data"
+        @detail-data="detailData"
       />
 
       <campaigns-form-edit
         v-if="pageType === 'campaignData' && methodType === 'edit'"
+        :detail="data"
         @detail-data="detailData"
       />
 
@@ -68,6 +70,9 @@
           return {}
         }
       },
+    },
+
+    mounted() {
     },
 
     methods: {

@@ -13,6 +13,7 @@
             />
           </div>
         </div>
+
         <div class="w-full px-4 text-center mt-20">
           <div v-if="methodType !== 'add'" class="flex justify-center py-4 lg:pt-4 pt-8">
             <div class="mr-4 p-3 text-center">
@@ -48,6 +49,9 @@
         >
           {{detail.users[0].name}}
         </h3>
+        <div v-if="successNew" class="flex justify-center">
+          <molecules-success-alert :success="successNew" :messageAlert="messageNew" @close-alert="closeSuccessAlert"/>
+        </div>
         <div v-if="methodType !== 'add'"
           class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase"
         >
@@ -103,7 +107,15 @@ export default {
     methodType: {
       type: String,
       default: null
-    }
+    },
+    successNew: {
+      type: Boolean,
+      default: null
+    },
+    messageNew: {
+      type: String,
+      default: ''
+    },
   },
 
   data() {
@@ -119,6 +131,10 @@ export default {
         this.$store.dispatch('success/removeStoreSuccess', 'success-form');
         this.$router.push(`/dashboard/${this.link}`);
       }, 1000)
+    },
+
+    closeSuccessAlert() {
+      this.$emit('close-alert')
     }
   }
 
