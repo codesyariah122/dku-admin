@@ -195,16 +195,16 @@
 					let prepareRoles = [];
 					if(this.type === 'DASHBOARD') {					
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
-						prepareRoles = [...roles];
+						prepareRoles = roles;
 						const roleNameEdit = roles.filter((role) => role.id === this.input.role).map((role) => role.name);
 						this.roleNameEdit = this.$role(roleNameEdit);
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
-						prepareRoles = [...roles];
+						prepareRoles = roles;
 						const roleNameEdit = roles.filter((role) => role.id === this.input.role).map((role) => role.name);
 						this.roleNameEdit = this.$role(roleNameEdit);
 					}
-					this.roles = [...prepareRoles]
+					this.roles = prepareRoles
 				})
 				.catch((err) => console.log(err))
 			},
