@@ -149,7 +149,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.param)
+    // console.log(this.param)
   },
 
   methods: {
@@ -182,7 +182,7 @@ export default {
     },
 
     redirectEditPage() {
-      if(this.type === 'user-data') {      
+      if(this.types === 'user-data') {      
         this.$router.push({
           'path': `/dashboard/${this.queryMiddle}/edit/${this.param}`,
           query: {
@@ -192,7 +192,6 @@ export default {
       } else {
         this.$router.push({path: `/dashboard/${this.queryMiddle}/edit/${this.param}`})
       }
-
     },
 
 

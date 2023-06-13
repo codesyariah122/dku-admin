@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap">
 
-    <div v-if="successNew" :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
+    <div v-if="successNew" :class="`w-full ${routeName === 'edit' ? 'lg:w-12/12' :'lg:w-12/12'} px-4`">
       <cards-card-profile 
       pageType="campaignData"
       link="campaigns-data"
@@ -12,11 +12,11 @@
       />
     </div>
 
-    <div v-else :class="`w-full ${routeName === 'add' ? 'lg:w-12/12' :'lg:w-8/12'} px-4`">
+    <div v-else :class="`w-full ${routeName === 'edit' ? 'lg:w-12/12' :'lg:w-12/12'} px-4`">
       <cards-card-settings 
       pageType="campaignData" 
-      title="Add New Campaign"
-      methodType="add"
+      title="Edit Campaign"
+      methodType="edit"
       @detail-data="detailCampaign"
       />
     </div>

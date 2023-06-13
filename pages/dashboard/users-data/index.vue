@@ -3,21 +3,21 @@
     <div class="w-full mb-12 px-4">
 
       <cards-card-table
-      color="dark"
-      title="User Dashboard"
-      :headers="headers"
-      :columns="items"
-      :loading="loading"
-      :userName="userName"
-      types="user-data"
-      queryType="USER_DATA"
-      queryRole="DASHBOARD"
-      queryMiddle="users-data"
-      :success="success"
-      :messageAlert="message_success"
-      @close-alert="closeSuccessAlert"
-      @deleted-data="deletedUser"
-      @activation-user="activationUser"
+        color="dark"
+        title="User Dashboard"
+        :headers="headers"
+        :columns="items"
+        :loading="loading"
+        :userName="userName"
+        types="user-data"
+        queryType="USER_DATA"
+        queryRole="DASHBOARD"
+        queryMiddle="users-data"
+        :success="success"
+        :messageAlert="message_success"
+        @close-alert="closeSuccessAlert"
+        @deleted-data="deletedUser"
+        @activation-user="activationUser"
       />
 
       <div class="mt-6 -mb-2">

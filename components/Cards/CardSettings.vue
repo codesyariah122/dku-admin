@@ -17,7 +17,7 @@
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
       
       <users-form-add 
-        v-if="methodType === 'add'"
+        v-if="pageType==='userData' && methodType === 'add'"
         @detail-data="detailData"
         :type="type"
       />
@@ -28,9 +28,14 @@
       />
 
       <users-form-edit
-        v-if="methodType === 'edit'"
+        v-if="pageType==='userData' && methodType === 'edit'"
         :type="type"
         :detail="data"
+      />
+
+      <campaigns-form-edit
+        v-if="pageType === 'campaignData' && methodType === 'edit'"
+        @detail-data="detailData"
       />
 
     </div>
