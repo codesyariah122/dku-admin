@@ -17,7 +17,6 @@
       @deleted-data="deletedUser"
       @restored-data="restoreData"
       />
-
     </div>
 
   </div>

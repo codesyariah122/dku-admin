@@ -3,22 +3,20 @@
     <div class="w-full mb-12 px-4">
 
       <cards-card-table
-      color="dark"
-      title="User Trashed"
-      :headers="headers"
-      :columns="items"
-      :loading="loading"
-      types="user-trash"
-      queryType="USER_DATA"
-      :success="success"
-      :messageAlert="message_success"
-      @deleted-data="deletedUser"
-      @restored-data="restoreData"
+        color="dark"
+        title="User Trashed"
+        :headers="headers"
+        :columns="items"
+        :loading="loading"
+        types="user-trash"
+        queryType="USER_DATA"
+        :success="success"
+        :messageAlert="message_success"
+        @close-alert="closeSuccessAlert"
+        @deleted-data="deletedUser"
+        @restored-data="restoreData"
       />
-
     </div>
-
-    <molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 
   </div>
 </template>
@@ -45,7 +43,6 @@
         headers: [...USER_TRASH_DATA_TABLE],
         api_url: process.env.NUXT_ENV_API_URL,
         items: [],
-        notifs: [],
         activation_id: null,
         queryParam: this.$route.query.type,
         totals: 0
@@ -63,17 +60,7 @@
     },
 
     methods: {
-      checkNewData() {
-        window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
-          "EventNotification",
-          (e) => {
-          // console.log(e[0].notif)
-            this.notifs.push(e);
-            this.messageNotifs = e[0].notif;        }
-            );
-      },
-
-
+     
       getUserTrash() {
         totalTrash({
         api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}&roles=USER`,
@@ -163,16 +150,26 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
+          // this.$toast.show(this.messageNotifs, {
+          //   type: "info",
+          //   duration: 5000,
+          //   position: "top-right",
+          // });
+          this.message_success = this.messageNotifs
           this.getUserTrash();
+          this.getTotalUser();
         }
       },
       dataNotifs() {
         if (this.$_.size(this.dataNotifs) > 0) {
-          this.$toast.show(this.message, {
-            type: "info",
-            duration: 5000,
-            position: "top-right",
-          });
+          // if(this.token.token === this.tokenLogins) {            
+          //   this.$toast.show(this.messageNotif, {
+          //     type: "info",
+          //     duration: 5000,
+          //     position: "top-right",
+          //   });
+          // }
+          this.message_success = this.messageNotif
           this.getUserTrash();
           this.getTotalUser();
         }
