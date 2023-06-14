@@ -58,7 +58,7 @@
 					</label>
 					<select @change="changeRoles($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
 						<option selected :value="input.role">{{roleNameEdit}}</option>
-						<option v-for="role in roles.filter(role => role.id !== input.role)" :key="role.id" :value="role.id">
+						<option v-for="role in roles" :key="role.id" :value="role.id">
 							{{$role(role.name)}}
 						</option>
 					</select>
@@ -193,18 +193,19 @@
 				})
 				.then(({data}) => {
 					let prepareRoles = [];
-					if(this.type === 'DASHBOARD') {					
+					if(this.type === 'DASHBOARD') {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
-						prepareRoles = roles;
-						const roleNameEdit = roles.filter((role) => role.id === this.input.role).map((role) => role.name);
-						this.roleNameEdit = this.$role(roleNameEdit);
+						this.roles = roles.filter(role => role.id !== this.input.role)
+						const selected = roles.filter((role) => role.id === this.input.role)
+						this.roleNameEdit = selected.map((role) => this.$role(role.name))[0];
+						console.log(this.roleNameEdit);
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
-						prepareRoles = roles;
-						const roleNameEdit = roles.filter((role) => role.id === this.input.role).map((role) => role.name);
-						this.roleNameEdit = this.$role(roleNameEdit);
+						this.roles = roles.filter(role => role.id !== this.input.role)
+						const selected = roles.filter((role) => role.id === this.input.role)
+						this.roleNameEdit = selected.map((role) => this.$role(role.name))[0];
+						console.log(this.roleNameEdit);
 					}
-					this.roles = prepareRoles
 				})
 				.catch((err) => console.log(err))
 			},
