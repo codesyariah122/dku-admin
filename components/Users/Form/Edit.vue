@@ -153,8 +153,8 @@
 		},
 
 		mounted() {
-			this.getRoleLists();
 			this.setUpUserEdit();
+			this.getRoleLists();
 		},
 
 		methods: {
@@ -197,13 +197,13 @@
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
 						this.roles = roles.filter(role => role.id !== this.input.role)
 						const selected = roles.filter((role) => role.id === this.input.role)
-						this.roleNameEdit = selected.map((role) => this.$role(role.name))[0];
+						this.roleNameEdit = this.$role(selected.map((role) => role.name));
 						console.log(this.roleNameEdit);
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
 						this.roles = roles.filter(role => role.id !== this.input.role)
 						const selected = roles.filter((role) => role.id === this.input.role)
-						this.roleNameEdit = selected.map((role) => this.$role(role.name))[0];
+						this.roleNameEdit = this.$role(selected.map((role) => role.name));
 						console.log(this.roleNameEdit);
 					}
 				})
