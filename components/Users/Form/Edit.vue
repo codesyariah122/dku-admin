@@ -193,6 +193,7 @@
 					api_key: this.api_token
 				})
 				.then(({data}) => {
+					console.log(data);
 					let prepareRoles = [];
 					if(this.type === 'DASHBOARD') {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
