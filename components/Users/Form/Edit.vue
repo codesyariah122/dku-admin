@@ -57,7 +57,7 @@
 						Role User
 					</label>
 					<select @change="changeRoles($event);" id="role" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected :value="input.role">{{roleNameEdit}}</option>
+						<option selected :value="input.role">{{$role(roleSelected)}}</option>
 						<option v-for="role in roles" :key="role.id" :value="role.id">
 							{{$role(role.name)}}
 						</option>
@@ -140,6 +140,7 @@
 				api_token: process.env.NUXT_ENV_APP_TOKEN,
 				roles: [],
 				roleNameEdit: '',
+				roleSelected: '',
 				error: null,
 				input: {},
 				validations: [],
@@ -197,14 +198,14 @@
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
 						this.roles = roles.filter(role => role.id !== this.input.role)
 						const selected = roles.filter((role) => role.id === this.input.role)
-						this.roleNameEdit = this.$role(selected.map((role) => role.name));
-						console.log(this.roleNameEdit);
+						this.roleSelected = selected.map((role) => role.name);
+						console.log(this.roleSelected);
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
 						this.roles = roles.filter(role => role.id !== this.input.role)
 						const selected = roles.filter((role) => role.id === this.input.role)
-						this.roleNameEdit = this.$role(selected.map((role) => role.name));
-						console.log(this.roleNameEdit);
+						this.roleSelected = selected.map((role) => role.name);
+						console.log(this.roleSelected);
 					}
 				})
 				.catch((err) => console.log(err))

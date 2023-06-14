@@ -22,7 +22,7 @@
             role="button"
             class="text-sm py-2 px-4 font-normal block w-full bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
-            <i class="fa-solid fa-binoculars text-blue-700"></i> &nbsp;&nbsp;Detailed Data
+              <i class="fa-solid fa-binoculars text-blue-700"></i> &nbsp;&nbsp;Detailed Data
           </button>
         </li>
         <li>
@@ -31,7 +31,7 @@
             @click.prevent="deletedData"
             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
-            <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
+              <i class="fa-solid fa-trash text-red-700"></i> &nbsp;&nbsp;Delete Data
           </button>
         </li>
         <li v-if="types === 'user-data' && username === 'super_admin' && types !== 'user-role'">
@@ -39,7 +39,7 @@
             @click="redirectEditPage"
             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
-            <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
+              <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
           </button>
         </li>
         <li v-else>
@@ -169,14 +169,14 @@ export default {
     },
 
     hideDropdown(event) {
-        const targetElement = event.target;
+      const targetElement = event.target;
 
-        if (
-          !this.$refs.btnDropdownRef.contains(targetElement) &&
-          !this.$refs.popoverDropdownRef.contains(targetElement)
-          ) {
-          this.dropdownPopoverShow = false;
-          // Menghapus event listener dari dokumen
+      if(this.$refs.btnDropdownRef &&
+        !this.$refs.btnDropdownRef.contains(targetElement) &&
+        this.$refs.popoverDropdownRef &&
+        !this.$refs.popoverDropdownRef.contains(targetElement)){
+
+        this.dropdownPopoverShow = false;
         document.removeEventListener("click", this.hideDropdown);
       }
     },

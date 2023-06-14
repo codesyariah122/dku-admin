@@ -41,7 +41,6 @@ export default {
   methods: {
     forceNow() {
       const queryToken = this.$route.query.token;
-      console.log(queryToken);
       this.$swal({
         title: "Really you ?",
         text: "If you are the owner of this account, please do a force logout !",
