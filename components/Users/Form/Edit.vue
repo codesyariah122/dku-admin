@@ -234,7 +234,7 @@
 					role: this.input.role,
 					status: this.input.status
 				}
-				const endPoint = `/fitur/user-management/${this.detail.username}`;
+				const endPoint = `/fitur/user-management/${this.data.username}`;
 				const config = {
 					headers: {
 						Accept: "application/json",
