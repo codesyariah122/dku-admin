@@ -55,13 +55,7 @@
 			<div class="w-full lg:w-12/12 px-4 py-6">
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="description">Description</label>
-					<tinymce
-					name="description"
-					id="d1"
-					v-model="input.description"
-					:other_options="optionsObject"
-					:init="editorConfig"
-					></tinymce>
+					<wysiwyg v-model="input.description"/>
 				</div>
 				<div v-if="validations.description" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
 					<i class="fa-solid fa-circle-info"></i>
@@ -75,7 +69,7 @@
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="donation_target">Donation Target</label>
 
-					<input @change="changeDonationTarget($event)" type="number" name="donation_target" id="donation_target" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="1000000" v-model="input.donation_target"/>
+					<input @change="changeDonationTarget($event)" type="number" name="donation_target" id="donation_target" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" :placeholder="input.donation_target" v-model="input.donation_target"/>
 
 					<small class="text-blueGray-600 font-italic px-4 py-2">
 						{{donation_currency}}
@@ -95,11 +89,11 @@
 						Is Headline
 					</label>
 					<select @change="changeIsHeadline($event)" id="is_headline" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected value="">Choose a is headline</option>
-						<option value="Y">
+						<option selected :value="input.is_headline">{{input.is_headline === 'N' ? 'No' : 'Yes'}}</option>
+						<option v-if="input.donation_target === 'N'" value="Y">
 							Yes
 						</option>
-						<option value="N">
+						<option v-else value="N">
 							No
 						</option>
 					</select>
@@ -118,11 +112,11 @@
 						Publish Campaign
 					</label>
 					<select @change="changePublish($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected value="">Choose a publish</option>
-						<option value="Y">
+						<option selected :value="input.publish">{{input.publish === 'N' ? 'No' : 'Yes'}}</option>
+						<option v-if="input.publish === 'N'" value="Y">
 							Yes
 						</option>
-						<option value="N">
+						<option v-else value="N">
 							No
 						</option>
 					</select>
@@ -168,8 +162,10 @@
 						Campaign Category
 					</label>
 					<select @change="changeCategory($event);" id="category_campaign" name="category_campaign" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected value="">Choose a campaign category</option>
-						<option v-for="category in categories" :key="category.id" :value="category.id">
+						<option v-for="category_campaign in input.category_campaign" :key="Math.random()" selected :value="category_campaign.id">
+							{{category_campaign.name}}
+						</option>
+						<option v-for="category in categories.filter((category) => category.id !== category_selected[0])" :key="category.id" :value="category.id">
 							{{category.name}}
 						</option>
 					</select>
@@ -188,11 +184,11 @@
 						Limit
 					</label>
 					<select @change="changeLimit($event)" id="limit" name="without_limit" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-						<option selected value="">Choose a limit</option>
-						<option value="Y">
+						<option selected :value="input.without_limit">{{input.without_limit === 'N' ? 'No' : 'Yes'}}</option>
+						<option v-if="this.input.without_limit === 'N'" value="Y">
 							Yes
 						</option>
-						<option value="N">
+						<option v-else value="N">
 							No
 						</option>
 					</select>
@@ -206,7 +202,7 @@
 			</div>
 
 			<div class="w-full lg:w-12/12 px-4 py-6">
-				<div v-if="previewUrl" class="flex justify-between w-full">
+				<div v-if="previewUrl && input.banner !== null" class="flex justify-between w-full">
 					<div class="grow">
 						<img :src="previewUrl" class="h-auto w-full">
 					</div>
@@ -249,7 +245,7 @@
 					</svg>
 					Loading...
 				</div>
-				<span v-else><i class="fa-solid fa-plus"></i> Add New Campaign</span>
+				<span v-else><i class="fa-solid fa-plus"></i> Update Campaign</span>
 			</button>
 		</div>
 	</div>
@@ -266,245 +262,286 @@
 	import {getData} from '~/hooks/index';
 
 	export default {
-		data() {
-			return {
-				param: '',
-				loading: null,
-				options: '',
-				hidePassword: true,
-				api_url: process.env.NUXT_ENV_API_URL,
-				api_token: process.env.NUXT_ENV_APP_TOKEN,
-				categories: [],
-				error: null,
-				input: {},
-				banner: [],
-				donation_currency: null,
-				previewUrl: '',
-				isDragging: null,
-				validations: [],
-				success: null,
-				message_success: '',
-				optionsObject: {
-					menubar: false,
-				},
-				editorConfig: {
-					height: 800
-				}
+	props: {
+		type: {
+			type: String,
+			default: null
+		},
+		data: {
+			type: Object,
+			default: function() {
+				return {}
+			}
+		}
+	},
+
+	data() {
+		return {
+			param: '',
+			loading: null,
+			options: '',
+			hidePassword: true,
+			api_url: process.env.NUXT_ENV_API_URL,
+			api_token: process.env.NUXT_ENV_APP_TOKEN,
+			storage_url: process.env.NUXT_ENV_STORAGE_URL,
+			categories: [],
+			error: null,
+			input: {},
+			banner: [],
+			donation_currency: null,
+			previewUrl: '',
+			isDragging: null,
+			validations: [],
+			success: null,
+			message_success: '',
+			optionsObject: {
+				menubar: false,
+				entity_encoding: 'raw',
+			},
+			editorConfig: {
+				height: 800
+			},
+			category_selected: null,
+			
+		}
+	},
+
+	created() {
+		this.dataManagementEvent();
+	},
+
+	mounted() {
+		this.getCategoryCampaignData();
+		this.checkUserLogin();
+		this.setupCampaignEdit();
+	},
+
+	methods: {
+		setupCampaignEdit() {
+			const prepare = this.data;
+			const decodedDescription = this.$decode(prepare.description);
+			this.input.title = prepare.title;
+			this.input.slug = prepare.slug;
+			this.input.description = decodedDescription;
+			this.donation_currency = this.$format(prepare.donation_target);
+			this.input.donation_target = prepare.donation_target;
+			this.input.is_headline = prepare.is_headline;
+			this.input.end_campaign = this.$moment(prepare.end_campaign).format('YYYY-MM-DD');
+			
+			this.input.publish = prepare.publish;
+			this.input.created_by = prepare.created_by;
+			this.input.author_email = prepare.author_email;
+			this.input.category_campaign = prepare.category_campaigns
+			this.input.without_limit = prepare.without_limit;
+			this.input.banner = prepare.banner;
+			this.previewUrl = `${this.storage_url}/${prepare.banner}`
+		},
+
+		changeSlug(e) {
+			if(e.target.value) {					
+				const title = e.target.value
+				this.input.slug = slugify(title, {
+					lower: true,
+					strict: true,
+					trim: true
+				});
+			} else {
+				this.input.slug = ''
 			}
 		},
 
-		created() {
-			this.dataManagementEvent();
+		changeDonationTarget(e) {
+			this.donation_currency = this.$format(e.target.value);
+			this.input.donation_target = e.target.value;
 		},
 
-		mounted() {
-			this.getCategoryCampaignData();
-			this.checkUserLogin();
+		changeCategory(e) {
+			this.input.category_campaign = e.target.value;
 		},
 
-		methods: {
-			changeSlug(e) {
-				if(e.target.value) {					
-					const title = e.target.value
-					this.input.slug = slugify(title, {
-						lower: true,
-						strict: true,
-						trim: true
-					});
-				} else {
-					this.input.slug = ''
-				}
-			},
+		changePublish(e) {
+			this.input.publish = e.target.value;
+		},
 
-			changeDonationTarget(e) {
-				this.donation_currency = this.$format(e.target.value);
-				this.input.donation_target = e.target.value;
-			},
+		changeLimit(e) {
+			this.input.without_limit = e.target.value;
+		},
 
-			changeCategory(e) {
-				this.input.category_campaign = e.target.value;
-			},
+		changeIsHeadline(e) {
+			this.input.is_headline = e.target.value;
+		},
 
-			changePublish(e) {
-				this.input.publish = e.target.value;
-			},
+		handleDragOver(event) {
+			event.preventDefault();
+			this.isDragging = true;
+		},
+		handleDragLeave() {
+			this.isDragging = false;
+		},
+		handleDrop(event) {
+			event.preventDefault();
+			this.isDragging = false;
 
-			changeLimit(e) {
-				this.input.without_limit = e.target.value;
-			},
+			const files = event.dataTransfer.files;
+			this.uploadFiles(files);
+		},
 
-			changeIsHeadline(e) {
-				this.input.is_headline = e.target.value;
-			},
+		handleFileInput(event) {
+			const files = event.target.files;
+			this.uploadFiles(files);
+		},
 
-			handleDragOver(event) {
-				event.preventDefault();
-				this.isDragging = true;
-			},
-			handleDragLeave() {
-				this.isDragging = false;
-			},
-			handleDrop(event) {
-				event.preventDefault();
-				this.isDragging = false;
+		uploadFiles(files) {
+			this.input.banner = files[0]
+			const fileInput = this.$refs.fileInput;
 
-				const files = event.dataTransfer.files;
-				this.uploadFiles(files);
-			},
+			if (fileInput.files && fileInput.files.length > 0) {
+				const file = fileInput.files[0];
 
-			handleFileInput(event) {
-				const files = event.target.files;
-				this.uploadFiles(files);
-			},
+				const reader = new FileReader();
 
-			uploadFiles(files) {
-				this.input.banner = files[0]
-				const fileInput = this.$refs.fileInput;
-
-				if (fileInput.files && fileInput.files.length > 0) {
-					const file = fileInput.files[0];
-
-					const reader = new FileReader();
-
-					reader.onload = (e) => {
-						this.previewUrl = e.target.result;
-					};
-
-					reader.readAsDataURL(file);
-
-				} else {
-					event.preventDefault();
-					const file = files[0];
-
-					const reader = new FileReader();
-
-					reader.onload = (e) => {
-						this.previewUrl = e.target.result;
-					};
-
-					reader.readAsDataURL(file);
-
-				}
-			},
-
-			removePreview() {
-				this.previewUrl = '';
-			},
-
-			closeSuccessAlert() {
-				this.success = false;
-				this.message = '';
-				this.detailCampaign();
-			},
-
-			getCategoryCampaignData() {
-				getData({
-					api_url: `${this.api_url}/fitur/category-campaigns-management`,
-					token: this.token.token,
-					api_key: this.api_token
-				})
-				.then(({data}) => {
-					this.categories = [...data.data]
-				})
-				.catch((err) => console.log(err))
-			},
-
-			clearValidation() {
-				this.validations = [];
-			},
-
-			addNewCampaign() {
-				this.loading = true
-				this.options = 'add-campaign';
-				
-				const endPoint = `/fitur/campaign-management`;
-				const config = {
-					headers: {
-						"Content-Type": "multipart/form-data"
-					},
+				reader.onload = (e) => {
+					this.previewUrl = e.target.result;
 				};
 
-				let formData = new FormData();
+				reader.readAsDataURL(file);
 
-				formData.append('title', this.input.title || '');
-				formData.append('slug', this.input.slug || '');
-				formData.append('description', this.input.description || '');
-				formData.append('donation_target', this.input.donation_target || '');
-				formData.append('is_headline', this.input.is_headline || '');
-				formData.append('banner', this.input.banner || null);
-				formData.append('publish', this.input.publish || '');
-				formData.append('end_campaign', this.$timestamp(this.input.end_campaign) || null);
-				formData.append('without_limit', this.input.without_limit || '');
-				formData.append('category_campaign', this.input.category_campaign || '');
+			} else {
+				event.preventDefault();
+				const file = files[0];
+
+				const reader = new FileReader();
+
+				reader.onload = (e) => {
+					this.previewUrl = e.target.result;
+				};
+
+				reader.readAsDataURL(file);
+
+			}
+		},
+
+		removePreview() {
+			this.previewUrl = '';
+		},
+
+		closeSuccessAlert() {
+			this.success = false;
+			this.message = '';
+			this.detailCampaign();
+		},
+
+		getCategoryCampaignData() {
+			getData({
+				api_url: `${this.api_url}/fitur/category-campaigns-management`,
+				token: this.token.token,
+				api_key: this.api_token
+			})
+			.then(({data}) => {
+				const category_selected = this.input.category_campaign.map((category) => category.id);
+				this.category_selected = category_selected;
+
+				this.categories = [...data.data];
+			})
+			.catch((err) => console.log(err))
+		},
+
+		clearValidation() {
+			this.validations = [];
+		},
+
+		addNewCampaign() {
+			this.loading = true
+			this.options = 'add-campaign';
+
+			const endPoint = `/fitur/campaign-management`;
+			const config = {
+				headers: {
+					"Content-Type": "multipart/form-data"
+				},
+			};
+
+			let formData = new FormData();
+
+			formData.append('title', this.input.title || '');
+			formData.append('slug', this.input.slug || '');
+			formData.append('description', this.input.description || '');
+			formData.append('donation_target', this.input.donation_target || '');
+			formData.append('is_headline', this.input.is_headline || '');
+			formData.append('banner', this.input.banner || null);
+			formData.append('publish', this.input.publish || '');
+			formData.append('end_campaign', this.$timestamp(this.input.end_campaign) || null);
+			formData.append('without_limit', this.input.without_limit || '');
+			formData.append('category_campaign', this.input.category_campaign || '');
 
 				// console.log(formData);
 
-				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
-				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
-				
-				this.$api.post(endPoint, formData, config)
-				.then(({data}) => {
+			this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
+			this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
+
+			this.$api.post(endPoint, formData, config)
+			.then(({data}) => {
 					// console.log(data)
-					if(data.success) {
-						this.success = true;
-						this.scrollToTop();
-						this.input = {}
-						this.param = data.data[0].id;
-						this.detailCampaign(data.data[0].id);
-						this.$store.dispatch('success/storeSuccessFormData', data?.data[0]);
-					} else {
-						this.$swal({
-							icon: 'info',
-							title: 'Oops...',
-							text: data.message,
-						})
-						his.loading = false;
-						this.options = ''
-						this.input = {};
-						this.input.category_campaign = '';
-						this.input.publish = '';
-						this.input.without_limit = '';
-						this.input.is_headline = '';
-						this.previewUrl = '';
-					}
-				})
-				.finally(() => {
-					setTimeout(() => {
-						this.loading = false;
-						this.options = ''
-						this.input = {};
-						this.input.category_campaign = '';
-						this.input.publish = '';
-						this.input.without_limit = '';
-						this.input.is_headline = '';
-						this.previewUrl = '';
-					}, 1500)
-				})
-				.catch((err) => {
+				if(data.success) {
+					this.success = true;
+					this.scrollToTop();
+					this.input = {}
+					this.param = data.data[0].id;
+					this.detailCampaign(data.data[0].id);
+					this.$store.dispatch('success/storeSuccessFormData', data?.data[0]);
+				} else {
 					this.$swal({
 						icon: 'info',
 						title: 'Oops...',
-						text: err.reponse.message ? err.response.message : 'Failed form data!',
+						text: data.message,
 					})
-					this.validations = err.response.data;
-					this.scrollToTop();
+					his.loading = false;
+					this.options = ''
+					this.input = {};
+					this.input.category_campaign = '';
+					this.input.publish = '';
+					this.input.without_limit = '';
+					this.input.is_headline = '';
+					this.previewUrl = '';
+				}
+			})
+			.finally(() => {
+				setTimeout(() => {
+					this.loading = false;
+					this.options = ''
+					this.input = {};
+					this.input.category_campaign = '';
+					this.input.publish = '';
+					this.input.without_limit = '';
+					this.input.is_headline = '';
+					this.previewUrl = '';
+				}, 1500)
+			})
+			.catch((err) => {
+				this.$swal({
+					icon: 'info',
+					title: 'Oops...',
+					text: err.reponse.message ? err.response.message : 'Failed form data!',
 				})
-			},
-
-			detailCampaign(detailId) {
-				this.$emit('detail-data', detailId)
-			}
+				this.validations = err.response.data;
+				this.scrollToTop();
+			})
 		},
 
-		watch: {
-			dataNotifs() {
-				if (this.$_.size(this.dataNotifs) > 0) {
-					if(this.token.token) {
-						this.message_success = this.messageNotif;
-					}
-					this.getTotalCampaign();
-				}
-			},
+		detailCampaign(detailId) {
+			this.$emit('detail-data', detailId)
 		}
+	},
+
+	watch: {
+		dataNotifs() {
+			if (this.$_.size(this.dataNotifs) > 0) {
+				if(this.token.token) {
+					this.message_success = this.messageNotif;
+				}
+				this.getTotalCampaign();
+			}
+		},
 	}
+}
 </script>

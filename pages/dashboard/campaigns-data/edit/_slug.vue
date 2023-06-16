@@ -15,8 +15,11 @@
     <div v-else :class="`w-full ${routeName === 'edit' ? 'lg:w-12/12' :'lg:w-12/12'} px-4`">
       <cards-card-settings 
       pageType="campaignData" 
-      title="Edit Campaign"
       methodType="edit"
+      link="campaigns-data"
+      :title="`Edit Campaign ${campaign.title}`"
+      :data="campaign"
+      :type="type"
       @detail-data="detailCampaign"
       />
     </div>
@@ -39,9 +42,11 @@
     data() {
       return {
         routeName: this.$route.name.split('-').pop(),
+        type: this.$route.query['type'],
+        slug: this.$route.params.slug,
         loadingDetail: null,
         successNew: null,
-        detail: {}
+        detail: {},
       };
     },
 
@@ -54,7 +59,7 @@
     },
 
     mounted() {
-      this.detailCampaign(this.formData ? this.formData.data.id : '');
+      // this.detailCampaign(this.slug ? this.slug : '');
     },
 
     methods: {
@@ -62,15 +67,16 @@
         this.$store.dispatch('success/storedFormData', 'success-form');
       },
 
-      detailCampaign(detailId='') {
+      detailCampaign(slug='') {
         this.loadingDetail = true
-        if(detailId) {          
+        if(slug) {          
           getData({
-            api_url: `${this.api_url}/fitur/campaign-management/${detailId}`,
+            api_url: `${this.api_url}/fitur/campaign-management/${slug}`,
             token: this.token.token,
             api_key: process.env.NUXT_ENV_APP_TOKEN
           })
           .then(({data}) => {
+            console.log(data);
             if(data) {
               this.successNew = true
               this.detail = data
@@ -99,6 +105,30 @@
           this.detailCampaign(this.formData ? this.formData.data.id : '');
         }
       },
+    },
+
+    async asyncData({params, $api}) {
+      try {        
+        const store = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : null;
+        const {token} = store;
+        const {slug} = params;
+        const endPoint = `/fitur/campaign-management/${slug}`;
+
+        $api.setHeader('Authorization', `Bearer ${token}`);
+        $api.defaults.headers.common['Content-Type'] = 'application/json';
+        $api.defaults.headers.common['Dku-Api-Key'] = process.env.NUXT_ENV_APP_TOKEN;
+        const response = await $api.$get(endPoint);
+        const campaign = response?.data;
+
+        return {
+          campaign
+        }
+      } catch (err) {
+        console.log(err)
+        return {
+          campaign: {}
+        }
+      }
     }
 
   };

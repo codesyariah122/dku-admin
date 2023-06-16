@@ -55,13 +55,7 @@
 			<div class="w-full lg:w-12/12 px-4 py-6">
 				<div class="relative">
 					<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="description">Description</label>
-					<tinymce
-					name="description"
-					id="d1"
-					v-model="input.description"
-					:other_options="optionsObject"
-					:init="editorConfig"
-					></tinymce>
+					<wysiwyg v-model="input.description"/>
 				</div>
 				<div v-if="validations.description" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
 					<i class="fa-solid fa-circle-info"></i>

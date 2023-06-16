@@ -123,7 +123,7 @@
 				type: String,
 				default: null
 			},
-			detail: {
+			data: {
 				type: Object,
 				default: function() {
 					return {}
@@ -177,7 +177,7 @@
 			},
 
 			setUpUserEdit() {
-				const prepare = this.detail.users.map((user) => user)[0];
+				const prepare = this.data.users.map((user) => user)[0];
 				this.input = {
 					name: prepare.name,
 					email: prepare.email,
@@ -194,7 +194,7 @@
 					api_key: this.api_token
 				})
 				.then(({data}) => {
-					console.log(data.data);
+					// console.log(data.data);
 					let prepareRoles = [];
 					if(this.type === 'DASHBOARD') {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) !== 'USER');
@@ -202,14 +202,12 @@
 						const selected = roles.filter((role) => role.id === this.input.role);
 						this.selected = selected;
 						this.roleSelected = selected.map((role) => role.name);
-						console.log(this.roleSelected);
 					} else {
 						const roles = data.data.map((role) => role).filter((role) => this.$role(role.name) === 'USER');
 						this.roles = roles.filter(role => role.id !== this.input.role);
 						const selected = roles.filter((role) => role.id === this.input.role);
 						this.selected = selected;
 						this.roleSelected = selected.map((role) => role.name);
-						console.log(this.roleSelected);
 					}
 				})
 				.catch((err) => console.log(err))

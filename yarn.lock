@@ -1756,6 +1756,17 @@
   dependencies:
     vue-toasted "^1.1.28"
 
+"@nuxtjs/universal-storage@^0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/universal-storage/-/universal-storage-0.5.9.tgz#3fbf481847f116cc5b7037315e8f53e1ec22c41b"
+  integrity sha512-T7rTu4Z933IcQqKTe45Ht4vJFUYXLjbHiovLLuD9yrAIganOh1nWBA6Ig8IyvaOALQt5KqKLNPSZXTQYxfI2Iw==
+  dependencies:
+    cookie "^0.4.1"
+    defu "^3.2.2"
+    dotprop "^1.2.1"
+    upath "^2.0.1"
+    uri-js "^4.4.1"
+
 "@nuxtjs/youch@^4.2.3":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@nuxtjs/youch/-/youch-4.2.3.tgz#36f8b22df5a0efaa81373109851e1d857aca6bed"
@@ -3346,6 +3357,11 @@ cookie@^0.3.1:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
   integrity sha512-+IJOX0OqlHCszo2mBUq+SrEbCj6w7Kpffqx60zYbPTFaO4+yYgRjHwcZNpWvaTylDHaV7PPmBHzSecZiMhtPgw==
 
+cookie@^0.4.1:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.2.tgz#0e41f24de5ecf317947c82fc789e06a884824432"
+  integrity sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==
+
 cookies@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/cookies/-/cookies-0.8.0.tgz#1293ce4b391740a8406e3c9870e828c4b54f3f90"
@@ -3739,6 +3755,11 @@ de-indent@^1.0.2:
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
   integrity sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==
 
+debounce@^1.1.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
+  integrity sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==
+
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -4035,6 +4056,16 @@ dotenv@^9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-9.0.2.tgz#dacc20160935a37dea6364aa1bef819fb9b6ab05"
   integrity sha512-I9OvvrHp4pIARv4+x9iuewrWycX6CcZtoAu1XrzPxc5UygMJXJZYmBsynku8IkrJwgypE5DGNjDPmPRhDCptUg==
+
+dotprop@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/dotprop/-/dotprop-1.2.1.tgz#7df88dd1c50ae4e93773475f85c84f77c302953b"
+  integrity sha512-TcgsqnhHYytg+JKusKAwe4YLZWtD/vfOmblUEbSDZxQy1nlOQTChbyvj/f6kqKLUYbcJqie97rVhDc1JBs00LA==
+
+dropzone@^5.5.1:
+  version "5.9.3"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.9.3.tgz#b3070ae090fa48cbc04c17535635537ca72d70d6"
+  integrity sha512-Azk8kD/2/nJIuVPK+zQ9sjKMRIpRvNyqn9XwbBHNq+iNuSccbJS6hwm1Woy0pMST0erSo0u4j+KJaodndDk4vA==
 
 duplexer@^0.1.2:
   version "0.1.2"
@@ -4737,6 +4768,11 @@ git-url-parse@^13.1.0:
   dependencies:
     git-up "^7.0.0"
 
+github-markdown-css@^2.8.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/github-markdown-css/-/github-markdown-css-2.10.0.tgz#0612fed22816b33b282f37ef8def7a4ecabfe993"
+  integrity sha512-RX5VUC54uX6Lvrm226M9kMzsNeOa81MnKyxb3J0G5KLjyoOySOZgwyKFkUpv6iUhooiUZdogk+OTwQPJ4WttYg==
+
 glob-all@^3.2.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/glob-all/-/glob-all-3.3.1.tgz#6be2d5d8276902319f640fbf839fbe15b35e7667"
@@ -5014,6 +5050,11 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
+
+highlightjs@^9.10.0:
+  version "9.16.2"
+  resolved "https://registry.yarnpkg.com/highlightjs/-/highlightjs-9.16.2.tgz#07ea6cc7c93340fc440734fb7abf28558f1f0fe1"
+  integrity sha512-FK1vmMj8BbEipEy8DLIvp71t5UsC7n2D6En/UfM/91PCwmOpj6f2iu0Y0coRC62KSRHHC+dquM2xMULV/X7NFg==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
@@ -6632,6 +6673,13 @@ no-case@^3.0.4:
   dependencies:
     lower-case "^2.0.2"
     tslib "^2.0.3"
+
+node-emoji@^1.8.1:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.11.0.tgz#69a0150e6946e2f115e9d7ea4df7971e2628301c"
+  integrity sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==
+  dependencies:
+    lodash "^4.17.21"
 
 node-fetch-native@^1.0.1:
   version "1.0.1"
@@ -9912,7 +9960,7 @@ upper-case@^1.1.1:
   resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
   integrity sha512-WRbjgmYzgXkCV7zNVpy5YgrHgbBv126rMALQQMrmzOVC4GM2waQ9x7xtm8VU+1yF2kWyPzI9zbZ48n4vSxwfSA==
 
-uri-js@^4.2.2:
+uri-js@^4.2.2, uri-js@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.4.1.tgz#9b1a52595225859e55f669d928f88c6c57f2a77e"
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
@@ -10078,6 +10126,15 @@ vue-server-renderer@^2.6.12, vue-server-renderer@^2.7.10:
     serialize-javascript "^6.0.0"
     source-map "0.5.6"
 
+vue-simple-markdown@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/vue-simple-markdown/-/vue-simple-markdown-1.1.5.tgz#2fef6ae8c35abbd45287a9d0336249a6d94a4099"
+  integrity sha512-SHXSEU5AqSJHB2vaCpUY/YpJnihRxKTOKXxRu/00GYex0brYOpvZuWhF1/GDsbt+/mXw4yP0bmN3k1GrRvPSlg==
+  dependencies:
+    github-markdown-css "^2.8.0"
+    highlightjs "^9.10.0"
+    node-emoji "^1.8.1"
+
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.3.tgz#6d55863a51fa757ab24e89d9371465072aa7bc35"
@@ -10127,6 +10184,22 @@ vue-toasted@^1.1.28:
   version "1.1.28"
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.28.tgz#dbabb83acc89f7a9e8765815e491d79f0dc65c26"
   integrity sha512-UUzr5LX51UbbiROSGZ49GOgSzFxaMHK6L00JV8fir/CYNJCpIIvNZ5YmS4Qc8Y2+Z/4VVYRpeQL2UO0G800Raw==
+
+vue-wysiwyg@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/vue-wysiwyg/-/vue-wysiwyg-1.7.2.tgz#8f5ffe46e95e984c1f36874cc42ede5213e3b2d8"
+  integrity sha512-ypj9vqmGJTuM/YYC30+vRPWm6+UizBqvNHnIJr1l6k92eHA33q5ubE+WPfij8Qr8mK+wbaCwaVBO7dQqvxzSTQ==
+  dependencies:
+    debounce "^1.1.0"
+    vue "^2.5.13"
+    vue2-dropzone "^3.0.4"
+
+vue2-dropzone@^3.0.4:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/vue2-dropzone/-/vue2-dropzone-3.6.0.tgz#b4bb4b64de1cbbb3b88f04b24878e06780a51546"
+  integrity sha512-YXC1nCWIZvfa98e/i6h+EshZCkFSxFEh0Sxr9ODfThAPPDVhAzLLlz/4XIx0NGO1QeSy6htwSstte47R7vVhLQ==
+  dependencies:
+    dropzone "^5.5.1"
 
 vue@^2.5.13, vue@^2.6.12, vue@^2.7.10:
   version "2.7.14"

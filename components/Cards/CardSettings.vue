@@ -30,13 +30,13 @@
       <users-form-edit
         v-if="pageType==='userData' && methodType === 'edit'"
         :type="type"
-        :detail="data"
+        :data="data"
         @detail-data="detailData"
       />
 
       <campaigns-form-edit
         v-if="pageType === 'campaignData' && methodType === 'edit'"
-        :detail="data"
+        :data="data"
         @detail-data="detailData"
       />
 

@@ -171,13 +171,11 @@ export default {
     hideDropdown(event) {
       const targetElement = event.target;
 
-      if(this.$refs.btnDropdownRef &&
-        !this.$refs.btnDropdownRef.contains(targetElement) &&
-        this.$refs.popoverDropdownRef &&
-        !this.$refs.popoverDropdownRef.contains(targetElement)){
-
-        this.dropdownPopoverShow = false;
-        document.removeEventListener("click", this.hideDropdown);
+      if (this.$refs.btnDropdownRef && !this.$refs.btnDropdownRef.contains(targetElement) && this.$refs.popoverDropdownRef && !this.$refs.popoverDropdownRef.contains(targetElement)
+          ) {
+          this.dropdownPopoverShow = false;
+          // Menghapus event listener dari dokumen
+          document.removeEventListener("click", this.hideDropdown);
       }
     },
 

@@ -138,7 +138,9 @@ export default {
     { src: "~/plugins/tel-input", ssr: false },
     { src: "~/plugins/vue-tiny-mce", ssr: false },
     { src: "~/plugins/timestamp" },
-    { src: "~/plugins/decode", ssr: false }
+    { src: "~/plugins/decode", ssr: false },
+    { src: "~/plugins/encode", ssr: false },
+    { src: '~/plugins/vue-wysiwyg'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

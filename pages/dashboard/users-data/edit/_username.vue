@@ -21,7 +21,7 @@
       :title="`Edit User ${param}`"
       methodType="edit"
       :type="type"
-      :data="detail"
+      :data="user"
       @detail-data="detailUser"
       />
     </div>
@@ -128,15 +128,15 @@
         $api.defaults.headers.common['Content-Type'] = 'application/json';
         $api.defaults.headers.common['Dku-Api-Key'] = process.env.NUXT_ENV_APP_TOKEN;
         const response = await $api.$get(endPoint);
-        const detail = response?.data;
+        const user = response?.data;
 
         return {
-          detail
+          user
         }
       } catch (err) {
         console.log(err)
         return {
-          detail: {}
+          user: {}
         }
       }
 
