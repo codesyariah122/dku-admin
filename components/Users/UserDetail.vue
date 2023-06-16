@@ -105,7 +105,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.detail);
+    // console.log(this.detail);
   },
 
   methods: {

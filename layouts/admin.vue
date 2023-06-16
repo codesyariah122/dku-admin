@@ -132,7 +132,7 @@
             }, 1500)
           })
           .catch((err) => {
-            console.log(err)
+            // console.log(err)
             if (err) {
               this.$swal({
                 icon: "error",

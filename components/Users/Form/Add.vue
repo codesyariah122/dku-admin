@@ -248,8 +248,12 @@
 				
 				this.$api.post(endPoint, postData)
 				.then(({data}) => {
-					console.log(data)
 					if(data.success) {
+						this.$toast.show(`${data.data[0].name}, successfully added !`, {
+							type: "success",
+							duration: 1500,
+							position: "top-right",
+						});
 						this.success = true;
 						this.scrollToTop();
 						this.detailUser(data?.profiles[0]);
@@ -266,6 +270,7 @@
 					}, 1000)
 				})
 				.catch((err) => {
+					console.log(err);
 					this.validations = err.response.data;
 				})
 			},

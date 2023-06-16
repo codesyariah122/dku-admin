@@ -425,7 +425,7 @@
 				formData.append('description', this.input.description || '');
 				formData.append('donation_target', this.input.donation_target || '');
 				formData.append('is_headline', this.input.is_headline || '');
-				formData.append('banner', this.input.banner || null);
+				formData.append('banner', this.input.banner || '');
 				formData.append('publish', this.input.publish || '');
 				formData.append('end_campaign', this.$timestamp(this.input.end_campaign) || null);
 				formData.append('without_limit', this.input.without_limit || '');
@@ -440,6 +440,11 @@
 				.then(({data}) => {
 					// console.log(data)
 					if(data.success) {
+						this.$toast.show(`${data.data[0].title}, successfully added !`, {
+							type: "success",
+							duration: 1500,
+							position: "top-right",
+						});
 						this.success = true;
 						this.scrollToTop();
 						this.input = {}

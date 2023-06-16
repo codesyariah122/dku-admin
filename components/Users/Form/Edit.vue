@@ -247,6 +247,11 @@
 				this.$api.put(endPoint, postData)
 				.then(({data}) => {
 					if(data.success) {
+						this.$toast.show(`${data.data.name}, successfully updated !`, {
+							type: "success",
+							duration: 1500,
+							position: "top-right",
+						});
 						this.success = true;
 						this.message_success=data.message
 						this.$emit('detail-data', data?.data?.profiles[0].username);

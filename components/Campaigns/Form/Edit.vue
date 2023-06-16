@@ -11,7 +11,7 @@
 
 
 <template>
-	<form @submit.prevent="addNewCampaign">
+	<form @submit.prevent="updateCampaign">
 		<div v-if="success" class="flex justify-center w-full bg-transparent mt-4">
 			<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
 		</div>
@@ -90,7 +90,7 @@
 					</label>
 					<select @change="changeIsHeadline($event)" id="is_headline" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
 						<option selected :value="input.is_headline">{{input.is_headline === 'N' ? 'No' : 'Yes'}}</option>
-						<option v-if="input.donation_target === 'N'" value="Y">
+						<option v-if="input.is_headline === 'N'" value="Y">
 							Yes
 						</option>
 						<option v-else value="N">
@@ -262,13 +262,13 @@
 	import {getData} from '~/hooks/index';
 
 	export default {
-	props: {
-		type: {
-			type: String,
+		props: {
+			type: {
+				type: String,
 			default: null
-		},
-		data: {
-			type: Object,
+			},
+			data: {
+				type: Object,
 			default: function() {
 				return {}
 			}
@@ -450,11 +450,11 @@
 			this.validations = [];
 		},
 
-		addNewCampaign() {
+		updateCampaign() {
 			this.loading = true
 			this.options = 'add-campaign';
 
-			const endPoint = `/fitur/campaign-management`;
+			const endPoint = `/fitur/update-campaign/${this.data.slug}`;
 			const config = {
 				headers: {
 					"Content-Type": "multipart/form-data"
@@ -468,7 +468,7 @@
 			formData.append('description', this.input.description || '');
 			formData.append('donation_target', this.input.donation_target || '');
 			formData.append('is_headline', this.input.is_headline || '');
-			formData.append('banner', this.input.banner || null);
+			formData.append('banner', this.input.banner || '');
 			formData.append('publish', this.input.publish || '');
 			formData.append('end_campaign', this.$timestamp(this.input.end_campaign) || null);
 			formData.append('without_limit', this.input.without_limit || '');
@@ -481,13 +481,17 @@
 
 			this.$api.post(endPoint, formData, config)
 			.then(({data}) => {
-					// console.log(data)
 				if(data.success) {
+					this.$toast.show(`${data.data[0].title}, successfully updated !`, {
+						type: "success",
+						duration: 1500,
+						position: "top-right",
+					});
 					this.success = true;
 					this.scrollToTop();
 					this.input = {}
 					this.param = data.data[0].id;
-					this.detailCampaign(data.data[0].id);
+					this.detailCampaign(data.data[0].slug);
 					this.$store.dispatch('success/storeSuccessFormData', data?.data[0]);
 				} else {
 					this.$swal({
@@ -497,24 +501,12 @@
 					})
 					his.loading = false;
 					this.options = ''
-					this.input = {};
-					this.input.category_campaign = '';
-					this.input.publish = '';
-					this.input.without_limit = '';
-					this.input.is_headline = '';
-					this.previewUrl = '';
 				}
 			})
 			.finally(() => {
 				setTimeout(() => {
 					this.loading = false;
 					this.options = ''
-					this.input = {};
-					this.input.category_campaign = '';
-					this.input.publish = '';
-					this.input.without_limit = '';
-					this.input.is_headline = '';
-					this.previewUrl = '';
 				}, 1500)
 			})
 			.catch((err) => {
