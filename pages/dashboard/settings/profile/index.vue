@@ -4,7 +4,7 @@
       <settings-profile-card-settings @refetch-data="prepareProfileData"/>
     </div>
     <div class="w-full lg:w-4/12 px-4">
-      <settings-profile-card-profile :user="user" :profiles="profiles" :roles="roles" :image="image"/>
+      <settings-profile-card-profile :user="user" :profiles="profiles" :roles="roles" :image="image" @refetch-data="prepareProfileData"/>
     </div>
   </div>
 </template>

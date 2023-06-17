@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap">
     <div class="w-full lg:w-12/12 px-4">
-      <settings-change-password-form-password />
+      <settings-change-password-form />
     </div>
   </div>
 </template>

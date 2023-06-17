@@ -105,7 +105,7 @@
 
           <div class="w-full lg:w-6/12 px-4 py-8">
             <div class="relative w-full mb-3">
-              <nuxt-link :to="`/dashboard/settings/change-password/${profiles.username}`" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+              <nuxt-link to="/dashboard/settings/change-password" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
                 <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                  <i class="fa-solid fa-user-shield"></i>&nbsp;Get Change Password !
                 </span>
@@ -325,7 +325,6 @@
 
       prepareProfileData() {
         if (this.token !== null) {
-          this.loadingData = true;
           const endPoint = `${this.api_url}/fitur/user-profile`;
           const config = {
             headers: {

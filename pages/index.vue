@@ -35,6 +35,15 @@
               </router-link>
             </div>
           </div>
+
+          <div v-if="errorLogin" class="flex py-6">
+            <div
+            :class="`${errorLogin === 'Your email not registered !' ? 'bg-danger-600' : 'bg-warning-300'} rounded-sm mb-4 text-base text-white font-bold capitalize w-full h-auto p-2`"
+            role="alert"
+            >
+              {{ errorLogin }}
+            </div>
+          </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
             <form @submit.prevent="login">
               <div class="relative w-full mb-3">
@@ -51,10 +60,9 @@
                 />
                 <div v-if="validation.email" class="flex py-6">
                   <div
-                    class="bg-yellow-100 rounded-lg text-base text-yellow-700 w-full h-auto"
-                    role="alert"
-                  >
-                    {{ validation.email[0] }}
+                    class="flex p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert"
+                    >
+                    <span class="font-medium"><i class="fa-solid fa-circle-exclamation"></i>&nbsp;{{ validation.email[0] }}</span>
                   </div>
                 </div>
               </div>
@@ -79,18 +87,9 @@
                 ></i>
                 <div v-if="validation.password" class="flex py-6">
                   <div
-                    class="bg-yellow-100 rounded-lg mb-4 text-base text-yellow-700 w-full h-auto"
-                    role="alert"
-                  >
-                    {{ validation.password[0] }}
-                  </div>
-                </div>
-                <div v-if="errorLogin" class="flex py-6">
-                  <div
-                    :class="`${errorLogin === 'Your email not registered !' ? 'bg-danger-600' : 'bg-warning-300'} rounded-sm mb-4 text-base text-white font-bold capitalize w-full h-auto p-2`"
-                    role="alert"
-                  >
-                    {{ errorLogin }}
+                    class="flex p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert"
+                    >
+                    <span class="font-medium"><i class="fa-solid fa-circle-exclamation"></i>&nbsp;{{ validation.password[0] }}</span>
                   </div>
                 </div>
               </div>

@@ -50,7 +50,7 @@
             <i class="fa-solid fa-pen-to-square text-cyan-800"></i> &nbsp;&nbsp;Edit Data
           </button>
         </li>
-        <li v-if="userStatus.status === 'INACTIVE'">
+        <li v-if="userStatus.status === 'INACTIVE' && username === 'super_admin'">
           <button
             @click.prevent="activationUser(userStatus.user_id)"
             href="javascript:void(0);"
