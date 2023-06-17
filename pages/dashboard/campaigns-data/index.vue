@@ -87,6 +87,7 @@ export default {
               title: cell?.title,
               slug: cell?.slug,
               banner: cell?.banner,
+              category_campaigns: cell?.category_campaigns,
               donation_target: cell?.donation_target,
               is_headline: cell?.is_headline,
               publish: cell?.publish,
@@ -122,6 +123,13 @@ export default {
       })
       .then((data) => {
         if(data.success) {
+          // console.log(data.message)
+          this.$toast.show('Campaign data successfully move to trash !', {
+            type : 'info',
+            duration: 5000,
+            position: "top-right",
+            icon: 'circle-exclamation'
+          });
           this.success = true;
           this.scrollToTop();
         }

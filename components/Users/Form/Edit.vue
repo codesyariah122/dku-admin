@@ -249,8 +249,9 @@
 					if(data.success) {
 						this.$toast.show(`${data.data.name}, successfully updated !`, {
 							type: "success",
-							duration: 1500,
+							duration: 2500,
 							position: "top-right",
+							icon: 'check-double'
 						});
 						this.success = true;
 						this.message_success=data.message

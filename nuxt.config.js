@@ -166,6 +166,11 @@ export default {
     "@nuxtjs/toast",
   ],
 
+  toast: {
+    position: 'bottom-center',
+    iconPack: 'fontawesome'
+  },
+
   //   fontawesome: {
   //     component: 'Fa',
   //     suffix: false,

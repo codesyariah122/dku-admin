@@ -243,14 +243,12 @@ export default {
           this.$api
           .get(endPoint, config)
           .then(({ data }) => {
-            this.userData = {...data.data[0]}
-            data.data.map((user) => {
-              user.logins.map((login) => {
-                this.tokenLogins = login.user_token_login
-              })
-              user.profiles.map((profile) => {
-                this.userName = profile.username
-              })
+            this.userData = {...data.data}
+            data.data.logins.map((login) => {
+              this.tokenLogins = login.user_token_login
+            })
+            data.data.profiles.map((profile) => {
+              this.userName = profile.username
             })
           })
           .catch((err) => {

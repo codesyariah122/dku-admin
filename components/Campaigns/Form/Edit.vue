@@ -484,8 +484,9 @@
 				if(data.success) {
 					this.$toast.show(`${data.data[0].title}, successfully updated !`, {
 						type: "success",
-						duration: 1500,
+						duration: 2500,
 						position: "top-right",
+						icon: 'check-double'
 					});
 					this.success = true;
 					this.scrollToTop();

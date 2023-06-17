@@ -160,11 +160,9 @@ export default {
         this.$api
           .get(endPoint, config)
           .then(({ data }) => {
-            this.userData = data.data.map((user) => user)[0]
-            data.data.map((user) => {
-              user.profiles.map((profile) => {
-                this.username = profile.username
-              })
+            this.userData = data.data
+            data.data.profiles.map((profile) => {
+              this.username = profile.username
             })
           })
           .catch((err) => {

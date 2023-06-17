@@ -96,9 +96,9 @@
           this.$api
           .get(endPoint, config)
           .then(({ data }) => {
-            const roles = this.$role(data.data[0].roles[0].name);
+            const roles = this.$role(data.data.roles[0].name);
             const now = this.$moment().format("LLLL");
-            const expires_at = this.$moment(data.data[0].expires_at).format(
+            const expires_at = this.$moment(data.data.expires_at).format(
               "LLL"
               );
 
@@ -110,11 +110,11 @@
 
             this.userRoles = roles;
 
-            this.userEmail = data.data[0].email;
+            this.userEmail = data.data.email;
 
-            this.userName = data.data[0].profiles[0].username;
+            this.userName = data.data.profiles[0].username;
 
-            if (now > expires_at && data.data[0].remember_token === null) {
+            if (now > expires_at && data.data.remember_token === null) {
               this.$toast.show("Sesi login telah habis", {
                 type: "info",
                 duration: 2000,
@@ -132,7 +132,6 @@
             }, 1500)
           })
           .catch((err) => {
-            // console.log(err)
             if (err) {
               this.$swal({
                 icon: "error",
@@ -165,9 +164,10 @@
           this.checkExpires();
           if (this.notifs[0][0].emailForbaiden === this.userEmail) {
             this.$toast.show(this.messageNotifs, {
-              type: "info",
+              type : 'error',
               duration: 5000,
               position: "top-right",
+              icon: 'circle-exclamation'
             });
           }
         }

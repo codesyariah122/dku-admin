@@ -177,6 +177,12 @@
         })
         .then((data) => {
           if(data.success) {
+            this.$toast.show("User data successfully move to trash !", {
+              type : 'success',
+              duration: 5000,
+              position: "top-right",
+              icon: 'circle-exclamation'
+            });
             this.success = true;
             this.scrollToTop();
           }

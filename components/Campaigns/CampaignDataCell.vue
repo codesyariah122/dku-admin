@@ -23,6 +23,12 @@
        <img v-else :src="require('~/assets/img/default.jpg')" class="w-42 h-24">
       </td>
 
+      <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+        <div v-for="category in column.category_campaigns">
+          {{category.name}}
+        </div>
+      </td>
+
       <td
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
@@ -112,6 +118,7 @@ export default {
 
   mounted() {
     this.checkUserLogin();
+    console.log(this.columns);
   },
 
   methods: {
@@ -131,11 +138,9 @@ export default {
         this.$api
           .get(endPoint, config)
           .then(({ data }) => {
-            this.userData = data.data.map((user) => user)[0]
-            data.data.map((user) => {
-              user.profiles.map((profile) => {
-                this.username = profile.username
-              })
+            this.userData = data.data
+            data.data.profiles.map((profile) => {
+              this.username = profile.username
             })
           })
           .catch((err) => {

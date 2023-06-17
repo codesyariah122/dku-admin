@@ -109,6 +109,12 @@
         })
         .then((data) => {
           if(data.success) {
+            this.$toast.show('Campaign data successfully destroyed !', {
+              type : 'error',
+              duration: 5000,
+              position: "top-right",
+              icon: 'dumpster-fire'
+            });
             this.success = true;
             if(this.totals > 1) {
               this.message_success = data.message;
@@ -137,6 +143,12 @@
         })
         .then(({data}) => {
           if(data.deleted_at === null) {
+            this.$toast.show("Campaign data successfully restored !", {
+              type : 'success',
+              duration: 5000,
+              position: "top-right",
+              icon: 'check-double'
+            });
             if(this.totals > 1) {
               this.success = true;
               this.scrollToTop();

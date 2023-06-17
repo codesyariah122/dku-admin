@@ -96,6 +96,12 @@
         })
         .then((data) => {
           if(data.success) {
+            this.$toast.show('User data successfully destroyed !', {
+              type : 'error',
+              duration: 5000,
+              position: "top-right",
+              icon: 'dumpster-fire'
+            });
             this.success = true;
             if(this.totals > 1) {
               this.scrollToTop();
@@ -123,6 +129,12 @@
         })
         .then(({data}) => {
           if(data.deleted_at === null) {
+            this.$toast.show("User data successfully restored !", {
+              type : 'success',
+              duration: 5000,
+              position: "top-right",
+              icon: 'check-double'
+            });
             if(this.totals > 1) {
               this.success = true;
               this.scrollToTop();

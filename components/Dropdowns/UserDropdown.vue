@@ -42,12 +42,12 @@
         {{ userData.email }}
       </p>
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
-      <a
-        href="javascript:void(0);"
+      <nuxt-link
+        to="/dashboard/settings/profile"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 hover:bg-gray-600 hover:text-white"
       >
         Setting
-      </a>
+      </nuxt-link>
 
       <a
         @click="logout(),dropdownPopoverShow=false"
@@ -155,20 +155,20 @@ export default {
         this.$api
           .get(endPoint, config)
           .then(({ data }) => {
-            if (data.data[0].logins[0].user_token_login === this.token.token) {
+            if (data.data.logins[0].user_token_login === this.token.token) {
               setTimeout(() => {
                 this.loadingData = false;
-                this.userDataCheck(data.data[0]);
+                this.userDataCheck(data.data);
               }, 500);
-              this.userToken = data.data[0].logins.map(
+              this.userToken = data.data.logins.map(
                 (d) => d.user_token_login
               );
               this.image =
                 this.image_url +
                 "/" +
-                data.data[0].profiles.map((profile) => profile.photo)[0];
+                data.data.profiles.map((profile) => profile.photo)[0];
 
-              this.userData = { ...data.data[0] };
+              this.userData = { ...data.data };
             } else {
               this.$router.replace("/");
             }

@@ -76,7 +76,7 @@
             api_key: process.env.NUXT_ENV_APP_TOKEN
           })
           .then(({data}) => {
-            console.log(data);
+            // console.log(data);
             if(data) {
               this.successNew = true
               this.detail = data
