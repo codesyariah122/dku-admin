@@ -89,6 +89,29 @@
               />
             </div>
           </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300" />
+
+          <div class="w-full lg:w-6/12 px-4 py-10">
+            <div class="relative w-full mb-3">
+              <label
+                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                htmlFor="username"
+              >
+                Change Password
+              </label>
+            </div>
+          </div>
+
+          <div class="w-full lg:w-6/12 px-4 py-8">
+            <div class="relative w-full mb-3">
+              <nuxt-link :to="`/dashboard/settings/change-password/${profiles.username}`" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                 <i class="fa-solid fa-user-shield"></i>&nbsp;Get Change Password !
+                </span>
+              </nuxt-link>
+            </div>
+          </div>
         </div>
 
         <hr class="mt-6 border-b-1 border-blueGray-300" />
@@ -328,56 +351,16 @@
         }
       },
 
-      getUserData(page=1, name='') {
-        // this.loading = loading ? loading : true;
-        getData({
-          api_url: `${this.api_url}/fitur/user-management?page=${page}&name=${name}`,
-          token: this.token.token,
-          api_key: this.api_token
-        })
-        .then((data) => {
-          let cells = []
-          data?.data?.map((cell) => {
-            const prepareCell = {
-              id: cell?.id,
-              name: cell?.name,
-              photo: cell.profiles.map(profile => profile?.photo ? profile?.photo : profile?.g_avatar)[0],
-              email: cell?.email,
-              role: this.$role(cell?.roles.map(role => role.name)),
-              phone: cell?.phone,
-              status: cell?.status,
-              expires_at: cell?.expires_at,
-              activation_id: cell?.activation_id ? cell?.activation_id : null,
-              token: cell?.logins?.map((data) => data.user_token_login)[0],
-              last_login: cell?.last_login,
-              is_login: cell?.is_login,
-              endTime: new Date(cell?.expires_at),
-              countdown: "",
-              username: cell?.profiles?.map((profile) => profile?.username)[0]
-            }
-            cells.push(prepareCell)
-          });
-          this.items = [...cells]
-          this.links = data?.meta?.links
-          this.paging.current = data?.meta?.current_page
-          this.paging.from = data?.meta?.from
-          this.paging.last = data?.meta?.last_page
-          this.paging.per_page = data?.meta?.per_page
-          this.paging.total = data?.meta?.total
-        })
-        .catch((err) => console.log(err));
-      },
-
       closeSuccessAlert() {
         this.success = false
         this.message_success = ''
-      }
+      },
     },
 
     watch: {
       dataNotifs() {
         if (this.$_.size(this.dataNotifs) > 0) {
-          this.getUserData();
+          this.$emit('refetch-data');
         }
       },
     }
