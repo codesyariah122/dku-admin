@@ -122,7 +122,7 @@
         }, 1000);
       },
 
-      getUserData(loading, loadingDelete, page=1, name='') {
+      getUserData(page=1, name='') {
         // this.loading = loading ? loading : true;
         getData({
           api_url: `${this.api_url}/fitur/user-management?page=${page}&name=${name}`,

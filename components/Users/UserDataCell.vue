@@ -83,7 +83,7 @@
       </td>
 
       <td
-        v-if="column.token !== token.token && column.username !== 'super_admin'"
+        v-if="column.token !== token.token && column.username !== 'super_admin' && column.is_login !== 1"
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
       >
         <dropdowns-table-dropdown 

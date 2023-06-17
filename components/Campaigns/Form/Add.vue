@@ -218,10 +218,10 @@
 						@dragleave="handleDragLeave"
 						@drop="handleDrop"
 						>
-						<h2 class="mb-4 text-sm text-gray-500 dark:text-gray-400">Upload Banner Here !</h2>
-						<i class="fa-solid fa-cloud-arrow-up text-5xl text-gray-500"></i>
-						<p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-					</div>
+							<h2 class="mb-4 text-sm text-gray-500 dark:text-gray-400">Upload Banner Here !</h2>
+							<i class="fa-solid fa-cloud-arrow-up text-5xl text-gray-500"></i>
+							<p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+						</div>
 					<input 
 					ref="fileInput"
 					id="dropzone-file"

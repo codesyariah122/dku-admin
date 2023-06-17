@@ -42,12 +42,13 @@
         {{ userData.email }}
       </p>
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
-      <nuxt-link
-        to="/dashboard/settings/profile"
+      <a
+        href="javascript:void(0)"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 hover:bg-gray-600 hover:text-white"
+        @click="redirectSettingsPage"
       >
         Setting
-      </nuxt-link>
+      </a>
 
       <a
         @click="logout(),dropdownPopoverShow=false"
@@ -120,6 +121,11 @@ export default {
           // Menghapus event listener dari dokumen
         document.removeEventListener("click", this.hideDropdown);
       }
+    },
+
+    redirectSettingsPage() {
+      this.$router.push('/dashboard/settings/profile');
+      this.dropdownPopoverShow = false;
     },
 
 
