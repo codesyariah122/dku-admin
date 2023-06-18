@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="w-full flex justify-center">
-          <div class="mt-16">
+          <div class="mt-24 px-6">
             <!-- Popup upload photo -->
             <button v-on:click="toggleModal()" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800" type="button">
               <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
@@ -268,7 +268,7 @@ export default {
           const formData = new FormData()
           formData.append('photo', photo)
 
-          const endPoint = `/fitur/update-profile`;
+          const endPoint = `/fitur/upload-photo`;
           const config = {
             headers: {
               Accept: "application/json",
@@ -278,7 +278,7 @@ export default {
           this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
           this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
 
-          this.$api.put(endPoint, formData, config)
+          this.$api.post(endPoint, formData, config)
           .then(({data}) => {
             console.log(data)
             if(data.success) {
