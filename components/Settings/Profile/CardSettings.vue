@@ -295,7 +295,7 @@
 
           this.$api.put(endPoint, dataProfile, config)
           .then(({data}) => {
-            console.log(data)
+            // console.log(data)
             if(data.success) {
               this.$toast.show(data.message, {
                 type: "success",

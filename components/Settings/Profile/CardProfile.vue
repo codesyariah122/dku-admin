@@ -280,7 +280,7 @@ export default {
 
           this.$api.post(endPoint, formData, config)
           .then(({data}) => {
-            console.log(data)
+            // console.log(data)
             if(data.success) {
               this.$toast.show(data.message, {
                 type: "success",
