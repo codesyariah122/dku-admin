@@ -45,10 +45,10 @@ export default {
       window.Echo.channel(process.env.NUXT_ENV_PUSHER_CHANNEL).listen(
         "EventNotification",
         (e) => {
-          if(e[0].type !== 'logout') {
-            this.notifs.push(e);
-            this.messageNotifs = e[0].notif;
-          }
+          this.notifs.push(e);
+          this.messageNotifs = e[0].notif;
+          // if(e[0].type !== 'logout') {
+          // }
         }
       );
     },
