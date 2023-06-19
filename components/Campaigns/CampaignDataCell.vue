@@ -118,7 +118,6 @@ export default {
 
   mounted() {
     this.checkUserLogin();
-    console.log(this.columns);
   },
 
   methods: {

@@ -106,6 +106,11 @@ export default {
         defer: true,
         ssr: false,
       },
+      // {
+      //   src: 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js',
+      //   body: true,
+      //   ssr: false
+      // },
       {
         src: "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js",
         defer: true,
@@ -140,7 +145,8 @@ export default {
     { src: "~/plugins/timestamp" },
     { src: "~/plugins/decode", ssr: false },
     { src: "~/plugins/encode", ssr: false },
-    { src: '~/plugins/vue-wysiwyg'},
+    { src: "~/plugins/vue-wysiwyg" },
+    { src: "~/plugins/vue2-datepicker", ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

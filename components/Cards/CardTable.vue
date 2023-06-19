@@ -53,6 +53,19 @@
       <div v-if="success" ref="alertNotifs" class="flex justify-center w-full bg-transparent mt-4">
         <molecules-success-alert :success="success" :messageAlert="messageAlert" @close-alert="closeSuccessAlert"/>
       </div>
+
+      <div class="flex justify-start mt-4 mb-4">
+        <div>
+          <h2 class="text-white text-md font-bold">Filter Campaign By</h2>
+        </div>
+      </div>
+
+      <div class="flex justify-start w-full bg-transparent mt-2 mb-8">
+        <div v-if="types === 'campaign-data'" >
+          <campaigns-campaign-filter  @filter-data="filterData"/>
+        </div>
+      </div>
+
     </div>
 
     <div class="block w-full overflow-x-auto">
@@ -219,6 +232,10 @@ export default {
 
     closeSuccessAlert() {
       this.$emit('close-alert');
+    },
+
+    filterData(title='', category_campaign='', start_date='', end_date='') {
+      this.$emit('filter-data', title, category_campaign, start_date, end_date)
     }
   },
 

@@ -15,6 +15,7 @@
         :messageAlert="message_success"
         @close-alert="closeSuccessAlert"
         @deleted-data="deletedCampaign"
+        @filter-data="handleFilterCampaign"
       />
 
       <div class="mt-6 -mb-2">
@@ -71,10 +72,14 @@ export default {
   },
 
   methods: {
-    getCampaignData(loading, loadingDelete, page=1) {
+    handleFilterCampaign(title='', category_campaign='', start_date='', end_date='') {
+      this.getCampaignData(1, title, category_campaign, start_date, end_date);
+    },
+
+    getCampaignData(page=1, title='', category_campaign='', start_date='', end_date='') {
       // this.loading = loading ? loading : true;
       getData({
-        api_url: `${this.api_url}/fitur/campaign-management?page=${page}`,
+        api_url: `${this.api_url}/fitur/campaign-management?page=${page}&title=${title}&category_campaign=${category_campaign}&start_date=${start_date}&end_date=${end_date}`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
