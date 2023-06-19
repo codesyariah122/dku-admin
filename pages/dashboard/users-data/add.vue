@@ -68,28 +68,35 @@
       },
 
       detailUser(username = '') {
-        this.loadingDetail = true
+        try {
 
-        if(username) {          
-          getData({
-            api_url: `${this.api_url}/fitur/user-management/${username}`,
-            token: this.token.token,
-            api_key: process.env.NUXT_ENV_APP_TOKEN
-          })
-          .then(({data}) => {
+          this.loadingDetail = true
+          // console.log(username)
+          if(username) {          
+            getData({
+              api_url: `${this.api_url}/fitur/user-management/${username}`,
+              token: this.token.token,
+              api_key: process.env.NUXT_ENV_APP_TOKEN
+            })
+            .then(({data}) => {
             // console.log(data)
-            if(data) {
-              this.successNew = true
-              this.messageNew = `${data.username}, data successfully added !`
-              this.detail = data
-            }
-          })
-          .finally(() => {
-            setTimeout(() => {
-              this.loadingDetail = false
-            }, 500)
-          })
-          .catch((err) => console.log(err));
+              if(data) {
+                this.successNew = true
+                this.messageNew = `${data.username}, data successfully added !`
+                this.detail = data
+              }
+            })
+            .finally(() => {
+              setTimeout(() => {
+                this.loadingDetail = false
+              }, 500)
+            })
+            .catch((err) => {
+              console.log(err)
+            });
+          }
+        } catch (err) {
+          console.error(err)
         }
       }
     },

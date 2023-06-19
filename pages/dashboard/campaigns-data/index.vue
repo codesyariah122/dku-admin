@@ -72,8 +72,10 @@ export default {
   },
 
   methods: {
-    handleFilterCampaign(title='', category_campaign='', start_date='', end_date='') {
-      this.getCampaignData(1, title, category_campaign, start_date, end_date);
+    handleFilterCampaign(param, types) {
+      if(types === 'campaign-data') {
+        this.getCampaignData(1, param.title, param.category_campaign, param.start_date, param.end_date);
+      }
     },
 
     getCampaignData(page=1, title='', category_campaign='', start_date='', end_date='') {
@@ -157,7 +159,7 @@ export default {
   watch: {
     notifs() {
       if (this.$_.size(this.notifs) > 0) {
-        this.getCampaignData();
+        this.getCampaignData(this.paging.current);
       }
     },
     dataNotifs() {
@@ -170,7 +172,7 @@ export default {
           // });
           this.message_success = this.messageNotif
         }
-        this.getCampaignData();
+        this.getCampaignData(this.paging.current);
         this.getTotalCampaign();
       }
     },

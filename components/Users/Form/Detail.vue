@@ -66,6 +66,14 @@
           <i class="fas fa-circle-user mr-2 text-lg text-blueGray-400"></i>
           Username - {{detail.username}}
         </div>
+        <div class="mb-2 text-blueGray-600">
+          <i class="fas fa-user-shield mr-2 text-lg text-blueGray-400"></i>
+          Role - {{$role(detail.users[0].roles[0].name)}}
+        </div>
+        <div class="mb-2 text-blueGray-600">
+          <i :class="`fas ${detail.users[0].status === 'ACTIVE' ? 'fa-person-circle-check' : 'fa-hourglass'} mr-2 text-lg text-blueGray-400`"></i>
+          Status - {{detail.users[0].status}}
+        </div>
       </div>
       <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
         <div v-if="methodType !== 'add'" class="flex flex-wrap justify-center">
@@ -126,7 +134,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.link)
+    // console.log(this.link)
   },
 
   methods: {

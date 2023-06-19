@@ -11,11 +11,12 @@
         queryType="USER_DATA"
         queryRole="USER"
         queryMiddle="users-donation"
+        :success="success"
+        :messageAlert="message_success"
         @deleted-data="deletedUser"
         @activation-user="activationUser"
         @close-alert="closeSuccessAlert"
-        :success="success"
-        :messageAlert="message_success"
+        @filter-data="handleFilterUser"
       />
 
       <div class="mt-12 mb-1">
@@ -121,9 +122,15 @@ export default {
       }, 1000);
     },
 
-    getUserData(loading, loadingDelete, page=1) {
+    handleFilterUser(param, types) {
+      if(types === 'user-data') {
+        this.getUserData(1, param.name, param.roles);
+      }
+    },
+
+    getUserData(page=1, name='', roles='') {
       getData({
-        api_url: `${this.api_url}/fitur/user-management?role=USER&page=${page}`,
+        api_url: `${this.api_url}/fitur/user-management?role=USER&page=${page}&name=${name}&roles=${roles}`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })

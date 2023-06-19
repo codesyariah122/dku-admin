@@ -17,8 +17,14 @@
       @deleted-data="deletedUser"
       @restored-data="restoreData"
       />
-    </div>
 
+      <div class="mt-6 -mb-2">
+        <div class="flex justify-end items-end">
+          <molecules-pagination :links="links" :paging="paging" @fetch-data="getUserTrash"/>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -47,7 +53,15 @@
         items: [],
         activation_id: null,
         queryParam: this.$route.query.type,
-        totals: 0
+        totals: 0,
+        links: [],
+        paging: {
+          current: null,
+          from: null,
+          last: null,
+          per_page: null,
+          total: null
+        },
       };
     },
 
@@ -62,9 +76,9 @@
     },
 
     methods: {
-      getUserTrash() {
+      getUserTrash(page=1) {
         totalTrash({
-          api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}&roles=DASHBOARD`,
+          api_url: `${this.api_url}/fitur/trashed?page=${page}&type=${this.queryParam}&roles=DASHBOARD`,
           api_key: process.env.NUXT_ENV_APP_TOKEN,
           token: this.token.token
         })
@@ -82,6 +96,12 @@
             cells.push(prepareCell)
           });
           this.items = [...cells]
+          this.links = data?.links
+          this.paging.current = data?.current_page
+          this.paging.from = data?.from
+          this.paging.last = data?.last_page
+          this.paging.per_page = data?.per_page
+          this.paging.total = data?.total
         })
         .catch((err) => console.log(err));
       },
@@ -169,7 +189,7 @@
           //   position: "top-right",
           // });
           this.message_success = this.messageNotifs
-          this.getUserTrash();
+          this.getUserTrash(this.paging.current);
           this.getTotalUser();
         }
       },
@@ -183,13 +203,13 @@
           //   });
           // }
           this.message_success = this.messageNotif
-          this.getUserTrash();
+          this.getUserTrash(this.paging.current);
           this.getTotalUser();
         }
       },
       updateProfileNotifs() {
         if(this.$_.size(this.updateProfileNotifs) > 0) {
-          this.getUserTrash();
+          this.getUserTrash(this.paging.current);
         }
       }
     },

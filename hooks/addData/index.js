@@ -21,8 +21,11 @@ export const addData = async (props, data) => {
       body: data
     })
 
-    const result = !parsed.ok ? parsed : await parsed.json()
-    return result
+    if (!parsed.ok) {
+      throw new Error("Data not found!");
+    }
+    const result = await parsed.json();
+    return result;
 
   } catch (error) {
     console.error('Error:', error);

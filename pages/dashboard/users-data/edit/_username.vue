@@ -72,26 +72,30 @@
       },
 
       detailUser(username = '') {
-        this.loadingDetail = true
-        if(username) {          
-          getData({
-            api_url: `${this.api_url}/fitur/user-management/${username}`,
-            token: this.token.token,
-            api_key: process.env.NUXT_ENV_APP_TOKEN
-          })
-          .then(({data}) => {
-            if(data) {
-              this.successNew = true
-              this.messageNew = `${data.username}, data successfully updated !`
-              this.detail = data
-            }
-          })
-          .finally(() => {
-            setTimeout(() => {
-              this.loadingDetail = false
-            }, 500)
-          })
-          .catch((err) => console.log(err));
+        try {          
+          this.loadingDetail = true
+          if(username) {          
+            getData({
+              api_url: `${this.api_url}/fitur/user-management/${username}`,
+              token: this.token.token,
+              api_key: process.env.NUXT_ENV_APP_TOKEN
+            })
+            .then(({data}) => {
+              if(data) {
+                this.successNew = true
+                this.messageNew = `${data.username}, data successfully updated !`
+                this.detail = data
+              }
+            })
+            .finally(() => {
+              setTimeout(() => {
+                this.loadingDetail = false
+              }, 500)
+            })
+            .catch((err) => console.log(err));
+          }
+        } catch (err) {
+          console.error(err)
         }
       },
 

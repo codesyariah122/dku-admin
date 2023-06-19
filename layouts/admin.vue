@@ -1,5 +1,10 @@
 <template>
   <div v-if="roles !== 'USER'">
+    
+    <div v-if="globalLoading">
+      <molecules-row-loading :loading="globalLoading" :options="options" />
+    </div>
+
     <sidebar />
     <div class="relative md:ml-64 bg-blueGray-100">
       <admin-navbar ref="layoutRef"/>
@@ -67,6 +72,7 @@
     mounted() {
       // document.addEventListener("visibilitychange", this.handleVisibilityChange);
       this.checkExpires();
+      console.log(this.globalLoading)
     },
 
     // beforeDestroy() {

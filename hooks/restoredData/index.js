@@ -17,8 +17,11 @@ export const restoredData = async (props) => {
         'Dku-Api-Key': props.api_key
       }
     })
-    const result = !parsed.ok ? parsed : await parsed.json()
-    return result
+    if (!parsed.ok) {
+      throw new Error("Data not found!");
+    }
+    const result = await parsed.json();
+    return result;
   } catch (err) {
     console.error(err)
   }

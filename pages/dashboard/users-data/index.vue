@@ -18,6 +18,7 @@
         @close-alert="closeSuccessAlert"
         @deleted-data="deletedUser"
         @activation-user="activationUser"
+        @filter-data="handleFilterUser"
       />
 
       <div class="mt-6 -mb-2">
@@ -122,22 +123,29 @@
         }, 1000);
       },
 
-      getUserData(page=1, name='') {
+      handleFilterUser(param, types) {
+        if(types === 'user-data') {
+          this.getUserData(1, param.name, param.roles);
+        }
+      },
+
+      getUserData(page=1, name='', roles='') {
         // this.loading = loading ? loading : true;
         getData({
-          api_url: `${this.api_url}/fitur/user-management?page=${page}&name=${name}`,
+          api_url: `${this.api_url}/fitur/user-management?role=DASHBOARD&page=${page}&name=${name}&roles=${roles}`,
           token: this.token.token,
           api_key: process.env.NUXT_ENV_APP_TOKEN
         })
         .then((data) => {
           let cells = []
           data?.data?.map((cell) => {
+            const rolesUser = this.$role(cell.roles.map((role) => role.name))
             const prepareCell = {
               id: cell?.id,
               name: cell?.name,
               photo: cell.profiles.map(profile => profile?.photo ? profile?.photo : profile?.g_avatar)[0],
               email: cell?.email,
-              role: this.$role(cell?.roles.map(role => role.name)),
+              role: rolesUser,
               phone: cell?.phone,
               status: cell?.status,
               expires_at: cell?.expires_at,
@@ -229,7 +237,7 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
-          this.getUserData();
+          this.getUserData(this.paging.current);
         }
       },
       dataNotifs() {
@@ -242,13 +250,13 @@
           //   });
           // }
           this.message_success = this.messageNotif
-          this.getUserData();
+          this.getUserData(this.paging.current);
           this.getTotalUser();
         }
       },
       updateProfileNotifs() {
         if(this.$_.size(this.updateProfileNotifs) > 0) {
-          this.getUserData();
+          this.getUserData(this.paging.current);
         }
       }
     },

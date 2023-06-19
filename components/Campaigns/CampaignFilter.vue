@@ -20,7 +20,7 @@
 			</ul>
 
 			<div class="relative flex flex-col min-w-0 break-words bg-transparent w-full mb-6 shadow-sm rounded">
-				<div class="px-4 py-5 flex-auto">
+				<div class="px-0 py-5 flex-auto">
 					<div class="tab-content tab-space">
 						<div v-bind:class="{'hidden': openTab !== 1, 'block': openTab === 1}">
 							<div class="relative flex w-full flex-wrap items-stretch mb-3">
@@ -88,20 +88,20 @@
 
 			changeCategory(e) {
 				const category_campaign = e.target.value;
-				this.$emit('filter-data', '', category_campaign, '', '')
+				this.$emit('filter-data', {title: '', category_campaign: category_campaign, start_date: '', end_date: ''})
 			},
 
 			handleDateChange(date) {
 				if (date.length === 2) {
 					const startDate = this.$moment(date[0]).format("YYYY-MM-DD")
 					const endDate = this.$moment(date[1]).format("YYYY-MM-DD")
-					this.$emit('filter-data', '', '', startDate, endDate)
+					this.$emit('filter-data', {title: '', category_campaign: '', startDate: startDate, endDate: endDate})
 				}
 			},
 
 			handleFilter(e) {
 				const title = e.target.value
-				this.$emit('filter-data', title, '', '', '')
+				this.$emit('filter-data', {title: title, category_campaign: '', startDate: '', endDate: ''})
 			},
 
 			getCategoryCampaignData() {

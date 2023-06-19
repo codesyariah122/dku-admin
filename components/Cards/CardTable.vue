@@ -53,11 +53,11 @@
       <div v-if="success" ref="alertNotifs" class="flex justify-center w-full bg-transparent mt-4">
         <molecules-success-alert :success="success" :messageAlert="messageAlert" @close-alert="closeSuccessAlert"/>
       </div>
-
-      <div v-if="types === 'campaign-data'">
+     
+      <div v-if="types === 'campaign-data' || types === 'user-data'">
         <div class="flex justify-start mt-4 mb-4">
           <div>
-            <h2 class="text-white text-md font-bold">Filter Campaign By</h2>
+            <h2 class="text-white text-md font-bold">Filter {{title}} By</h2>
           </div>
         </div>
 
@@ -74,6 +74,9 @@
       <div class="flex justify-start w-full bg-transparent mt-2 mb-8">
         <div v-if="types === 'campaign-data'" >
           <campaigns-campaign-filter  @filter-data="filterData"/>
+        </div>
+        <div v-if="types === 'user-data'" >
+          <users-user-filter  @filter-data="filterData" :queryRole="queryRole"/>
         </div>
       </div>
 
@@ -211,6 +214,7 @@ export default {
 
   mounted() {
     this.totalTrash();
+    console.log(this.queryRole)
   },
 
   methods: {
@@ -245,12 +249,16 @@ export default {
       this.$emit('close-alert');
     },
 
-    filterData(title='', category_campaign='', start_date='', end_date='') {
-      this.$emit('filter-data', title, category_campaign, start_date, end_date)
+    filterData(param) {
+      this.$emit('filter-data', param, this.types)
     },
 
     resetFilter() {
-      this.$emit('filter-data', '', '', '')
+      if(this.types === 'campaign-data') {
+        this.$emit('filter-data', {}, this.types)
+      } else {
+        this.$emit('filter-data', {}, this.types)
+      }
     }
   },
 

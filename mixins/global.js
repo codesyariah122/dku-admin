@@ -7,6 +7,7 @@ export default {
   data() {
     return {
       globalLoading: null,
+      globalOptions: '',
       globalMessage: '',
       expires_at: null,
       api_url: process.env.NUXT_ENV_API_URL,
@@ -186,6 +187,8 @@ export default {
 
     logout() {
       try {
+        this.globalLoading = true;
+        this.globalOptions = "logout"
         this.$swal({
           title: `kamu akan segera keluar dari Dashboard ${this.roles} ?`,
           showDenyButton: false,
@@ -194,7 +197,7 @@ export default {
           denyButtonText: `Batal`,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.globalLoading = true;
+            
             const endPoint = `/auth/logout`;
             this.$api.defaults.headers.common["Accept"] = "application/json";
             this.$api.defaults.headers.common[
@@ -216,6 +219,7 @@ export default {
             .finally(() => {
               setTimeout(() => {
                 this.globalLoading = false;
+                this.globalOptions = ""
               }, 500);
             });
           } else if (result.isDenied) {
