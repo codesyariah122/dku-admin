@@ -190,18 +190,18 @@ export default {
         this.$api
           .get(endPoint, config)
           .then(({ data }) => {
-            if (data.data[0].logins[0].user_token_login === this.token.token) {
+            if (data.data.logins[0].user_token_login === this.token.token) {
               this.$swal(
                 "You are login",
                 `You are login as a ${this.getRoles(
-                  data.data[0].roles[0].name
+                  data.data.roles[0].name
                 )}`,
                 "warning"
               );
               setTimeout(() => {
                 this.$router.replace({
                   path: `/dashboard/${this.getRoles(
-                    data.data[0].roles[0].name
+                    data.data.roles[0].name
                   )}`,
                 });
               }, 1500);
@@ -238,7 +238,7 @@ export default {
                 remember_token: data.data.remember_token,
               }
             ];
-            const token = data.data.logins.map((login) => login.user_token_login)
+            const token = data.data.logins[0].user_token_login
 
             this.saveExpires(expires[0]);
 
