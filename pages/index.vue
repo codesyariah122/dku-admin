@@ -226,11 +226,38 @@ export default {
         })
         .then(({ data }) => {
           if (data.is_login) {
-            this.$swal({
-              icon: "warning",
-              title: "Oops...",
-              text: data.message + data.quote,
-            });
+            // this.$swal({
+            //   icon: "warning",
+            //   title: "Oops...",
+            //   text: data.message + data.quote,
+            // });
+            const roles = this.getRoles(data.data.roles[0].name);
+            const expires = [
+              {
+                expires_at: data.data.expires_at,
+                remember_token: data.data.remember_token,
+              }
+            ];
+            const token = data.data.logins.map((login) => login.user_token_login)
+
+            this.saveExpires(expires[0]);
+
+            this.saveLogin(token);
+
+            if (roles !== "user") {
+              this.$swal({
+                position: "top-end",
+                icon: "success",
+                title: `Selamat datang , ${data.data.name}`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              setTimeout(() => {
+                this.$router.replace({
+                  path: `/dashboard/${roles}`,
+                });
+              }, 1000);
+            }
           }
 
           if (data.not_found) {
@@ -245,11 +272,10 @@ export default {
           }
 
 
-          if (data.success) {
+          if (data.success || data.data.logins) {
             const roles = this.getRoles(data.data[0].roles[0].name);
             const token = data.data.map((d) =>
-              d.logins.map((login) => login.user_token_login)
-            )[0];
+              d.logins.map((login) => login.user_token_login))[0];
             let expires = [];
             data.data.map((d) => {
               const prepare = {

@@ -61,11 +61,18 @@
           </div>
         </div>
 
-        <div class="flex justify-start mt-6 mb-6">
+        <div class="flex justify-start mt-6 mb-6 space-x-4">
           <div>
             <button @click="resetFilter" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Reset Filter
               <i class="fa-solid fa-repeat"></i>
+            </button>
+          </div>
+
+          <div v-if="types === 'campaign-data'">
+            <button @click="downloadData" type="button" class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+              Export All
+              <i class="fa-solid fa-download"></i>
             </button>
           </div>
         </div>
@@ -214,7 +221,7 @@ export default {
 
   mounted() {
     this.totalTrash();
-    console.log(this.queryRole)
+    // console.log(this.queryRole)
   },
 
   methods: {
@@ -258,6 +265,12 @@ export default {
         this.$emit('filter-data', {}, this.types)
       } else {
         this.$emit('filter-data', {}, this.types)
+      }
+    },
+
+    downloadData() {
+      if(this.types === 'campaign-data') {
+        this.$emit('download-data')
       }
     }
   },

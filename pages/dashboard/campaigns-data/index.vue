@@ -16,6 +16,7 @@
         @close-alert="closeSuccessAlert"
         @deleted-data="deletedCampaign"
         @filter-data="handleFilterCampaign"
+        @download-data="downloadDataCampaign"
       />
 
       <div class="mt-6 -mb-2">
@@ -74,8 +75,33 @@ export default {
   methods: {
     handleFilterCampaign(param, types) {
       if(types === 'campaign-data') {
-        this.getCampaignData(1, param.title, param.category_campaign, param.start_date, param.end_date);
+        this.getCampaignData(1, param.title, param.category_campaign, param.startDate, param.endDate);
       }
+    },
+
+    downloadDataCampaign() {
+      this.loading = true
+      getData({
+        api_url: `${this.api_url}/fitur/campaign-data/download`,
+        token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN
+      })
+      .then((data) => {
+        if(data.success) {
+          this.$toast.show('Campaign data downloaded.. !', {
+            type : 'success',
+            duration: 2500,
+            position: "top-right",
+            icon: 'check-double'
+          });
+          window.open(data.link, '_blank');
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+      })
     },
 
     getCampaignData(page=1, title='', category_campaign='', start_date='', end_date='') {
@@ -87,6 +113,7 @@ export default {
       })
 
         .then(( data ) => {
+          // console.log(data);
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
