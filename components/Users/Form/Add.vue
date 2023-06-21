@@ -246,7 +246,7 @@
 				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
 				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
 				
-				this.$api.post(endPoint, postData)
+				this.$api.post(endPoint, postData, config)
 				.then(({data}) => {
 					if(data.success) {
 						this.$toast.show(`${data.data[0].name}, successfully added !`, {

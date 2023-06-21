@@ -24,8 +24,8 @@
           <molecules-pagination :links="links" :paging="paging" @fetch-data="getCampaignData"/>
         </div>
       </div>
+      
     </div>
-
   </div>
 </template>
 

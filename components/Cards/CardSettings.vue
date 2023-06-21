@@ -27,6 +27,10 @@
         @detail-data="detailData"
       />
 
+      <campaigns-category-form-add 
+        v-if="pageType === 'categoryCampaign' && methodType === 'add'"
+      />
+
       <users-form-edit
         v-if="pageType==='userData' && methodType === 'edit'"
         :type="type"

@@ -11,6 +11,13 @@
         queryMiddle="category-campaigns"
         @deleted-data="deletedCampaign"
       />
+
+      <div class="mt-6 -mb-2">
+        <div class="flex justify-end items-end">
+          <molecules-pagination :links="links" :paging="paging" @fetch-data="getCategoryCampaignData"/>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -25,7 +32,7 @@ import { CATEGORY_CAMPAIGN_DATA_TABLE } from "~/utils/tables-organizations";
 import { getData } from "~/hooks/getData/index";
 
 export default {
-  name: "categpry-campaigns",
+  name: "category-campaigns",
   layout: "admin",
 
   data() {
@@ -37,6 +44,14 @@ export default {
       headers: [...CATEGORY_CAMPAIGN_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
+      links: [],
+      paging: {
+        current: null,
+        from: null,
+        last: null,
+        per_page: null,
+        total: null
+      },
     };
   },
 
@@ -73,15 +88,15 @@ export default {
       );
     },
 
-    getCategoryCampaignData() {
+    getCategoryCampaignData(page=1) {
       getData({
-        api_url: `${this.api_url}/fitur/category-campaigns-management`,
+        api_url: `${this.api_url}/fitur/category-campaigns-management?page=${page}`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
-      .then(({ data }) => {
+      .then(( data ) => {
         let cells = []
-        data.data.map((cell) => {
+        data.data?.data?.map((cell) => {
           const prepareCell = {
             id: cell.id,
             title: cell.name,
@@ -90,6 +105,13 @@ export default {
           cells.push(prepareCell)
         });
         this.items = [...cells]
+
+        this.links = data?.data?.links
+        this.paging.current = data?.data?.current_page
+        this.paging.from = data?.data?.from
+        this.paging.last = data?.data?.last_page
+        this.paging.per_page = data?.data?.per_page
+        this.paging.total = data?.data?.total
       })
       
       .catch((err) => console.log(err));

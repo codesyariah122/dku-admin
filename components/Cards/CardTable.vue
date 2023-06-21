@@ -33,7 +33,7 @@
           </button>
         </div>
 
-        <div v-if="!queryParam && types !== 'user-role'">
+        <div v-if="!queryParam && types !== 'user-role' && types !== 'category-campaign'">
           <button type="button" @click="total > 0 ?
           $router.push({
             path: `/dashboard/${queryMiddle}/trash`,

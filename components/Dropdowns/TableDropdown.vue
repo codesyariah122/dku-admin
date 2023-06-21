@@ -25,7 +25,7 @@
               <i class="fa-solid fa-binoculars text-blue-700"></i> &nbsp;&nbsp;Detailed Data
           </button>
         </li>
-        <li>
+        <li v-if="campaigns === 0">
           <button
             v-if="username === 'super_admin' || username === 'ad266' && types !== 'user-role'"
             @click.prevent="deletedData"
@@ -139,6 +139,10 @@ export default {
     param: {
       type: String,
       default: ''
+    },
+    campaigns: {
+      type: Number,
+      default: 0
     }
   },
 
