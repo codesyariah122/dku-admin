@@ -5,16 +5,17 @@
       <cards-card-table
         color="dark"
         title="Payment Method"
-        :headers="headers"
-        :columns="items"
-        :loading="loading"
         types="bank-data"
         queryType="BANK_DATA"
         queryMiddle="bank-data"
+        :headers="headers"
+        :columns="items"
+        :loading="loading"
         :success="success"
         :messageAlert="message_success"
+        @filter-data="handleFilterCampaign"
         @close-alert="closeSuccessAlert"
-        @deleted-data="deletedCampaign"
+        @deleted-data="deletedBank"
       />
 
       <div class="mt-6 -mb-2">
@@ -71,15 +72,16 @@ export default {
   },
 
   methods: {
-    getBankData() {
-      getData({
-        api_url: `${this.api_url}/fitur/bank-management`,
-        token: this.token.token,
-        api_key: process.env.NUXT_ENV_APP_TOKEN
-      })
+    handleFilterCampaign(param, types) {
+      if(types === 'bank-data') {
+        this.getBankData(1, param.name);
+      }
+    },
+
+    getBankData(page=1, name='') {
+      getData({api_url: `${this.api_url}/fitur/bank-management?page=${page}${name ? '&name='+name : ''}`, token: this.token.token,api_key: process.env.NUXT_ENV_APP_TOKEN})
 
         .then(( data ) => {
-          console.log(data);
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
@@ -94,14 +96,21 @@ export default {
             cells.push(prepareCell)
           });
           this.items = [...cells]
+
+          this.links = data?.meta?.links
+          this.paging.current = data?.meta?.current_page
+          this.paging.from = data?.meta?.from
+          this.paging.last = data?.meta?.last_page
+          this.paging.per_page = data?.meta?.per_page
+          this.paging.total = data?.meta?.total
         })
         
         .catch((err) => console.log(err));
     },
 
-    deletedCampaign(id) {
+    deletedBank(id) {
       this.loading = true
-      this.options = 'delete-campaign';
+      this.options = 'delete-bank';
       deleteData({
         api_url: `${this.api_url}/fitur/bank-management/${id}`,
         token: this.token.token,
@@ -110,7 +119,7 @@ export default {
       .then((data) => {
         if(data.success) {
           // console.log(data.message)
-          this.$toast.show('Campaign data successfully move to trash !', {
+          this.$toast.show('Bank data successfully move to trash !', {
             type : 'info',
             duration: 5000,
             position: "top-right",

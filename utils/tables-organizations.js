@@ -183,3 +183,31 @@ export const BANK_DATA_TABLE = [
     title: 'type'
   }
 ]
+
+export const BANK_DATA_TRASH = [
+  {
+    id: 1,
+    title: 'image'
+  },
+
+  {
+    id: 2,
+    title: 'name',
+  },
+  {
+    id: 3,
+    title: 'no.rek'
+  },
+  {
+    id: 4,
+    title: 'owner'
+  },
+  {
+    id: 5,
+    title: 'status'
+  },
+  {
+    id: 6,
+    title: 'type'
+  }
+]

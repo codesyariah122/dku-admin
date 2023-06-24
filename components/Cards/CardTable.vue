@@ -54,7 +54,7 @@
         <molecules-success-alert :success="success" :messageAlert="messageAlert" @close-alert="closeSuccessAlert"/>
       </div>
      
-      <div v-if="types === 'campaign-data' || types === 'user-data'">
+      <div v-if="types === 'campaign-data' || types === 'user-data' || types === 'bank-data'">
         <div class="flex justify-start mt-4 mb-4">
           <div>
             <h2 class="text-white text-md font-bold">Filter {{title}} By</h2>
@@ -84,6 +84,9 @@
         </div>
         <div v-if="types === 'user-data'" >
           <users-user-filter  @filter-data="filterData" :queryRole="queryRole"/>
+        </div>
+        <div v-if="types === 'bank-data'">
+          <banks-filter-bank @filter-data="filterData" />
         </div>
       </div>
 
@@ -156,6 +159,14 @@
 
         <banks-bank-data-cell
           v-if="types === 'bank-data'"
+          :columns="columns"
+          :types="types"
+          @deleted-data="deletedData"
+          @restored-data="restoredData"
+        />
+
+        <banks-trash-cell
+          v-if="types === 'bank-data-trash'"
           :columns="columns"
           :types="types"
           @deleted-data="deletedData"
