@@ -4,7 +4,7 @@
     
       <cards-card-table
         color="dark"
-        title="Bank Data"
+        title="Payment Method"
         :headers="headers"
         :columns="items"
         :loading="loading"
