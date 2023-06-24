@@ -33,7 +33,7 @@
           </button>
         </div>
 
-        <div v-if="!queryParam && types !== 'user-role' && types !== 'category-campaign'">
+        <div v-if="!queryParam && types !== 'user-role'">
           <button type="button" @click="total > 0 ?
           $router.push({
             path: `/dashboard/${queryMiddle}/trash`,
@@ -134,12 +134,28 @@
           v-if="types === 'category-campaign'"
           :columns="columns"
           :types="types"
+          :queryMiddle="queryMiddle"
           @deleted-data="deletedData"
-          @activation-user="activationUser"
         />
 
         <campaigns-campaign-trash-cell
           v-if="types === 'campaign-trash'"
+          :columns="columns"
+          :types="types"
+          @deleted-data="deletedData"
+          @restored-data="restoredData"
+        />
+
+        <campaigns-category-trash-cell
+          v-if="types === 'category-campaign-trash'"
+          :columns="columns"
+          :types="types"
+          @deleted-data="deletedData"
+          @restored-data="restoredData"
+        />
+
+        <banks-bank-data-cell
+          v-if="types === 'bank-data'"
           :columns="columns"
           :types="types"
           @deleted-data="deletedData"

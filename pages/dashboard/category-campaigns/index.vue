@@ -6,10 +6,13 @@
         title="Category Campaign"
         :headers="headers"
         :columns="items"
+        :loading="loading"
+        :success="success"
+        :messageAlert="message_success"
         types="category-campaign"
-        queryType="CATEGORY_CAMPAIGN"
+        queryType="CATEGORY_CAMPAIGN_DATA"
         queryMiddle="category-campaigns"
-        @deleted-data="deletedCampaign"
+        @deleted-data="deletedCategoryCampaign"
       />
 
       <div class="mt-6 -mb-2">
@@ -29,7 +32,7 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
 import { CATEGORY_CAMPAIGN_DATA_TABLE } from "~/utils/tables-organizations";
-import { getData } from "~/hooks/getData/index";
+import { getData, deleteData } from "~/hooks/index";
 
 export default {
   name: "category-campaigns",
@@ -40,7 +43,8 @@ export default {
       loading: null,
       notifs: [],
       dataNotifs: [],
-      message: '',
+      success: null,
+      message_success: '',
       headers: [...CATEGORY_CAMPAIGN_DATA_TABLE],
       api_url: process.env.NUXT_ENV_API_URL,
       items: [],
@@ -117,8 +121,34 @@ export default {
       .catch((err) => console.log(err));
     },
 
-    deletedCampaign(id) {
-      console.log(id);
+    deletedCategoryCampaign(id) {
+      this.loading = true
+      this.options = 'delete-category-campaigns';
+      deleteData({
+        api_url: `${this.api_url}/fitur/category-campaigns-management/${id}`,
+        token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN
+      })
+      .then((data) => {
+        if(data.success) {
+          this.$toast.show('Category Campaign data successfully move to trash !', {
+            type : 'info',
+            duration: 5000,
+            position: "top-right",
+            icon: 'circle-exclamation'
+          });
+          this.success = true;
+          this.message_success = data.message
+          this.scrollToTop();
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.options = ''
+        }, 1000)
+      })
+      .catch((err) => console.log(err))
     }
   },
 
@@ -130,11 +160,6 @@ export default {
     },
     dataNotifs() {
       if (this.$_.size(this.dataNotifs) > 0) {
-        this.$toast.show(this.message, {
-          type: "info",
-          duration: 5000,
-          position: "top-right",
-        });
         this.getCategoryCampaignData();
         this.getTotalCampaign();
       }

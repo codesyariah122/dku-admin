@@ -4,12 +4,12 @@
 
       <cards-card-table
       color="dark"
-      title="Campaign Trashed"
+      title="Category Campaign Trashed"
       :headers="headers"
       :columns="items"
       :loading="loading"
-      types="campaign-trash"
-      queryType="CAMPAIGN_DATA"
+      types="category-campaign-trash"
+      queryType="CATEGORY_CAMPAIGN_DATA"
       :success="success"
       :messageAlert="message_success"
       @close-alert="closeSuccessAlert"
@@ -29,11 +29,11 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  * @vue tolol anjing developer vuejs mah
  */
-  import { CAMPAIGN_TRASH_DATA_TABLE } from "~/utils/tables-organizations";
+  import { CATEGORY_CAMPAIGN_TRASH_DATA_TABLE } from "~/utils/tables-organizations";
   import { getData, deleteData, totalTrash, restoredData } from "~/hooks/index";
 
   export default {
-    name: "campaigns-data",
+    name: "category-campaigns-data",
     layout: "admin",
 
     data() {
@@ -42,7 +42,7 @@
         options: '',
         success: null,
         message_success: '',
-        headers: [...CAMPAIGN_TRASH_DATA_TABLE],
+        headers: [...CATEGORY_CAMPAIGN_TRASH_DATA_TABLE],
         api_url: process.env.NUXT_ENV_API_URL,
         items: [],
         notifs: [],
@@ -59,7 +59,7 @@
     },
 
     mounted() {
-      this.getCampaignTrash();
+      this.getCategoryCampaignTrash();
     },
 
     methods: {
@@ -74,7 +74,7 @@
       },
 
 
-      getCampaignTrash() {
+      getCategoryCampaignTrash() {
         totalTrash({
           api_url: `${this.api_url}/fitur/trashed?type=${this.queryParam}`,
           api_key: process.env.NUXT_ENV_APP_TOKEN,
@@ -86,11 +86,7 @@
           data.data.map((cell) => {
             const prepareCell = {
               id: cell.id,
-              title: cell.title,
-              banner: cell.banner,
-              publish: cell.publish,
-              end_campaign: cell.end_campaign,
-              created_by: cell.created_by
+              name: cell.name
             }
             cells.push(prepareCell)
           });
@@ -101,7 +97,7 @@
 
       deletedData(id) {
         this.loading = true
-        this.options = 'delete-campaign';
+        this.options = 'delete-user';
         deleteData({
           api_url: `${this.api_url}/fitur/trashed/${id}?type=${this.queryParam}`,
           token: this.token.token,
@@ -135,7 +131,7 @@
 
       restoreData(id) {
         this.loading = true
-        this.options = 'restore-campaign';
+        this.options = 'restore-user';
         restoredData({
           api_url: `${this.api_url}/fitur/trashed/${id}?type=${this.queryParam}`,
           token: this.token.token,
@@ -177,7 +173,7 @@
     watch: {
       notifs() {
         if (this.$_.size(this.notifs) > 0) {
-          this.getCampaignTrash();
+          this.getCategoryCampaignTrash();
         }
       },
       dataNotifs() {
@@ -190,13 +186,13 @@
           //   });
           // }
           this.message_success = this.messageNotif
-          this.getCampaignTrash();
+          this.getCategoryCampaignTrash();
           this.getTotalCampaign();
         }
       },
       updateProfileNotifs() {
         if(this.$_.size(this.updateProfileNotifs) > 0) {
-          this.getCampaignTrash();
+          this.getCategoryCampaignTrash();
         }
       }
     },

@@ -147,3 +147,39 @@ export const CAMPAIGN_TRASH_DATA_TABLE = [
     title: 'created by'
   }
 ]
+
+export const CATEGORY_CAMPAIGN_TRASH_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'name'
+  },
+]
+
+
+export const BANK_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'image'
+  },
+
+  {
+    id: 2,
+    title: 'name',
+  },
+  {
+    id: 3,
+    title: 'no.rek'
+  },
+  {
+    id: 4,
+    title: 'owner'
+  },
+  {
+    id: 5,
+    title: 'status'
+  },
+  {
+    id: 6,
+    title: 'type'
+  }
+]
