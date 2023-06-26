@@ -43,7 +43,7 @@
           </button>
         </li>
         <li v-else>
-          <button v-if="username === 'super_admin' && types !== 'user-role'"
+          <button v-if="username === 'super_admin' && types !== 'user-role' && donationStatus !== 'PENDING'"
             @click="redirectEditPage"
             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
@@ -57,6 +57,16 @@
             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
             >
             <i class="fa-solid fa-file-shield text-orange-500"></i> &nbsp;&nbsp;Activasi
+          </button>
+        </li>
+
+        <li v-if="donationStatus === 'PAID' && username === 'super_admin'">
+          <button
+            @click.prevent="activationUser(userStatus.user_id)"
+            href="javascript:void(0);"
+            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer hover:bg-gray-600 hover:text-white"
+            >
+            <i class="fa-solid fa-file-shield text-orange-500"></i> &nbsp;&nbsp;Accept Payment
           </button>
         </li>
       </ul>
@@ -143,6 +153,10 @@ export default {
     campaigns: {
       type: Number,
       default: 0
+    },
+    donationStatus: {
+      type: String,
+      default: 'PENDING'
     }
   },
 
@@ -153,7 +167,7 @@ export default {
   },
 
   mounted() {
-    // console.log(this.param)
+    console.log(this.donationStatus)
   },
 
   methods: {
@@ -216,6 +230,13 @@ export default {
 
     detailDataRedirect(param) {
       this.$router.push({path: `/dashboard/${this.queryMiddle}/detail/${param}`})
+    },
+
+    acceptPayment(id) {
+      this.$emit('accept-payment', user_id)
+      setTimeout(() => {
+        this.dropdownPopoverShow = false;
+      }, 500)
     }
   },
 };

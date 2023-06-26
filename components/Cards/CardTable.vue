@@ -173,6 +173,15 @@
           @restored-data="restoredData"
         />
 
+        <dontaions-donation-data-cell
+          v-if="types ==='transaction-donation'"
+          :columns="columns"
+          :types="types"
+          @deleted-data="deletedData"
+          @restored-data="restoredData"
+          @accept-donation="acceptDonation"
+        />
+
         <tr v-if="loading">
           <molecules-row-loading :loading="loading" :options="options" />
         </tr>
@@ -259,8 +268,13 @@ export default {
     deletedData(id) {
       this.$emit("deleted-data", id);
     },
+
     activationUser(id) {
       this.$emit("activation-user", id);
+    },
+
+    acceptDonation(id) {
+      this.$emit('accept-donation', id);
     },
 
     restoredData(id) {

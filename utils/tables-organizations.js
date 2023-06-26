@@ -55,7 +55,6 @@ export const USER_ROLE_TABLE = [
 export const CAMPAIGN_DATA_TABLE = [
   {
     id: 1,
-    type: 'campaign',
     title: 'campaign title'
   },
   {
@@ -210,4 +209,44 @@ export const BANK_DATA_TRASH = [
     id: 6,
     title: 'type'
   }
+]
+
+
+export const DONATION_DATA_TABLE = [
+  {
+    id: 1,
+    title: 'transaction date'
+  },
+  {
+    id: 2,
+    title: 'transaction receipt'
+  },
+  {
+    id: 3,
+    title: 'transaction id'
+  },
+  {
+    id: 4,
+    title: 'campaign title'
+  },
+  {
+    id: 5,
+    title: 'name'
+  },
+  {
+    id: 6,
+    title: 'email'
+  },
+  {
+    id: 7,
+    title: 'fundraiser'
+  },
+  {
+    id: 8,
+    title: 'payment method'
+  },
+  {
+    id: 9,
+    title: 'status'
+  },
 ]
