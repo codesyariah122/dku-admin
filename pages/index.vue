@@ -132,7 +132,7 @@
           <div class="flex justify-center py-4 px-6">
             <div>
               <h1 class="text-blueGray-700 font-extrabold text-2xl">
-                System kolonialisme, penjajah berkedok Agama.
+                Sebuah kegiatan mempublikasikan kemiskinan.
               </h1>
               <a href="https://dntourtravel.com/" class="text-link">D & N Tour | Travel</a>
             </div>
