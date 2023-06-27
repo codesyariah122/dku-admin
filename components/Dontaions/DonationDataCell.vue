@@ -69,6 +69,7 @@
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
         <span v-if="column.status === 'PENDING'" class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">{{column.status}}</span>
+        <span v-else-if="column.status === 'HOLD'" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">{{column.status}}</span>
         <span v-else class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">{{column.status}}</span>
       </td>
 
@@ -85,8 +86,10 @@
           :queryData="column.slug"
           :param="column.slug"
           :donationStatus="column.status"
+          :transactionReceipt="`${image_url}/${column.transaction_receipt}`"
+          :transactionId="column.transaction_id"
           @deleted-data="deletedData"
-          @accept-donation="acceptDonation"
+          @accept-payment="acceptPayment"
         />
       </td>
     </tr>
@@ -128,8 +131,8 @@ export default {
       this.$emit("deleted-data", id);
     },
 
-    acceptDonation(id) {
-    	this.$emit('accept-donation', id);
+    acceptPayment(transaction_id) {
+    	this.$emit('accept-payment', transaction_id);
     },
 
     checkUserLogin() {

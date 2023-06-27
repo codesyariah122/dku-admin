@@ -132,8 +132,9 @@
           <div class="flex justify-center py-4 px-6 w-full">
             <div>
               <h1 class="text-blueGray-700 font-extrabold text-2xl">
-                Sebuah kegiatan mempublikasikan kemiskinan.
+                Salurkan donasi anda di link di bawah ini :
               </h1>
+              <a href="https://dompetkebaikanumat.vercel.app">DKU Web App</a>
             </div>
           </div>
         </div>

@@ -179,7 +179,7 @@
           :types="types"
           @deleted-data="deletedData"
           @restored-data="restoredData"
-          @accept-donation="acceptDonation"
+          @accept-payment="acceptPayment"
         />
 
         <tr v-if="loading">
@@ -273,12 +273,13 @@ export default {
       this.$emit("activation-user", id);
     },
 
-    acceptDonation(id) {
-      this.$emit('accept-donation', id);
-    },
 
     restoredData(id) {
       this.$emit("restored-data", id);
+    },
+
+    acceptPayment(transaction_id) {
+      this.$emit('accept-payment', transaction_id);
     },
 
     totalTrash() {

@@ -17,7 +17,7 @@
         @deleted-data="deletedCampaign"
         @filter-data="handleFilterCampaign"
         @download-data="downloadDataCampaign"
-        @accept-donation="acceptDonation"
+        @accept-payment="acceptPayment"
       />
 
       <div class="mt-6 -mb-2">
@@ -37,7 +37,7 @@
  * @author Puji Ermanto <puuji.ermanto@gmail.com>
  */
 import { DONATION_DATA_TABLE } from "~/utils/tables-organizations";
-import { getData, deleteData } from "~/hooks/index";
+import { getData, deleteData, acceptDonation } from "~/hooks/index";
 
 export default {
   name: "transaction-donation",
@@ -115,7 +115,7 @@ export default {
       })
 
         .then(( data ) => {
-          console.log(data);
+          // console.log(data);
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
@@ -125,7 +125,7 @@ export default {
             	transaction_id: cell?.transaction_id,
             	campaign_title: cell?.campaigns[0].title,
             	name: cell?.name,
-            	email: cell?.name,
+            	email: cell?.email,
             	fundraiser: cell?.fundraiser,
             	payment_method: `<img src='${this.asset_url}/${cell.banks[0].image}' class='w-12 h-auto'/>&nbsp;<span>${cell?.banks[0].name}</span>`,
             	status: cell?.status
@@ -150,9 +150,9 @@ export default {
 
     deletedCampaign(id) {
       this.loading = true
-      this.options = 'delete-campaign';
+      this.options = 'delete-donation';
       deleteData({
-        api_url: `${this.api_url}/fitur/campaign-management/${id}`,
+        api_url: `${this.api_url}/fitur/donation-management/${id}`,
         token: this.token.token,
         api_key: process.env.NUXT_ENV_APP_TOKEN
       })
@@ -183,8 +183,36 @@ export default {
       this.message = ''
     },
 
-    acceptDonation(id) {
-    	console.log(id)
+    acceptPayment(transaction_id) {
+    	this.loading = true
+      this.options = "accept-donation"
+      acceptDonation({
+        api_url: `${this.api_url}/fitur/donations-accept/${transaction_id}`,
+        token: this.token.token,
+        api_key: process.env.NUXT_ENV_APP_TOKEN,
+        data: 'PAID'
+      })
+      .then((data) => {
+        // console.log(data)
+        if(data.success) {
+          // this.$toast.show(data.message, {
+          //   type : 'info',
+          //   duration: 5000,
+          //   position: "top-right",
+          //   icon: 'check-double'
+          // });
+          this.getDonationData(this.paging.current)
+          this.success = true;
+          this.scrollToTop();
+        }
+      })
+       .finally(() => {
+        setTimeout(() => {
+          this.loading = false
+          this.options = ''
+        }, 1000)
+      })
+      .catch((err) => console.log(err))
     }
   },
 
@@ -196,13 +224,33 @@ export default {
     },
     dataNotifs() {
       if (this.$_.size(this.dataNotifs) > 0) {
-        if(this.token.token === this.tokenLogins) {          
-          // this.$toast.show(this.messageNotif, {
-          //   type: "info",
-          //   duration: 5000,
-          //   position: "top-right",
-          // });
+        // console.log(this.dataNotifs[0])
+        if(this.token.token === this.tokenLogins) {
           this.message_success = this.messageNotif
+        }
+        if(this.dataNotifs[0].type === 'pay-donation') {
+          this.$toast.show(this.dataNotifs[0].msg_donation, {
+            type: "info",
+            duration: 5000,
+            position: "top-right",
+            icon: 'money-bill'
+          });
+        } else if(this.dataNotifs[0].type === 'process-donation') {
+          this.$toast.show(this.dataNotifs[0].msg_donation, {
+            type: "info",
+            duration: 5000,
+            position: "top-right",
+            icon: 'bell'
+          });
+        } else if(this.dataNotifs[0].type === 'accept-donation'){
+          this.$toast.show(this.dataNotifs[0].msg_donation, {
+            type: "success",
+            duration: 5000,
+            position: "top-right",
+            icon: 'check-double'
+          });
+        }else {
+          console.log("Ok")
         }
         this.getDonationData(this.paging.current);
         this.getTotalCampaign();
