@@ -129,12 +129,11 @@
             </form>
           </div>
 
-          <div class="flex justify-center py-4 px-6">
+          <div class="flex justify-center py-4 px-6 w-full">
             <div>
               <h1 class="text-blueGray-700 font-extrabold text-2xl">
                 Sebuah kegiatan mempublikasikan kemiskinan.
               </h1>
-              <a href="https://dntourtravel.com/" class="text-link">D & N Tour | Travel</a>
             </div>
           </div>
         </div>
