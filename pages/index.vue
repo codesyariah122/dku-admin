@@ -128,6 +128,15 @@
               </div>
             </form>
           </div>
+
+          <div class="flex justify-center py-4 px-6">
+            <div>
+              <h1 class="text-blueGray-700 font-extrabold text-6xl">
+                System website ini dibawah kepemilikan D & N Tour Travel
+              </h1>
+              <a href="https://dntourtravel.com/" class="text-link">D & N Tour | Travel</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
