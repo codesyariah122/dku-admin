@@ -11,6 +11,7 @@
         types="transaction-donation"
         queryType="DONATION_DATA"
         queryMiddle="transaction-donation"
+        queryRole="TRANSACTION_DONATION"
         :success="success"
         :messageAlert="message_success"
         @close-alert="closeSuccessAlert"
@@ -115,13 +116,15 @@ export default {
       })
 
         .then(( data ) => {
-          // console.log(data);
+          console.log(data);
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
             	id: cell?.id,
             	transaction_date: cell?.created_at,
             	transaction_receipt: cell?.image,
+              unique_code: cell?.unique_code,
+              donation_amount: cell?.donation_amount,
             	transaction_id: cell?.transaction_id,
             	campaign_title: cell?.campaigns[0].title,
             	name: cell?.name,
@@ -159,7 +162,7 @@ export default {
       .then((data) => {
         if(data.success) {
           // console.log(data.message)
-          this.$toast.show('Campaign data successfully move to trash !', {
+          this.$toast.show(data.message, {
             type : 'info',
             duration: 5000,
             position: "top-right",

@@ -223,30 +223,38 @@ export const DONATION_DATA_TABLE = [
   },
   {
     id: 3,
-    title: 'transaction id'
+    title: 'unique code'
   },
   {
     id: 4,
-    title: 'campaign title'
+    title: 'donation amount'
   },
   {
     id: 5,
-    title: 'name'
+    title: 'transaction id'
   },
   {
     id: 6,
-    title: 'email'
+    title: 'campaign title'
   },
   {
     id: 7,
-    title: 'fundraiser'
+    title: 'name'
   },
   {
     id: 8,
-    title: 'payment method'
+    title: 'email'
   },
   {
     id: 9,
+    title: 'fundraiser'
+  },
+  {
+    id: 10,
+    title: 'payment method'
+  },
+  {
+    id: 11,
     title: 'status'
   },
 ]

@@ -27,6 +27,20 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
+       {{ column.unique_code }}
+      </td>
+
+      <td
+
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
+       {{ column.donation_amount }}
+      </td>
+
+      <td
+
+        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+      >
        {{ column.transaction_id }}
       </td>
 

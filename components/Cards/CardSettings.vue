@@ -44,6 +44,13 @@
         @detail-data="detailData"
       />
 
+      <donations-form-add
+        v-if="pageType === 'transactionDonation' && methodType === 'add'"
+        :data="data"
+        :type="type"
+        @detail-data="detailData"
+      />
+
     </div>
 
   </div>

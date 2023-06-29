@@ -100,6 +100,12 @@
           :types="types"
         />
 
+        <tr v-if="$_.size(columns) < 1" class="flex justify-center w-full">
+          <th colspan="3" style="text-align:center;">
+            Empty data
+          </th>
+        </tr>
+
         <users-user-data-cell
           v-if="types === 'user-data'"
           :columns="columns"
@@ -173,13 +179,21 @@
           @restored-data="restoredData"
         />
 
-        <dontaions-donation-data-cell
+        <donations-donation-data-cell
           v-if="types ==='transaction-donation'"
           :columns="columns"
           :types="types"
           @deleted-data="deletedData"
           @restored-data="restoredData"
           @accept-payment="acceptPayment"
+        />
+
+        <donations-donation-trash-cell
+          v-if="types ==='donation-trash'"
+          :columns="columns"
+          :types="types"
+          @deleted-data="deletedData"
+          @restored-data="restoredData"
         />
 
         <tr v-if="loading">

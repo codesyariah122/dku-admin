@@ -11,6 +11,7 @@
         types="campaign-data"
         queryType="CAMPAIGN_DATA"
         queryMiddle="campaigns-data"
+        queryRole="CAMPAIGN"
         :success="success"
         :messageAlert="message_success"
         @close-alert="closeSuccessAlert"

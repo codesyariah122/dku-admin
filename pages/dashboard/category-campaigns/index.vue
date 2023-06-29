@@ -11,6 +11,7 @@
         :messageAlert="message_success"
         types="category-campaign"
         queryType="CATEGORY_CAMPAIGN_DATA"
+        queryRole="CATEGORY_CAMPAIGN"
         queryMiddle="category-campaigns"
         @deleted-data="deletedCategoryCampaign"
       />
