@@ -67,26 +67,30 @@ export const CAMPAIGN_DATA_TABLE = [
   },
   {
     id: 4,
-    title: 'Donation Target'
+    title: 'donation target'
   },
   {
     id: 5,
-    title: 'is headline'
+    title: 'total transfer'
   },
   {
     id: 6,
-    title: 'published'
+    title: 'is headline'
   },
   {
     id: 7,
-    title: 'end campaign'
+    title: 'published'
   },
   {
     id: 8,
-    title: 'author'
+    title: 'end campaign'
   },
   {
     id: 9,
+    title: 'author'
+  },
+  {
+    id: 10,
     title: 'limit'
   }
 ]

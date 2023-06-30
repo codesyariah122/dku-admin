@@ -124,6 +124,7 @@ export default {
               banner: cell?.banner,
               category_campaigns: cell?.category_campaigns,
               donation_target: cell?.donation_target,
+              total_trf: cell?.total_trf,
               is_headline: cell?.is_headline,
               publish: cell?.publish,
               end_campaign: cell?.end_campaign,
