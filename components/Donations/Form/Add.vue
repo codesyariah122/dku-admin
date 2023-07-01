@@ -77,7 +77,7 @@
 							<input :class="`${checked_bank ? 'input__bank' : ''}`" @click="changeBank(bank.id)" type="radio" :id="`option-bank${bank.id}`" v-model="input.bank_id" :value="bank.id" name="bank_id"/>
 							<label :for="`option-bank${bank.id}`" class="flex justify-between items-center px-4 py-2" >
 								<div>
-									<img :src="`${img_url}/${bank.image}`" alt="Icon" class="w-[48px] h-auto">
+									<img :src="`${img_url}/${bank.image}`" alt="Icon" class="w-[60px] h-auto">
 								</div>
 								<div>
 									{{bank.name}}
@@ -129,18 +129,12 @@
 
 					<div class="w-full lg:w-6/12 px-4 py-6">
 						<div class="relative">				
-							<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-								Anonim
+							
+							<label class="relative inline-flex items-center cursor-pointer">
+								<input type="checkbox" @change="changeAnonim($event)" value="Y" v-model="input.anonim" class="sr-only peer">
+								<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+								<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Sembunyikan Nama (Hamba Allah)</span>
 							</label>
-							<select @change="changeAnonim($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-								<option selected value="">Choose anonim</option>
-								<option value="Y">
-									Yes
-								</option>
-								<option value="N">
-									No
-								</option>
-							</select>
 						</div>
 						<div v-if="validations.anonim" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
 							<i class="fa-solid fa-circle-info"></i>
@@ -167,6 +161,15 @@
 							<div class="px-2">
 								{{validations.anonim[0]}}
 							</div>
+						</div>
+					</div>
+
+					<div class="w-full w-12/12 px-4 py-6">
+						<div class="relative">
+							
+							<label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pesan</label>
+							<textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..." v-model="input.message"></textarea>
+
 						</div>
 					</div>
 
@@ -238,6 +241,10 @@
 				changeStep: false,
 				checked_bank: false
 			};
+		},
+
+		created() {
+			this.dataManagementEvent();
 		},
 
 
@@ -336,17 +343,20 @@
 				const dataPrepare = {
 					name: this.input.name,
 					email: this.input.email,
-					anonim: this.input.anonim,
+					anonim: this.input.anonim ? this.input.anonim : 'N',
+					status: null,
 					methode: this.input.bank_id ? 'BANK_TRANSFER' : '',
 					bank_id: this.input.bank_id,
 					campaign_id: this.input.campaign_id,
 					nominal_donation: this.input.donation_amount,
-					user_id: null
+					user_id: null,
+					message: this.input.message
 				}
 
 
 				this.$api.post(endPoint, dataPrepare, config)
 				.then(({data}) => {
+					// console.log(data)
 					if(data.success) {
 						this.$toast.show(data.message, {
 							type: "success",
@@ -358,6 +368,12 @@
 						this.message_success = data.message
 						this.scrollToTop();
 						this.input = {}
+					} else {
+						this.$swal({
+							icon: 'info',
+							title: 'Oops...',
+							text: data.message,
+						})
 					}
 				})
 				.finally(() => {
@@ -384,10 +400,13 @@
 		watch: {
 			dataNotifs() {
 				if (this.$_.size(this.dataNotifs) > 0) {
-					if(this.token.token) {
-						this.message_success = this.messageNotif;
-					}
+					// if(this.token.token) {
+					// 	this.message_success = this.messageNotif;
+					// }
 					console.log("Ok")
+					this.getNominalLists();
+					this.getCampaignLists();
+					this.getBankLists();
 				}
 			},
 		}

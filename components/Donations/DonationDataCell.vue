@@ -55,7 +55,7 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-       {{ column.name }}
+       {{ column.anonim === 'Y' ? 'Hamba Allah' : column.name }}
       </td>
 
       <td
