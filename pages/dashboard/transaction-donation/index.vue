@@ -116,7 +116,6 @@ export default {
       })
 
         .then(( data ) => {
-          console.log(data);
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
@@ -131,7 +130,8 @@ export default {
             	email: cell?.email,
             	fundraiser: cell?.fundraiser,
             	payment_method: `<img src='${this.asset_url}/${cell.banks[0].image}' class='w-12 h-auto'/>&nbsp;<span>${cell?.banks[0].name}</span>`,
-            	status: cell?.status
+            	status: cell?.status,
+              anonim: cell?.anonim
             }
             cells.push(prepareCell)
           });

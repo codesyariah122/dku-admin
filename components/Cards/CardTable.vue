@@ -88,6 +88,9 @@
         <div v-if="types === 'bank-data'">
           <banks-filter-bank @filter-data="filterData" />
         </div>
+        <div v-if="types === 'transaction-donation'">
+          <donations-donation-filter @filter-data="filterData" />
+        </div>
       </div>
 
     </div>

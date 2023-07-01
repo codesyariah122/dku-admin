@@ -61,7 +61,10 @@
 
         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
       >
-       {{ column.end_campaign ? $moment(column.end_campaign).format("LLLL") : 'NULL' }}
+        <span v-if="checkEndCampaign(column.end_campaign)" class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">{{$moment(column.end_campaign).fromNow()}}</span>
+        <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+          Telah Berakhir {{$moment(column.end_campaign).fromNow()}}
+        </span>
       </td>
 
       <td
@@ -119,7 +122,8 @@ export default {
     return {
       image_url: process.env.NUXT_ENV_STORAGE_URL,
       username: '',
-      userData: []
+      userData: [],
+      today: this.$moment().startOf('day')
     }
   },
 
@@ -128,6 +132,10 @@ export default {
   },
 
   methods: {
+    checkEndCampaign(time) {
+      return this.$moment(time).startOf('day') > this.today
+    },
+
     deletedData(id) {
       this.$emit("deleted-data", id);
     },
