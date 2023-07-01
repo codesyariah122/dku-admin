@@ -1,5 +1,4 @@
 <style lang="css" scoped>
-	/* Menghilangkan gaya default dari input radio */
 	input[type="radio"] {
 		display: none;
 	}
@@ -21,7 +20,12 @@
 	}
 
 	/* Mengatur tampilan tombol saat di klik (selected) */
-	input[type="radio"]:checked + label {
+	.input__nominal:checked + label {
+		background-color: #000000;
+		color: #ffffff;
+	}
+
+	.input__bank:checked + label {
 		background-color: #000000;
 		color: #ffffff;
 	}
@@ -33,6 +37,10 @@
 		<molecules-stepper :steps="steps" :currentStep="currentStep" />
 
 		<!-- Konten langkah saat ini -->
+		<div v-if="success" class="flex justify-center w-full bg-transparent mt-4 mb-4">
+			<molecules-success-alert :success="success" :messageAlert="message_success" @close-alert="closeSuccessAlert"/>
+		</div>
+
 		<form @submit.prevent="addDonation">
 			<div v-if="currentStep === 0">
 				<!-- Konten langkah 1 -->
@@ -44,7 +52,7 @@
 				<div class="flex justify-center py-6">				
 					<div class="grid grid-cols-2 gap-4">
 						<div v-for="nominal in nominals" :key="nominal.id" class="mb-6 w-full">
-							<input @click="changeNominal(nominal.nominal)" type="radio" :id="`option-nominal${nominal.id}`" v-model="input.donation_amount" :value="nominal.id" name="donation_amount"/>
+							<input class="input__nominal" @click="changeNominal(nominal.nominal)" type="radio" :id="`option-nominal${nominal.id}`" v-model="input.donation_amount" :value="nominal.id" name="donation_amount" :checked="input.donation_amount === nominal.id"/>
 							<label :for="`option-nominal${nominal.id}`">{{$format(nominal.nominal)}}</label>
 						</div>
 					</div>
@@ -66,8 +74,8 @@
 				<div class="flex justify-center py-2">				
 					<div class="grid grid-cols-1">
 						<div v-for="bank in banks" :key="bank.id" class="col-span-full mb-6">
-							<input @click="changeBank(bank.id)" type="radio" :id="`option-bank${bank.id}`" v-model="input.bank_id" :value="bank.id" name="bank_id"/>
-							<label :for="`option-bank${bank.id}`" class="flex justify-between items-center">
+							<input :class="`${checked_bank ? 'input__bank' : ''}`" @click="changeBank(bank.id)" type="radio" :id="`option-bank${bank.id}`" v-model="input.bank_id" :value="bank.id" name="bank_id"/>
+							<label :for="`option-bank${bank.id}`" class="flex justify-between items-center px-4 py-2" >
 								<div>
 									<img :src="`${img_url}/${bank.image}`" alt="Icon" class="w-[48px] h-auto">
 								</div>
@@ -142,6 +150,26 @@
 						</div>
 					</div>
 
+					<div class="w-full lg:w-6/12 px-4 py-6">
+						<div class="relative">				
+							<label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+								Campaign
+							</label>
+							<select @change="changeCampaign($event)" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+								<option selected value="">Choose campaign</option>
+								<option v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
+									{{campaign.title}}
+								</option>
+							</select>
+						</div>
+						<div v-if="validations.anonim" class="flex p-4 py-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+							<i class="fa-solid fa-circle-info"></i>
+							<div class="px-2">
+								{{validations.anonim[0]}}
+							</div>
+						</div>
+					</div>
+
 					<div class="flex-shrink-0 lg:w-12/12 w-full py-10">
 						<button type="submit" class="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
 							<div v-if="loading">
@@ -162,6 +190,11 @@
 		<div class="flex justify-center items-center py-6 mb-4 space-x-4">
 			<button @click="prevStep" :disabled="currentStep === 0" class="btn"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
 			<button @click="nextStep" :disabled="currentStep === steps.length - 1" class="btn">Selanjutnya <i class="fa-solid fa-arrow-right"></i></button>
+		</div>
+
+
+		<div v-if="loading">
+			<molecules-row-loading :loading="loading" :options="options" />
 		</div>
 	</div>
 </template>
@@ -201,7 +234,9 @@
 				currentStep: 0,
 				nominals: [],
 				banks: [],
+				campaigns: [],
 				changeStep: false,
+				checked_bank: false
 			};
 		},
 
@@ -209,6 +244,7 @@
 		mounted() {
 			this.getNominalLists();
 			this.getBankLists();
+			this.getCampaignLists();
 		},
 
 		methods: {
@@ -217,10 +253,16 @@
 					this.currentStep++;
 				}
 			},
+
 			prevStep() {
 				if (this.currentStep > 0) {
 					this.currentStep--;
 				}
+			},
+
+			closeSuccessAlert() {
+				this.success = false;
+				this.message_success = '';
 			},
 
 			changeNominal(data) {
@@ -229,6 +271,15 @@
 
 			changeBank(id) {
 				this.input.bank_id = id
+				this.checked_bank = true
+			},
+
+			changeAnonim(e) {
+				this.input.anonim = e.target.value
+			},
+
+			changeCampaign(e) {
+				this.input.campaign_id = e.target.value
 			},
 
 			getNominalLists() {
@@ -255,10 +306,91 @@
 				.catch((err) => console.log(err))
 			},
 
+			getCampaignLists() {
+				getData({
+					api_url: `${this.api_url}/fitur/campaign-management`,
+					token: this.token.token,
+					api_key: this.api_token
+				})
+				.then(({data}) => {
+					this.campaigns = data
+				})
+				.catch((err) => console.log(err))
+			},
+
 			addDonation() {
-				console.log(this.input)
+				this.loading = true;
+				this.options = "add-donatur"
+
+				const endPoint = `/fitur/donation-management`;
+				const config = {
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json"
+					},
+				};
+
+				this.$api.defaults.headers.common["Authorization"] = `Bearer ${this.token.token}`;
+				this.$api.defaults.headers.common["Dku-Api-Key"] = this.api_token;
+
+				const dataPrepare = {
+					name: this.input.name,
+					email: this.input.email,
+					anonim: this.input.anonim,
+					methode: this.input.bank_id ? 'BANK_TRANSFER' : '',
+					bank_id: this.input.bank_id,
+					campaign_id: this.input.campaign_id,
+					nominal_donation: this.input.donation_amount,
+					user_id: null
+				}
+
+
+				this.$api.post(endPoint, dataPrepare, config)
+				.then(({data}) => {
+					if(data.success) {
+						this.$toast.show(data.message, {
+							type: "success",
+							duration: 1500,
+							position: "top-right",
+							icon: 'check-double'
+						});
+						this.success = true;
+						this.message_success = data.message
+						this.scrollToTop();
+						this.input = {}
+					}
+				})
+				.finally(() => {
+					setTimeout(() => {
+						this.loading = false;
+						this.options = ''
+						this.input = {};
+						this.input.donation_amount = '';
+						this.input.bank_id = '';
+					}, 1500)
+				})
+				.catch((err) => {
+					this.$swal({
+						icon: 'info',
+						title: 'Oops...',
+						text: 'Failed form data, please check again!',
+					})
+					this.validations = err.response.data;
+					this.scrollToTop();
+				})
 			}
 		},
+
+		watch: {
+			dataNotifs() {
+				if (this.$_.size(this.dataNotifs) > 0) {
+					if(this.token.token) {
+						this.message_success = this.messageNotif;
+					}
+					console.log("Ok")
+				}
+			},
+		}
 	};
 </script>
 

@@ -116,7 +116,6 @@ export default {
       })
 
         .then(( data ) => {
-          console.log(data);
           let cells = []
           data?.data?.map((cell) => {
             const prepareCell = {
